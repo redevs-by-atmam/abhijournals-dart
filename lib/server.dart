@@ -11,6 +11,7 @@ Future<Response> renderHtml(String template, Map<String, dynamic> data) async {
     'navigation': _buildNavigation(data),
   };
 
+
   // Load and parse the template
   final templateContent = await _loadTemplate(template);
   final parser = Template(templateContent, name: template);
