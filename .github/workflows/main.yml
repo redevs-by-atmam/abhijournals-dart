@@ -58,5 +58,5 @@ jobs:
         uses: actions/deploy-pages@v4
 
 env:
-  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
 
