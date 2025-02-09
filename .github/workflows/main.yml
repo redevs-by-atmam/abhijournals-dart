@@ -35,7 +35,7 @@ jobs:
       - name: Copy static files
         run: |
           mkdir -p build
-          cp -r web/* build/
+          cp -r static/* build/
           rm build/main.dart
           
       - name: Setup Pages
