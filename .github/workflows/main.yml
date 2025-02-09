@@ -36,7 +36,7 @@ jobs:
         run: |
           mkdir -p build
           cp -r static/* build/
-          rm build/main.dart
+          # rm build/main.dart
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
