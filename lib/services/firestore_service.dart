@@ -1,10 +1,9 @@
 import 'dart:developer';
 
-import 'package:dart_main_website/controllers/domain_controller.dart';
 import 'package:dart_main_website/models/article.dart';
+import 'package:dart_main_website/models/journal.dart';
+import 'package:dart_main_website/models/home_content_model.dart';
 import 'package:firedart/firedart.dart';
-import '../models/journal.dart';
-import '../models/home_content_model.dart';
 import '../config/firebase_config.dart';
 
 class FirestoreService {

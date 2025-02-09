@@ -29,9 +29,7 @@ class DomainController {
         return Response.notFound('Journal not found');
       }
 
-      final HomeContentModel? homeContent =
-          await _firestoreService.getHomeContent(journal);
-
+      final homeContent = await _firestoreService.getHomeContent(journal);
 
       return renderHtml('index.html', {
         'journal': journal.toJson(),

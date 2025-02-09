@@ -1,0 +1,14 @@
+{
+  "name": "dart-journal-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "dependencies": {
+    "@vercel/node": "^2.0.0"
+  }
+} 

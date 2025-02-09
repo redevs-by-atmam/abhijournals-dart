@@ -1,26 +1,42 @@
-# Use the Dart official image
-FROM dart:stable
+# Use the official Dart SDK image with a specific version
+FROM dart:3.6.1 AS build
 
 # Set the working directory
 WORKDIR /app
 
-# Copy Dart project files
-COPY . .
+# Copy pubspec files
+COPY pubspec.* ./
 
-# Resolve dependencies
+# Get dependencies
 RUN dart pub get
 
-# Run build_runner to generate code
+# Copy the rest of the application code
+COPY . .
+
+# Run build_runner
 RUN dart run build_runner build --delete-conflicting-outputs
 
-# Compile the app to JavaScript
-RUN dart compile js bin/main.dart -o build/main.js
+# Build for production
+RUN dart compile exe bin/main.dart -o server
 
-# Copy static files
-RUN mkdir -p build && \
-    cp -r static/* build/ && \
-    rm build/main.dart
+# Use a minimal runtime image
+FROM debian:bullseye-slim
 
-# Start server
+# Set the working directory
+WORKDIR /app
+
+# Copy necessary files from build stage
+COPY --from=build /app/server /app/
+COPY --from=build /app/templates /app/templates
+COPY --from=build /app/static /app/static
+
+# Install required dependencies
+RUN apt-get update && \
+    apt-get install -y ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+# Expose the port
 EXPOSE 8080
-CMD ["dart", "bin/main.dart"]
+
+# Start the server
+CMD ["./server"]
