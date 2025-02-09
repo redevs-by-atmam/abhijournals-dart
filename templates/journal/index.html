@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>Journal Subdomain</h1>
+    <h2>{{journal.title}}</h2>
+    <p>Domain: {{journal.domain}}</p>
+    
+    <h3>Available Journals:</h3>
+    <ul>
+    {{#journals}}
+        <li>{{title}} - {{domain}}</li>
+    {{/journals}}
+    </ul>
+</body>
+</html> 

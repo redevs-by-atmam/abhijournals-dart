@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+{% block body %}
+<head>
+    <style>
+        section {
+            margin: 20px;
+            padding: 20px;
+            color: black;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .volumes-container {
+            margin: 20px;
+            padding: 20px;
+            color: #333;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .volume {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .volume:last-child {
+            border-bottom: none;
+        }
+
+        .volume-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .volume-status {
+            font-size: 0.9em;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-left: 5px;
+        }
+
+        .active {
+            color: #2ecc71;
+        }
+
+        .inactive {
+            color: #e74c3c;
+        }
+
+        .no-volumes {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            section, .volumes-container {
+                margin: 10px;
+                padding: 10px;
+            }
+
+            .volume {
+                padding: 5px;
+            }
+
+            .volume-title {
+                font-size: 0.9em;
+            }
+
+            .volume-status {
+                font-size: 0.8em;
+                display: block;
+                margin-left: 0;
+                margin-top: 5px;
+            }
+
+            .volume-created-at {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+    <title>Archive {% if journal %}{{ journal.name }}{% endif %}</title>
+</head>
+
+<body>
+    <section class="volumes-container">
+        {% if filtered_volumes %}
+            {% for volume in filtered_volumes %}
+                <div class="volume">
+                    <div class="volume-title">
+                        <a href="{{ url_for('volume_issues', volume_id=volume.id, subdomain=journal.domain) }}" style="color: black; text-decoration: none;">
+                        Volume {{ volume.volume_number }}: {{ volume.title }}
+                        {% if not volume.is_active %}
+                            <span class="volume-status inactive">(Inactive)</span>
+                        {% else %}
+                            <span class="volume-status active">(Active)</span>
+                        {% endif %}
+                        <div class="volume-created-at" style="font-weight: normal;">
+                            <i class="far fa-clock"></i>Published on: {{ volume.created_at[:7] }} (Year-Month)
+                        </div>
+                        </a>
+                    </div>  
+                    <hr>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-volumes">{{ "No volumes found for this journal." }}</p>
+        {% endif %}
+    </section>
+</body>
+{% endblock %}
