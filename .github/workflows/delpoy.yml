@@ -25,11 +25,11 @@ jobs:
           project_id: "abhijournals"
 
 
-      - name: Build and Push Docker Image
+      - name: Build and Push Docker Image (Artifact Registry)
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev
-          docker build -t us-central1-docker.pkg.dev/abhijournals/gcr.io/dart-shelf-app .
-          docker push us-central1-docker.pkg.dev/abhijournals/gcr.io/dart-shelf-app
+          docker build -t us-central1-docker.pkg.dev/abhijournals/my-dart-repo/dart-shelf-app .
+          docker push us-central1-docker.pkg.dev/abhijournals/my-dart-repo/dart-shelf-app
 
 
 

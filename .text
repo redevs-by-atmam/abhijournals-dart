@@ -6,3 +6,13 @@ gcloud projects add-iam-policy-binding abhijournals --member=serviceAccount:gith
 
 
 gcloud iam service-accounts keys create key.json --iam-account=github-actions@abhijournals.iam.gserviceaccount.com
+
+gcloud artifacts repositories create my-dart-repo --repository-format=Docker --location=us --description="Docker repository for Dart Shelf app"
+
+
+
+
+
+
+
+
