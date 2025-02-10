@@ -27,9 +27,10 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          gcloud auth configure-docker
-          docker build -t gcr.io/abhijournals/dart-shelf-app .
-          docker push gcr.io/abhijournals/dart-shelf-app
+          gcloud auth configure-docker us-central1-docker.pkg.dev
+          docker build -t us-central1-docker.pkg.dev/abhijournals/gcr.io/dart-shelf-app .
+          docker push us-central1-docker.pkg.dev/abhijournals/gcr.io/dart-shelf-app
+
 
 
       - name: Deploy to Google Cloud Run
