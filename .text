@@ -12,6 +12,9 @@ gcloud artifacts repositories create my-dart-repo --repository-format=Docker --l
 gcloud iam service-accounts add-iam-policy-binding 875524656819-compute@developer.gserviceaccount.com --member=serviceAccount:github-actions@abhijournals.iam.gserviceaccount.com --role=roles/iam.serviceAccountUser
 
 
+gcloud artifacts repositories create dart-shelf-repo --repository-format=docker --location=asia-south1
+
+
 
 
 
