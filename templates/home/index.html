@@ -65,12 +65,9 @@
             <ul>
               {{#journals}}
               <li>
-                {{#is_production}}
-                <a href="https://abhijournals.com/{{domain}}/" target="_blank">{{title}}</a>
-                {{/is_production}}
-                {{^is_production}} 
-                <a href="http://localhost:8080/{{domain}}/" target="_blank">{{title}}</a>
-                {{/is_production}}
+                <a href="/{{domain}}/" target="_blank">{{title}}</a>
+       
+
 
 
               </li>
@@ -517,25 +514,18 @@
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <img src="{{ image }}" class="img-fluid" alt="{{ title }}">
               <div class="portfolio-info">
-                {{#is_production}}
-                <a href="https://abhijournals.com/{{domain}}/" target="_blank">
-                {{/is_production}}
-                {{^is_production}} 
-                <a href="http://localhost:8080/{{domain}}/" target="_blank">
-                {{/is_production}}
-                
+                <a href="/{{domain}}/" target="_blank">
+          
                   <h4>{{ title }}</h4>
                 
                 </a>
 
-                {{#is_production}}
-                <a href="https://abhijournals.com/{{domain}}/" target="_blank" title="More Details"
+
+
+                <a href="/{{domain}}/" target="_blank" title="More Details"
                   class="details-link"><i class="bi bi-link-45deg"></i></a>
-                {{/is_production}}
-                {{^is_production}} 
-                <a href="http://localhost:8080/{{domain}}/" target="_blank" title="More Details"
-                  class="details-link"><i class="bi bi-link-45deg"></i></a>
-                {{/is_production}}
+
+
 
                
               </div>
