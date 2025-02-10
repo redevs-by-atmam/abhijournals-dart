@@ -37,7 +37,7 @@ jobs:
       - name: Deploy to Google Cloud Run
         run: |
           gcloud run deploy dart-shelf-app \
-            --image gcr.io/abhijournals/dart-shelf-app \
+            --image us-docker.pkg.dev/abhijournals/gcr.io/dart-shelf-app \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated
