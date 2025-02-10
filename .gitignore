@@ -3,6 +3,6 @@
 .dart_tool/
 .env
 env.g.dart
-
+key.json
 .vercel
 node_modules
