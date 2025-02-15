@@ -24,18 +24,28 @@ class DomainController {
 
       // Get journal by domain
       final journal = await _firestoreService.getJournalByDomain(domain);
+      final volumes =
+          await _firestoreService.getVolumesByJournalId(journal!.id);
+      final issues = await _firestoreService.getIssuesByJournalId(journal.id);
+      final latestVolumeAndIssueName =
+          await _firestoreService.getLatestVolumeAndIssueName();
 
-      if (journal == null) {
-        return Response.notFound('Journal not found');
-      }
+      print('Volumes: ${volumes.length}');
+      print('Issues: ${issues.length}');
 
       final homeContent = await _firestoreService.getHomeContent(journal);
 
       return renderHtml('index.html', {
         'journal': journal.toJson(),
+        'latestVolume': latestVolumeAndIssueName['volume'],
+        'latestIssue': latestVolumeAndIssueName['issue'],
+        'latestYear': latestVolumeAndIssueName['year'],
+        'domain': journal.domain,
         'header': getHeaderHtml(journal),
         'footer': getFooterHtml(journal),
-        'content': homeContent?.toJson()
+        'content': homeContent?.toJson(),
+        'volumes': volumes.map((volume) => volume.toJson()).toList(),
+        'issues': issues.map((issue) => issue.toJson()).toList(),
       });
     } catch (e) {
       print('Error in domain controller: $e');

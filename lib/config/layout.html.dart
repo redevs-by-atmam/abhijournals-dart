@@ -1,4 +1,5 @@
 import 'package:dart_main_website/models/journal.dart';
+import 'package:dart_main_website/routes/route_const.dart';
 
 const String headerHtml = '';
 
@@ -118,26 +119,17 @@ String getHeaderHtml(JournalModel journal) {
                         <a
                             class="nav-link dropdown-toggle" data-toggle="dropdown">Browse</a>
                         <div class="dropdown-menu rounded-0 m-0">
-                            <a href="/${journal.domain}/current_issue/"
+                            <a href="/${journal.domain}/${PageRoutes.currentIssue}/"
                                 class="dropdown-item">Current Issue</a>
-                            <a href="/${journal.domain}/by_issue/" class="dropdown-item">By
-                                Issue</a>
+                            <a href="/${journal.domain}/${PageRoutes.byIssue}/" 
+                                class="dropdown-item">By Issue</a>
 
                         </div>
                     </div>
 
                     <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"
-                            data-toggle="dropdown">Archive</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            {% for year in (journal.get_filtered_volumes_by_year()).keys() %}
-
-                            <a href="/${journal.domain}/archive/${2024}/" class="dropdown-item">Archive
-                                ${2024}</a>
-                            {% endfor %}
-
-
-                        </div>
+                        <a href="/${journal.domain}/${PageRoutes.archive}/" class="nav-link">Archive</a>
+                       
                     </div>
 
                     <div class="nav-item dropdown">
@@ -145,20 +137,20 @@ String getHeaderHtml(JournalModel journal) {
                             class="nav-link dropdown-toggle" data-toggle="dropdown">Journal
                             Info</a>
                         <div class="dropdown-menu rounded-0 m-0">
-                            <a href="/${journal.domain}/about_journal/"
+                            <a href="/${journal.domain}/${PageRoutes.aboutJournal}/"
                                 class="dropdown-item">About Journal</a>
-                            <a href="/${journal.domain}/aim_and_scope/" class="dropdown-item">Aim
+                            <a href="/${journal.domain}/${PageRoutes.aimAndScope}/" class="dropdown-item">Aim
                                 and Scope</a>
 
-                            <a href="/${journal.domain}/editorial_board/"
+                            <a href="/${journal.domain}/${PageRoutes.editorialBoard}/"
                                 class="dropdown-item">Editorial Board</a>
-                            <a href="/${journal.domain}/publication_ethics/"
+                            <a href="/${journal.domain}/${PageRoutes.publicationEthics}/"
 
                                 class="dropdown-item">Publication Ethics</a>
-                            <a href="/${journal.domain}/indexing_and_abstracting/"
+                            <a href="/${journal.domain}/${PageRoutes.indexingAndAbstracting}/"
                                 class="dropdown-item">Indexing And Abstracting</a>
 
-                            <a href="/${journal.domain}/peer_review_process/"
+                            <a href="/${journal.domain}/${PageRoutes.peerReviewProcess}/"
                                 class="dropdown-item">Peer Review Process</a>
                         </div>
 
@@ -167,27 +159,27 @@ String getHeaderHtml(JournalModel journal) {
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown">For Author</a>
                         <div class="dropdown-menu rounded-0 m-0">
-                            <a href="/${journal.domain}/submit_online_paper/"
+                            <a href="/${journal.domain}/${PageRoutes.submitOnlinePaper}/"
 
                                 class="dropdown-item">Submit Online Paper</a>
-                            <a href="/${journal.domain}/topic/" class="dropdown-item">Topics</a>
-                            <a href="/${journal.domain}/author_guidelines/"
+                            <a href="/${journal.domain}/${PageRoutes.topics}/" class="dropdown-item">Topics</a>
+                            <a href="/${journal.domain}/${PageRoutes.authorGuidelines}/"
                                 class="dropdown-item">Author Guidelines</a>
 
-                            <a href="/${journal.domain}/copyright_form/"
+                            <a href="/${journal.domain}/${PageRoutes.copyrightForm}/"
                                 class="dropdown-item">Copyright Form</a>
-                            <a href="/${journal.domain}/check_paper_status/"
+                            <a href="/${journal.domain}/${PageRoutes.checkPaperStatus}/"
 
                                 class="dropdown-item">Check Paper Status</a>
                             
                         </div>
                     </div>
 
-                    <a href="/${journal.domain}/submit_manuscript/"
+                    <a href="/${journal.domain}/${PageRoutes.submitManuscript}/"
                         class="nav-item nav-link">Submit Manuscript</a>
-                    <a href="/${journal.domain}/reviewer/" class="nav-item nav-link">Reviewer</a>
+                    <a href="/${journal.domain}/${PageRoutes.reviewers}/" class="nav-item nav-link">Reviewer</a>
 
-                    <a href="/${journal.domain}/contact_us/"
+                    <a href="/${journal.domain}/${PageRoutes.contact}/"
                         class="nav-item nav-link">Contact</a>
                 </div>
 
@@ -208,28 +200,28 @@ String getHeaderHtml(JournalModel journal) {
                         </div>
                         <div class="scrolling-text">
                             <div class="scrolling-content">
-                                <a href="/${journal.domain}/about_journal/">About Journal</a>
-                                <a href="/${journal.domain}/aim_and_scope/">Aim and Scope</a>
-                                <a href="/${journal.domain}/editorial_board/">Editorial Board</a>
+                                <a href="/${journal.domain}/${PageRoutes.aboutJournal}/">About Journal</a>
+                                <a href="/${journal.domain}/${PageRoutes.aimAndScope}/">Aim and Scope</a>
+                                <a href="/${journal.domain}/${PageRoutes.editorialBoard}/">Editorial Board</a>
 
-                                <a href="/${journal.domain}/publication_ethics/">Publication
+                                <a href="/${journal.domain}/${PageRoutes.publicationEthics}/">Publication
                                     Ethics</a>
-                                <a href="/${journal.domain}/indexing_and_abstracting/">Indexing
+                                <a href="/${journal.domain}/${PageRoutes.indexingAndAbstracting}/">Indexing
                                     And Abstracting</a>
-                                <a href="/${journal.domain}/peer_review_process/">Peer Review
+                                <a href="/${journal.domain}/${PageRoutes.peerReviewProcess}/">Peer Review
                                     Process</a>
 
                                 <!-- Repeat content to ensure smooth looping -->
-                                <a href="/${journal.domain}/about_journal/">About Journal</a>
-                                <a href="/${journal.domain}/aim_and_scope/">Aim and Scope</a>
+                                <a href="/${journal.domain}/${PageRoutes.aboutJournal}/">About Journal</a>
+                                <a href="/${journal.domain}/${PageRoutes.aimAndScope}/">Aim and Scope</a>
 
-                                <a href="/${journal.domain}/editorial_board/">Editorial Board</a>
-                                <a href="/${journal.domain}/publication_ethics/">Publication
+                                <a href="/${journal.domain}/${PageRoutes.editorialBoard}/">Editorial Board</a>
+                                <a href="/${journal.domain}/${PageRoutes.publicationEthics}/">Publication
                                     Ethics</a>
 
-                                <a href="/${journal.domain}/indexing_and_abstracting/">Indexing
+                                <a href="/${journal.domain}/${PageRoutes.indexingAndAbstracting}/">Indexing
                                     And Abstracting</a>
-                                <a href="/${journal.domain}/peer_review_process/">Peer Review
+                                <a href="/${journal.domain}/${PageRoutes.peerReviewProcess}/">Peer Review
 
                                     Process</a>
                             </div>

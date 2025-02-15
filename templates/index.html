@@ -12,7 +12,7 @@
               <hr style="width: 80%; border-top: 1px solid #ccc; margin: 10px 0;" />
              
             
-                <h5 class="text-center mb-3">No Active Volume or Issue</h5>
+                <h5 class="text-center mb-3">Volume {{latestVolume}} - Issue {{latestIssue}}, {{latestYear}}</h5>
           
               <hr style="width: 80%; border-top: 1px solid #ccc; margin: 0 0;" />
 
@@ -61,30 +61,30 @@
         <!-- Articles in Press End -->
         <div class="mb-3">
           <div class="section-title mb-0">
-            <h5 class="m-0 text-uppercase font-weight-bold">Available Volumes</h5>
+            <h5 class="m-0 text-uppercase font-weight-bold">Archive</h5>
           </div>
           <div class="bg-white border border-top-0 p-3">
             <div class="accordion" id="volumeAccordion">
-             
+              {{#volumes}}
                 <div class="mb-2">
-                  <div class="d-flex align-items-center" style="cursor: pointer;" data-toggle="collapse" data-target="#volume_id" aria-expanded="false">
+                  <div class="d-flex align-items-center" style="cursor: pointer;" data-toggle="collapse" data-target="#volume_{{id}}" aria-expanded="false">
                     <i class="fas fa-book mr-2"></i>
-                    <span style="color: #000000;" onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'">Volume No</span>
+                    <span style="color: #000000;" onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'">Volume {{volumeNumber}}</span>
                     <i class="fas fa-chevron-down ml-auto"></i>
                   </div>
 
-                  <div id="volume_id" class="collapse ml-4 mt-2" data-parent="#volumeAccordion">
-                 
+                  <div id="volume_{{id}}" class="collapse ml-4 mt-2" data-parent="#volumeAccordion">
+                    {{#issues}}
                       <div class="mb-2">
-                        <a href="/issue-details/id../articles/" style="color: #000000; text-decoration: none;" onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'">
+                        <a href="/{{domain}}/issue/{{id}}/articles/" style="color: #000000; text-decoration: none;" onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'">
                           <i class="far fa-file-alt mr-2"></i>
-                          Issue No
+                          Issue {{issueNumber}}
                         </a>
                       </div>
-           
+                    {{/issues}}
                   </div>
                 </div>
-           
+              {{/volumes}}
             </div>
           </div>
         </div>
