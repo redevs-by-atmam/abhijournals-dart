@@ -53,7 +53,9 @@
           </div>
           <div class="bg-white border border-top-0 p-3">
             <div class="d-flex flex-column">
-              <a href="current_issue" class="mb-2" style="color: #000000; text-decoration: none;" onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'"><i class="fas fa-link mr-2"></i>Current Issue</a>
+              {{#journal}}
+              <a href="/{{domain}}/current-issue/" class="mb-2" style="color: #000000; text-decoration: none;" onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'"><i class="fas fa-link mr-2"></i>Current Issue</a>
+              {{/journal}}
             </div>
           </div>
         </div>
@@ -74,14 +76,14 @@
                   </div>
 
                   <div id="volume_{{id}}" class="collapse ml-4 mt-2" data-parent="#volumeAccordion">
-                    {{#issues}}
+                    {{#volumeIssues}}
                       <div class="mb-2">
                         <a href="/{{domain}}/issue/{{id}}/articles/" style="color: #000000; text-decoration: none;" onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'">
                           <i class="far fa-file-alt mr-2"></i>
                           Issue {{issueNumber}}
                         </a>
                       </div>
-                    {{/issues}}
+                    {{/volumeIssues}}
                   </div>
                 </div>
               {{/volumes}}

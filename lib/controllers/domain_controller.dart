@@ -24,14 +24,31 @@ class DomainController {
 
       // Get journal by domain
       final journal = await _firestoreService.getJournalByDomain(domain);
-      final volumes =
-          await _firestoreService.getVolumesByJournalId(journal!.id);
-      final issues = await _firestoreService.getIssuesByJournalId(journal.id);
-      final latestVolumeAndIssueName =
-          await _firestoreService.getLatestVolumeAndIssueName();
+      if (journal == null) {
+        return renderNotFound({
+          'domain': domain,
+          'message': 'Journal not found'
+        });
+      }
 
-      print('Volumes: ${volumes.length}');
-      print('Issues: ${issues.length}');
+      // Get volumes and issues
+      final volumes = await _firestoreService.getVolumesByJournalId(journal.id);
+      final issues = await _firestoreService.getIssuesByJournalId(journal.id);
+      
+      // Get latest volume and issue info
+      final latestVolumeAndIssueName = await _firestoreService.getLatestVolumeAndIssueName();
+
+      // Organize issues by volume
+      final volumesWithIssues = volumes.map((volume) {
+        final volumeIssues = issues.where((issue) => issue.volumeId == volume.id).toList();
+        return {
+          ...volume.toJson(),
+          'volumeIssues': volumeIssues.map((issue) => {
+            ...issue.toJson(),
+            'domain': domain,
+          }).toList(),
+        };
+      }).toList();
 
       final homeContent = await _firestoreService.getHomeContent(journal);
 
@@ -44,13 +61,14 @@ class DomainController {
         'header': getHeaderHtml(journal),
         'footer': getFooterHtml(journal),
         'content': homeContent?.toJson(),
-        'volumes': volumes.map((volume) => volume.toJson()).toList(),
-        'issues': issues.map((issue) => issue.toJson()).toList(),
+        'volumes': volumesWithIssues,
       });
     } catch (e) {
       print('Error in domain controller: $e');
-      return Response.internalServerError(
-          body: 'An error occurred while processing your request');
+      return renderError(
+        'An error occurred while processing your request',
+        {'domain': domain}
+      );
     }
   }
 

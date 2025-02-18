@@ -10,18 +10,33 @@ class CurrentIssueController {
     try {
       // Get journal
       final journal = await _firestoreService.getJournalByDomain(domain);
+      if (journal == null) {
+        return renderNotFound({
+          'domain': domain,
+          'message': 'Journal not found'
+        });
+      }
 
-      final latestIssue = await _firestoreService.getLatestIssue();
-      final latestVolume = await _firestoreService.getLatestVolume();
+      // Get latest volume and issue for this specific journal
+      final latestVolume = await _firestoreService.getLatestVolumeByJournalId(journal.id);
+      if (latestVolume == null) {
+        return renderError('No volumes found for this journal', {'domain': domain});
+      }
+
+      final latestIssue = await _firestoreService.getLatestIssueByVolumeId(latestVolume.id);
+      if (latestIssue == null) {
+        return renderError('No issues found for the latest volume', {'domain': domain});
+      }
 
       // Get articles for latest issue
-      final articles =
-          await _firestoreService.getArticlesByIssue(latestIssue.id);
+      final articles = await _firestoreService.getArticlesByIssue(latestIssue.id);
+      
+      print('Latest Volume: ${latestVolume.volumeNumber}');
+      print('Latest Issue: ${latestIssue.issueNumber}');
+      print('Articles found: ${articles.length}');
 
-      print('Articles: ${articles.length}');
-
-      return renderHtml('dynamic-pages/articles-list.html', {
-        'header': getHeaderHtml(journal!),
+      return renderHtml('dynamic-pages/current-issue.html', {
+        'header': getHeaderHtml(journal),
         'footer': getFooterHtml(journal),
         'journal': journal.toJson(),
         'domain': journal.domain,
@@ -32,8 +47,10 @@ class CurrentIssueController {
       });
     } catch (e) {
       print('Error fetching current issue: $e');
-      return Response.internalServerError(
-          body: 'An error occurred while processing your request');
+      return renderError(
+        'An error occurred while fetching the current issue',
+        {'domain': domain}
+      );
     }
   }
 

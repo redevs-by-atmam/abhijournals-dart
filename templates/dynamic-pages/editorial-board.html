@@ -1,0 +1,52 @@
+{{{header}}}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card">
+        <div class="card-body">
+          {{#chiefEditor}}
+            <h4 class="card-title text-primary">Chief Editor</h4>
+            <h5 class="card-subtitle mb-2">{{name}}</h5>
+            <p class="card-text">{{institution}}</p>
+            <p class="card-text"><small class="text-muted">{{email}}</small></p>
+          {{/chiefEditor}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 mb-3">
+      <h4>Associate Editors</h4>
+    </div>
+    {{#associateEditors}}
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{name}}</h5>
+            <p class="card-text">{{institution}}</p>
+            <p class="card-text"><small class="text-muted">{{email}}</small></p>
+          </div>
+        </div>
+      </div>
+    {{/associateEditors}}
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 mb-3">
+      <h4>Editors</h4>
+    </div>
+    {{#editors}}
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{name}}</h5>
+            <p class="card-text">{{institution}}</p>
+            <p class="card-text"><small class="text-muted">{{email}}</small></p>
+          </div>
+        </div>
+      </div>
+    {{/editors}}
+  </div>
+</div>
+{{{footer}}}

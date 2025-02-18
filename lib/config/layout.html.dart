@@ -1,11 +1,14 @@
 import 'package:dart_main_website/models/journal.dart';
 import 'package:dart_main_website/routes/route_const.dart';
+import 'package:dart_main_website/services/firestore_service.dart';
+import 'package:dart_main_website/models/social_link.dart';
 
 const String headerHtml = '';
 
-
 String getHeaderHtml(JournalModel journal) {
-    return '''
+  // Get cached social links using the public getter
+
+  return '''
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,7 +57,6 @@ String getHeaderHtml(JournalModel journal) {
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-body small" href="https://admin.abhijournals.com/"
-
                                 target="_blank">Login</a>
                         </li>
                     </ul>
@@ -71,21 +73,17 @@ String getHeaderHtml(JournalModel journal) {
                 <a href="/${journal.domain}/" class="navbar-brand p-0 d-none d-lg-block">
                     <div class="heading-text">
                         <h6>
-
-
                             <span style="font-size: 1.2em; font-weight: bold; margin-bottom: 0;">${journal.title.split(' ').take(4).join(' ')}</span><br>
                             <span style="font-weight: bold; margin-top: 0;">${journal.title.split(' ').skip(4).join(' ')} ( ${journal.domain.toUpperCase()} )</span>
                         </h6>
-
                     </div>
-
-
                 </a>
             </div>
-            <!-- login button -->
             <div class="col-lg-8 text-center text-lg-right">
-                <a href="https://admin.abhijournals.com/" target="_blank" class="btn px-4"
-                    style="background-color: #033e93; color: white; border-radius: 5px;">Login/Register</a>
+                <a href="https://admin.abhijournals.com/" target="_blank" class="btn btn-dark px-4"
+                    style="border-radius: 0;">
+                  Login/Register
+                </a>
             </div>
         </div>
     </div>
@@ -97,18 +95,9 @@ String getHeaderHtml(JournalModel journal) {
         <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
             <a href="/${journal.domain}/" class="navbar-brand d-block d-lg-none">
                 <div class="">   
-
-
-                        <span style="font-size: 0.6em; font-weight: bold;color: white;">${journal.title.split(' ').take(5).join(' ')}</span><br>
-
-                        <span style="font-size: 0.6em; font-weight: bold;color: white;">${journal.title.split(' ').skip(5).take(5).join(' ')}</span><br>
+                    <span style="font-size: 0.6em; font-weight: bold;color: white;">${journal.title.split(' ').take(5).join(' ')}</span><br>
+                    <span style="font-size: 0.6em; font-weight: bold;color: white;">${journal.title.split(' ').skip(5).take(5).join(' ')}</span><br>
                 </div>
-
-
-            </a>
-            <a href="https://admin.abhijournals.com/" target="_blank" class="btn px-3 d-block d-lg-none"
-                style="background-color: #033e93; color: white; border-radius: 5px; margin-right: 1px;">
-                Login
             </a>
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
@@ -116,73 +105,64 @@ String getHeaderHtml(JournalModel journal) {
             <div class="collapse navbar-collapse justify-content-center px-0 px-lg-3" id="navbarCollapse">
                 <div class="navbar-nav mx-auto py-0">
                     <div class="nav-item dropdown">
-                        <a
-                            class="nav-link dropdown-toggle" data-toggle="dropdown">Browse</a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">Browse</a>
                         <div class="dropdown-menu rounded-0 m-0">
                             <a href="/${journal.domain}/${PageRoutes.currentIssue}/"
                                 class="dropdown-item">Current Issue</a>
                             <a href="/${journal.domain}/${PageRoutes.byIssue}/" 
                                 class="dropdown-item">By Issue</a>
-
                         </div>
                     </div>
 
                     <div class="nav-item dropdown">
                         <a href="/${journal.domain}/${PageRoutes.archive}/" class="nav-link">Archive</a>
-                       
                     </div>
 
                     <div class="nav-item dropdown">
-                        <a 
-                            class="nav-link dropdown-toggle" data-toggle="dropdown">Journal
-                            Info</a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">Journal Info</a>
                         <div class="dropdown-menu rounded-0 m-0">
                             <a href="/${journal.domain}/${PageRoutes.aboutJournal}/"
                                 class="dropdown-item">About Journal</a>
                             <a href="/${journal.domain}/${PageRoutes.aimAndScope}/" class="dropdown-item">Aim
                                 and Scope</a>
-
                             <a href="/${journal.domain}/${PageRoutes.editorialBoard}/"
                                 class="dropdown-item">Editorial Board</a>
                             <a href="/${journal.domain}/${PageRoutes.publicationEthics}/"
-
                                 class="dropdown-item">Publication Ethics</a>
                             <a href="/${journal.domain}/${PageRoutes.indexingAndAbstracting}/"
                                 class="dropdown-item">Indexing And Abstracting</a>
-
                             <a href="/${journal.domain}/${PageRoutes.peerReviewProcess}/"
                                 class="dropdown-item">Peer Review Process</a>
                         </div>
-
                     </div>
 
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown">For Author</a>
                         <div class="dropdown-menu rounded-0 m-0">
                             <a href="/${journal.domain}/${PageRoutes.submitOnlinePaper}/"
-
                                 class="dropdown-item">Submit Online Paper</a>
                             <a href="/${journal.domain}/${PageRoutes.topics}/" class="dropdown-item">Topics</a>
                             <a href="/${journal.domain}/${PageRoutes.authorGuidelines}/"
                                 class="dropdown-item">Author Guidelines</a>
-
                             <a href="/${journal.domain}/${PageRoutes.copyrightForm}/"
                                 class="dropdown-item">Copyright Form</a>
                             <a href="/${journal.domain}/${PageRoutes.checkPaperStatus}/"
-
                                 class="dropdown-item">Check Paper Status</a>
-                            
                         </div>
                     </div>
 
                     <a href="/${journal.domain}/${PageRoutes.submitManuscript}/"
                         class="nav-item nav-link">Submit Manuscript</a>
                     <a href="/${journal.domain}/${PageRoutes.reviewers}/" class="nav-item nav-link">Reviewer</a>
-
                     <a href="/${journal.domain}/${PageRoutes.contact}/"
                         class="nav-item nav-link">Contact</a>
+                    
+                    <!-- Login button for mobile view -->
+                    <a href="https://admin.abhijournals.com/" target="_blank" 
+                        class="nav-item nav-link d-lg-none">
+                        Login/Register
+                    </a>
                 </div>
-
             </div>
         </nav>
     </div>
@@ -203,27 +183,17 @@ String getHeaderHtml(JournalModel journal) {
                                 <a href="/${journal.domain}/${PageRoutes.aboutJournal}/">About Journal</a>
                                 <a href="/${journal.domain}/${PageRoutes.aimAndScope}/">Aim and Scope</a>
                                 <a href="/${journal.domain}/${PageRoutes.editorialBoard}/">Editorial Board</a>
-
-                                <a href="/${journal.domain}/${PageRoutes.publicationEthics}/">Publication
-                                    Ethics</a>
-                                <a href="/${journal.domain}/${PageRoutes.indexingAndAbstracting}/">Indexing
-                                    And Abstracting</a>
-                                <a href="/${journal.domain}/${PageRoutes.peerReviewProcess}/">Peer Review
-                                    Process</a>
+                                <a href="/${journal.domain}/${PageRoutes.publicationEthics}/">Publication Ethics</a>
+                                <a href="/${journal.domain}/${PageRoutes.indexingAndAbstracting}/">Indexing And Abstracting</a>
+                                <a href="/${journal.domain}/${PageRoutes.peerReviewProcess}/">Peer Review Process</a>
 
                                 <!-- Repeat content to ensure smooth looping -->
                                 <a href="/${journal.domain}/${PageRoutes.aboutJournal}/">About Journal</a>
                                 <a href="/${journal.domain}/${PageRoutes.aimAndScope}/">Aim and Scope</a>
-
                                 <a href="/${journal.domain}/${PageRoutes.editorialBoard}/">Editorial Board</a>
-                                <a href="/${journal.domain}/${PageRoutes.publicationEthics}/">Publication
-                                    Ethics</a>
-
-                                <a href="/${journal.domain}/${PageRoutes.indexingAndAbstracting}/">Indexing
-                                    And Abstracting</a>
-                                <a href="/${journal.domain}/${PageRoutes.peerReviewProcess}/">Peer Review
-
-                                    Process</a>
+                                <a href="/${journal.domain}/${PageRoutes.publicationEthics}/">Publication Ethics</a>
+                                <a href="/${journal.domain}/${PageRoutes.indexingAndAbstracting}/">Indexing And Abstracting</a>
+                                <a href="/${journal.domain}/${PageRoutes.peerReviewProcess}/">Peer Review Process</a>
                             </div>
                         </div>
                     </div>
@@ -233,32 +203,33 @@ String getHeaderHtml(JournalModel journal) {
     </div>
     <!-- Breaking News End -->
 
-
 </body>
 
 </html>
 ''';
 }
 
-
 String getFooterHtml(JournalModel journal) {
-    return '''
-<div class="footer bg-dark pt-3 px-sm-3 px-md-5 mt-5">
+  // Get cached social links using the public getter
+  final socialLinks = FirestoreService().cachedSocialLinks;
 
+  return '''
+<div class="footer bg-dark pt-3 px-sm-3 px-md-5 mt-5">
+        
 
         <div class="row justify-content-center py-2">
             <div class="col-lg-12 text-center mb-4">
                 <h6 class="mb-3 text-white text-uppercase font-weight-bold">Follow Us</h6>
                 <div class="d-flex justify-content-center flex-wrap">
-                    <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="{{ social_links['x'] }}" id="twitter-link-footer"
+                    <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="${socialLinks['x']?.url ?? ''}" id="twitter-link-footer"
                         target="_blank"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="{{ social_links['facebook'] }}" id="facebook-link-footer"
+                    <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="${socialLinks['facebook']?.url ?? ''}" id="facebook-link-footer"
                         target="_blank"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="{{ social_links['linkedin'] }}" id="linkedin-link-footer"
+                    <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="${socialLinks['linkedin']?.url ?? ''}" id="linkedin-link-footer"
                         target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="{{ social_links['instagram'] }}" id="instagram-link-footer"
+                    <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="${socialLinks['instagram']?.url ?? ''}" id="instagram-link-footer"
                         target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="{{ social_links['youtube'] }}" id="youtube-link-footer"
+                    <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="${socialLinks['youtube']?.url ?? ''}" id="youtube-link-footer"
                         target="_blank"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
@@ -298,5 +269,9 @@ String getFooterHtml(JournalModel journal) {
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
+    <!-- Social Links -->
+  
+
 ''';
 }
+

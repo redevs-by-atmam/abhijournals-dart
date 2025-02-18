@@ -21,10 +21,14 @@ class PageModel extends Equatable {
     return PageModel(
       id: json['id'],
       journalId: json['journalId'],
-      name: json['name'],
-      content: json['content'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      name: json['name'] ?? 'Untitled',
+      content: json['content'] ?? 'No content',
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
+          : DateTime.now(),
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'])
+          : DateTime.now(),
     );
   }
 
@@ -40,5 +44,6 @@ class PageModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, journalId, name, content, createdAt, updatedAt];
+  List<Object?> get props =>
+      [id, journalId, name, content, createdAt, updatedAt];
 }

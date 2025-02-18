@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dart_main_website/models/article.dart';
+import 'package:dart_main_website/models/eb_board_model.dart';
 import 'package:dart_main_website/models/issue.dart';
 import 'package:dart_main_website/models/journal.dart';
 import 'package:dart_main_website/models/home_content_model.dart';
@@ -8,10 +9,18 @@ import 'package:dart_main_website/models/page_model.dart';
 import 'package:dart_main_website/models/volume.dart';
 import 'package:firedart/firedart.dart';
 import '../config/firebase_config.dart';
+import '../models/paper_status.dart';
+import '../models/social_link.dart';
+import '../services/cache_service.dart';
 
 class FirestoreService {
   static final FirestoreService _instance = FirestoreService._internal();
   late Firestore _firestore;
+  final _cacheService = CacheService();
+  Map<String, SocialLink>? _cachedSocialLinks;
+
+  // Add getter for cached social links
+  Map<String, SocialLink> get cachedSocialLinks => _cachedSocialLinks ?? {};
 
   factory FirestoreService() {
     return _instance;
@@ -24,7 +33,10 @@ class FirestoreService {
 
   Future<List<JournalModel>> getJournals() async {
     try {
-      final snapshot = await _firestore.collection('journals').get();
+      final snapshot = await _firestore
+          .collection('journals')
+          .orderBy('createdAt', descending: true)
+          .get();
       final journals =
           snapshot.map((doc) => JournalModel.fromJson(doc.map)).toList();
       return journals;
@@ -34,12 +46,42 @@ class FirestoreService {
     }
   }
 
+  Future<List<EditorialBoardModel>> getEditorialBoardByJournalId(
+      String journalId) async {
+    try {
+      final snapshot = await _firestore
+          .collection('editorialBoard')
+          .where('journalId', isEqualTo: journalId)
+          .orderBy('role')
+          .orderBy('name')
+          .get();
+      final editorialBoard = snapshot
+          .map((doc) => EditorialBoardModel.fromJson(doc.map))
+          .toList();
+          
+      editorialBoard.sort((a, b) {
+        final roleOrder = {
+          'Chief Editor': 0,
+          'Associate Editor': 1,
+          'Editor': 2
+        };
+        return (roleOrder[a.role] ?? 3).compareTo(roleOrder[b.role] ?? 3);
+      });
+      
+      return editorialBoard;
+    } catch (e) {
+      log('Error getting editorial board by journal id: $e');
+      return [];
+    }
+  }
+
   Future<PageModel?> getPageByDomain(String journalId, String pageRoute) async {
     try {
       final snapshot = await _firestore
           .collection('pages')
           .where('journalId', isEqualTo: journalId)
           .where('url', isEqualTo: pageRoute)
+          .orderBy('createdAt', descending: true)
           .get();
 
       return PageModel.fromJson(snapshot.first.map);
@@ -51,32 +93,26 @@ class FirestoreService {
 
   Future<JournalModel?> getJournalByDomain(String domain) async {
     try {
-      log('Getting journal by domain: $domain');
-
-      // Skip favicon.ico requests
-      if (domain == 'favicon.ico') {
-        return null;
+      // Check cache first
+      if (_cacheService.hasJournal(domain)) {
+        return _cacheService.getJournal(domain);
       }
 
-      final snapshot = await _firestore
+      // If not in cache, fetch from Firestore
+      final journalDoc = await _firestore
           .collection('journals')
           .where('domain', isEqualTo: domain)
+          .orderBy('createdAt', descending: true)
           .get();
 
-      if (snapshot.isEmpty) {
-        log('No journal found for domain: $domain');
-        return null;
-      }
+      if (journalDoc.isEmpty) return null;
 
-      final doc = snapshot.first;
-
-      // Include the document ID in the data
-      final data = {
-        'id': doc.id,
-        ...doc.map,
-      };
-
-      return JournalModel.fromJson(data);
+      final journal = JournalModel.fromJson(journalDoc.first.map);
+      
+      // Store in cache
+      _cacheService.setJournal(domain, journal);
+      
+      return journal;
     } catch (e) {
       log('Error getting journal by domain: $e');
       return null;
@@ -88,6 +124,7 @@ class FirestoreService {
       final snapshot = await _firestore
           .collection('volumes')
           .where('journalId', isEqualTo: journalId)
+          .orderBy('volumeNumber', descending: true)
           .get();
 
       return snapshot.map((doc) => VolumeModel.fromJson(doc.map)).toList();
@@ -102,6 +139,7 @@ class FirestoreService {
       final snapshot = await _firestore
           .collection('issues')
           .where('journalId', isEqualTo: journalId)
+          .orderBy('issueNumber', descending: true)
           .get();
 
       return snapshot.map((doc) => IssueModel.fromJson(doc.map)).toList();
@@ -116,6 +154,7 @@ class FirestoreService {
       final snapshot = await _firestore
           .collection('articles')
           .where('journalId', isEqualTo: domain)
+          .orderBy('createdAt', descending: true)
           .get();
 
       print(snapshot.map((doc) => doc.map).toList());
@@ -153,14 +192,13 @@ class FirestoreService {
       final snapshot = await _firestore
           .collection('articles')
           .where('issueId', isEqualTo: issueId)
+          .orderBy('createdAt', descending: true)
           .get();
 
-      return snapshot
-          .map((doc) => ArticleModel.fromJson({
-                'id': doc.id,
-                ...doc.map,
-              }))
-          .toList();
+      return snapshot.map((doc) => ArticleModel.fromJson({
+        'id': doc.id,
+        ...doc.map,
+      })).toList();
     } catch (e) {
       log('Error getting articles by issue: $e');
       return [];
@@ -169,14 +207,20 @@ class FirestoreService {
 
   Future<IssueModel?> getIssueById(String issueId) async {
     try {
-      final doc = await _firestore.collection('issues').document(issueId).get();
+      final doc = await _firestore
+          .collection('issues')
+          .document(issueId)
+          .get();
 
-      return IssueModel.fromJson({
+
+      final data = {
         'id': doc.id,
         ...doc.map,
-      });
+      };
+
+      return IssueModel.fromJson(data);
     } catch (e) {
-      log('Error getting issue: $e');
+      log('Error getting issue by ID: $e');
       return null;
     }
   }
@@ -216,7 +260,7 @@ class FirestoreService {
       final snapshot = await _firestore
           .collection('issues')
           .where('volumeId', isEqualTo: volumeId)
-          .orderBy('issueNumber')
+          .orderBy('issueNumber', descending: true)
           .get();
 
       return snapshot
@@ -238,6 +282,7 @@ class FirestoreService {
           .collection('articles')
           .where('volumeId', isEqualTo: volumeId)
           .where('issueId', isEqualTo: issueId)
+          .orderBy('createdAt', descending: true)
           .get();
 
       return snapshot
@@ -258,6 +303,7 @@ class FirestoreService {
       final snapshot = await _firestore
           .collection('volumes')
           .where('isActive', isEqualTo: true)
+          .orderBy('volumeNumber', descending: true)
           .limit(1)
           .get();
 
@@ -275,6 +321,7 @@ class FirestoreService {
       final snapshot = await _firestore
           .collection('issues')
           .where('isActive', isEqualTo: true)
+          .orderBy('issueNumber', descending: true)
           .limit(1)
           .get();
 
@@ -309,13 +356,102 @@ class FirestoreService {
 
   Future<Map<String, dynamic>?> getJournalAboutContent(String journalId) async {
     try {
-      final doc = await _firestore
-          .collection('journal-info')
-          .document(journalId)
-          .get();
+      final doc =
+          await _firestore.collection('journal-info').document(journalId).get();
       return doc.map;
     } catch (e) {
       log('Error getting journal about content: $e');
+      return null;
+    }
+  }
+
+  Future<String?> getPaperStatus(String paperId) async {
+    try {
+      final doc = await _firestore
+          .collection('articles')
+          .document(paperId)
+          .get();
+
+      return doc.map['status'];
+    } catch (e) {
+      log('Error getting paper status: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, SocialLink>> getSocialLinks() async {
+    // Return cached links if available
+    if (_cachedSocialLinks != null) {
+      return _cachedSocialLinks!;
+    }
+
+    try {
+      final socialLinks = <String, SocialLink>{};
+      final platforms = ['facebook', 'instagram', 'linkedin', 'x', 'youtube'];
+      
+      for (final platform in platforms) {
+        final doc = await _firestore
+            .collection('socialLinks')
+            .document(platform)
+            .get();
+            
+        if (doc.map.isNotEmpty) {
+          socialLinks[platform] = SocialLink.fromJson(doc.map);
+        }
+      }
+      
+      // Cache the results
+      _cachedSocialLinks = socialLinks;
+      return socialLinks;
+    } catch (e) {
+      log('Error getting social links: $e');
+      return {};
+    }
+  }
+
+  // Method to clear cache if needed
+  void clearSocialLinksCache() {
+    _cachedSocialLinks = null;
+  }
+
+  Future<VolumeModel?> getLatestVolumeByJournalId(String journalId) async {
+    try {
+      final snapshot = await _firestore
+          .collection('volumes')
+          .where('journalId', isEqualTo: journalId)
+          .orderBy('volumeNumber', descending: true)
+          .limit(1)
+          .get();
+
+      if (snapshot.isEmpty) return null;
+
+      return VolumeModel.fromJson({
+        'id': snapshot.first.id,
+        ...snapshot.first.map,
+      });
+    } catch (e) {
+      log('Error getting latest volume: $e');
+      return null;
+    }
+  }
+
+  Future<IssueModel?> getLatestIssueByVolumeId(String volumeId) async {
+    try {
+      final snapshot = await _firestore
+          .collection('issues')
+          .where('volumeId', isEqualTo: volumeId)
+          .orderBy('issueNumber', descending: true)
+          .limit(1)
+          .get();
+
+      if (snapshot.isEmpty) return null;
+
+      return IssueModel.fromJson({
+        'id': snapshot.first.id,
+        ...snapshot.first.map,
+      });
+    } catch (e) {
+      log('Error getting latest issue: $e');
       return null;
     }
   }

@@ -1,4 +1,5 @@
 import 'package:dart_main_website/config/layout.html.dart';
+import 'package:dart_main_website/models/eb_board_model.dart';
 import 'package:shelf/shelf.dart';
 import '../services/firestore_service.dart';
 import '../server.dart';
@@ -9,7 +10,8 @@ class JournalInfoController {
   Future<Response> aboutJournal(Request request, String domain) async {
     try {
       final journal = await _firestoreService.getJournalByDomain(domain);
-      final aboutContent = await _firestoreService.getPageByDomain(journal!.id, 'about-journal');
+      final aboutContent =
+          await _firestoreService.getPageByDomain(journal!.id, 'about-journal');
 
       return renderHtml('dynamic-pages/page.html', {
         'header': getHeaderHtml(journal),
@@ -28,7 +30,8 @@ class JournalInfoController {
   Future<Response> aimAndScope(Request request, String domain) async {
     try {
       final journal = await _firestoreService.getJournalByDomain(domain);
-      final aimAndScopeContent = await _firestoreService.getPageByDomain(journal!.id, 'aim-and-scope');
+      final aimAndScopeContent =
+          await _firestoreService.getPageByDomain(journal!.id, 'aim-and-scope');
 
       return renderHtml('dynamic-pages/page.html', {
         'header': getHeaderHtml(journal),
@@ -47,14 +50,39 @@ class JournalInfoController {
   Future<Response> editorialBoard(Request request, String domain) async {
     try {
       final journal = await _firestoreService.getJournalByDomain(domain);
-      final editorialBoardContent = await _firestoreService.getPageByDomain(journal!.id, 'editorial-board');
+      final editorialBoardContent =
+          await _firestoreService.getEditorialBoardByJournalId(journal!.id);
 
-      return renderHtml('dynamic-pages/page.html', {
+      if (editorialBoardContent.isEmpty) {
+        return Response.internalServerError(
+            body: 'No editorial board members found');
+      }
+
+      return renderHtml('dynamic-pages/editorial-board.html', {
         'header': getHeaderHtml(journal),
         'footer': getFooterHtml(journal),
         'journal': journal.toJson(),
         'domain': journal.domain,
-        'content': editorialBoardContent?.toJson(),
+
+        // Convert Dart Models to Maps for Mustache Template
+        'chiefEditor': editorialBoardContent.isNotEmpty
+            ? editorialBoardContent.first.toJson()
+            : null,
+        'associateEditors': editorialBoardContent.length > 1
+            ? editorialBoardContent
+                .sublist(1, editorialBoardContent.length)
+                .where(
+                    (e) => e.role == EditorialBoardRole.associateEditor.value)
+                .map((e) => e.toJson())
+                .toList()
+            : [],
+        'editors': editorialBoardContent.length > 1
+            ? editorialBoardContent
+                .sublist(1, editorialBoardContent.length)
+                .where((e) => e.role == EditorialBoardRole.editor.value)
+                .map((e) => e.toJson())
+                .toList()
+            : [],
       });
     } catch (e) {
       print('Error fetching editorial board: $e');
@@ -66,7 +94,8 @@ class JournalInfoController {
   Future<Response> publicationEthics(Request request, String domain) async {
     try {
       final journal = await _firestoreService.getJournalByDomain(domain);
-      final publicationEthicsContent = await _firestoreService.getPageByDomain(journal!.id, 'publication-ethics');
+      final publicationEthicsContent = await _firestoreService.getPageByDomain(
+          journal!.id, 'publication-ethics');
 
       return renderHtml('dynamic-pages/page.html', {
         'header': getHeaderHtml(journal),
@@ -82,10 +111,12 @@ class JournalInfoController {
     }
   }
 
-  Future<Response> indexingAndAbstracting(Request request, String domain) async {
+  Future<Response> indexingAndAbstracting(
+      Request request, String domain) async {
     try {
       final journal = await _firestoreService.getJournalByDomain(domain);
-      final indexingContent = await _firestoreService.getPageByDomain(journal!.id, 'indexing-and-abstracting');
+      final indexingContent = await _firestoreService.getPageByDomain(
+          journal!.id, 'indexing-and-abstracting');
 
       return renderHtml('dynamic-pages/page.html', {
         'header': getHeaderHtml(journal),
@@ -104,7 +135,8 @@ class JournalInfoController {
   Future<Response> peerReviewProcess(Request request, String domain) async {
     try {
       final journal = await _firestoreService.getJournalByDomain(domain);
-      final peerReviewContent = await _firestoreService.getPageByDomain(journal!.id, 'peer-review-process');
+      final peerReviewContent = await _firestoreService.getPageByDomain(
+          journal!.id, 'peer-review-process');
 
       return renderHtml('dynamic-pages/page.html', {
         'header': getHeaderHtml(journal),
@@ -119,4 +151,4 @@ class JournalInfoController {
           body: 'An error occurred while processing your request');
     }
   }
-} 
+}

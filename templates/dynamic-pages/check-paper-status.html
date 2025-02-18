@@ -1,0 +1,148 @@
+{{{header}}}
+
+<div class="container-fluid mt-5 mb-3">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="bg-white border p-4">
+          <h2 class="text-center mb-4">Check Paper Status</h2>
+          
+          <!-- Status Check Form -->
+          <form action="/{{domain}}/check-paper-status/" method="GET" class="mb-4">
+            <div class="form-group">
+              <label for="paperId">Paper ID</label>
+              <input type="text" 
+                     class="form-control" 
+                     id="paperId" 
+                     name="paperId" 
+                     value="{{paperId}}"
+                     placeholder="Enter your paper ID"
+                     required>
+              <small class="form-text text-muted">Enter the ID you received when submitting your paper</small>
+            </div>
+            <div class="text-center mt-3">
+              <button type="submit" class="btn btn-primary">
+                Check Status
+              </button>
+            </div>
+          </form>
+
+          {{#error}}
+          <div class="alert alert-danger" role="alert">
+            {{error}}
+          </div>
+          {{/error}}
+
+          {{#status}}
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Paper Status</h5>
+            </div>
+            <div class="card-body">
+              <div class="status-info">
+                <p><strong>Paper ID:</strong> {{paperId}}</p>
+                <p><strong>Current Status:</strong> {{status}}</p>
+              </div>
+            </div>
+          </div>
+          {{/status}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add this before the footer -->
+<style>
+.timeline-items {
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  border-left: 2px solid #033e93;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #033e93;
+}
+
+.timeline-date {
+  font-size: 0.85em;
+  color: #666;
+}
+
+.timeline-status {
+  font-weight: 500;
+  margin: 4px 0;
+}
+</style>
+
+<script>
+document.getElementById('statusCheckForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const paperId = document.getElementById('paperId').value;
+  const statusResult = document.getElementById('statusResult');
+  const errorMessage = document.getElementById('errorMessage');
+  
+  try {
+    // Show loading state
+    document.querySelector('button[type="submit"]').disabled = true;
+    
+    // Make API call to check status
+    const response = await fetch(`/api/paper-status/${paperId}`);
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to fetch paper status');
+    }
+    
+    // Update display elements
+    document.getElementById('displayPaperId').textContent = data.paperId;
+    document.getElementById('paperTitle').textContent = data.title;
+    document.getElementById('currentStatus').textContent = data.currentStatus;
+    document.getElementById('lastUpdated').textContent = new Date(data.lastUpdated).toLocaleString();
+    
+    // Create timeline items
+    const timelineContainer = document.querySelector('.timeline-items');
+    timelineContainer.innerHTML = ''; // Clear existing items
+    
+    data.statusHistory.forEach(item => {
+      const timelineItem = document.createElement('div');
+      timelineItem.className = 'timeline-item';
+      timelineItem.innerHTML = `
+        <div class="timeline-date">${new Date(item.date).toLocaleString()}</div>
+        <div class="timeline-status">${item.status}</div>
+        <div class="timeline-note">${item.note || ''}</div>
+      `;
+      timelineContainer.appendChild(timelineItem);
+    });
+    
+    // Show result, hide error
+    statusResult.classList.remove('d-none');
+    errorMessage.classList.add('d-none');
+    
+  } catch (error) {
+    // Show error message
+    errorMessage.textContent = error.message;
+    errorMessage.classList.remove('d-none');
+    statusResult.classList.add('d-none');
+  } finally {
+    // Re-enable submit button
+    document.querySelector('button[type="submit"]').disabled = false;
+  }
+});
+</script>
+
+{{{footer}}}

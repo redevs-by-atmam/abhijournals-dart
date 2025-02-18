@@ -2,14 +2,19 @@ import 'package:dart_main_website/config/layout.html.dart';
 import 'package:shelf/shelf.dart';
 import '../services/firestore_service.dart';
 import '../server.dart';
+import '../controllers/base_controller.dart';
 
-class ContactController {
+class ContactController extends BaseController {
   final _firestoreService = FirestoreService();
 
   Future<Response> index(Request request, String domain) async {
     try {
-      final journal = await _firestoreService.getJournalByDomain(domain);
-      final pageContent = await _firestoreService.getPageByDomain(journal!.id, 'contact');
+      final journal = await getJournal(domain);
+      if (journal == null) {
+        return Response.notFound('Journal not found');
+      }
+
+      final pageContent = await _firestoreService.getPageByDomain(journal.id, 'contact');
 
       return renderHtml('dynamic-pages/page.html', {
         'header': getHeaderHtml(journal),
