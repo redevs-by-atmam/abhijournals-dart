@@ -13,7 +13,11 @@ RUN dart pub get
 # Copy the rest of the application code
 COPY . .
 
-# Run build_runner
+# Build with environment variables
+ARG FIREBASE_PROJECT_ID
+ENV FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID
+
+# Run build_runner with environment variables
 RUN dart run build_runner build --delete-conflicting-outputs
 
 # Build for production
@@ -34,6 +38,9 @@ COPY --from=build /app/static /app/static
 RUN apt-get update && \
     apt-get install -y ca-certificates && \
     rm -rf /var/lib/apt/lists/*
+
+# Set runtime environment variables
+ENV FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
 
 # Expose the port
 EXPOSE 8080

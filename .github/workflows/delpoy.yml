@@ -27,7 +27,9 @@ jobs:
       - name: Build and Push Docker Image (Artifact Registry)
         run: |
           gcloud auth configure-docker asia-south1-docker.pkg.dev
-          docker build -t asia-south1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app .
+          docker build \
+            --build-arg FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }} \
+            -t asia-south1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app .
           docker push asia-south1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app
 
       - name: Deploy to Google Cloud Run
@@ -36,4 +38,5 @@ jobs:
             --image asia-south1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app \
             --platform managed \
             --region asia-south1 \
-            --allow-unauthenticated
+            --allow-unauthenticated \
+            --set-env-vars "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}"

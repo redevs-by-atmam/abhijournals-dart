@@ -7,4 +7,9 @@ part 'env.g.dart';
 abstract class Env {
     @EnviedField(varName: 'FIREBASE_PROJECT_ID', defaultValue: 'your-project-id-here')
     static const String projectId = _Env.projectId;
+
+    static const firebaseProjectId = String.fromEnvironment(
+        'FIREBASE_PROJECT_ID',
+        defaultValue: 'default-project-id'
+    );
 }
