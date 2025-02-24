@@ -22,18 +22,18 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: "abhijournals"
+          project_id: ${{ secrets.PROJECT_ID }}
 
       - name: Build and Push Docker Image (Artifact Registry)
         run: |
           gcloud auth configure-docker asia-south1-docker.pkg.dev
-          docker build -t asia-south1-docker.pkg.dev/abhijournals/dart-shelf-repo/dart-shelf-app .
-          docker push asia-south1-docker.pkg.dev/abhijournals/dart-shelf-repo/dart-shelf-app
+          docker build -t asia-south1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app .
+          docker push asia-south1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app
 
       - name: Deploy to Google Cloud Run
         run: |
           gcloud run deploy dart-shelf-app \
-            --image asia-south1-docker.pkg.dev/abhijournals/dart-shelf-repo/dart-shelf-app \
+            --image asia-south1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app \
             --platform managed \
             --region asia-south1 \
             --allow-unauthenticated
