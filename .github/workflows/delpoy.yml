@@ -46,3 +46,4 @@ jobs:
             --region us-central1 \
             --allow-unauthenticated \
             --set-env-vars "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}"
+ 
