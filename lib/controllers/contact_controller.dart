@@ -16,12 +16,12 @@ class ContactController extends BaseController {
 
       final pageContent = await _firestoreService.getPageByDomain(journal.id, 'contact');
 
-      return renderHtml('dynamic-pages/page.html', {
+      return renderHtml('dynamic-pages/contact.html', {
         'header': getHeaderHtml(journal),
         'footer': getFooterHtml(journal),
         'journal': journal.toJson(),
         'domain': journal.domain,
-        'content': pageContent?.toJson(),
+        'pageModel': pageContent?.toJson(),
       });
     } catch (e) {
       print('Error fetching contact page: $e');

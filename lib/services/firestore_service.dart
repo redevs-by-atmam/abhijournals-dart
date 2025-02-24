@@ -55,10 +55,9 @@ class FirestoreService {
           .orderBy('role')
           .orderBy('name')
           .get();
-      final editorialBoard = snapshot
-          .map((doc) => EditorialBoardModel.fromJson(doc.map))
-          .toList();
-          
+      final editorialBoard =
+          snapshot.map((doc) => EditorialBoardModel.fromJson(doc.map)).toList();
+
       editorialBoard.sort((a, b) {
         final roleOrder = {
           'Chief Editor': 0,
@@ -67,7 +66,7 @@ class FirestoreService {
         };
         return (roleOrder[a.role] ?? 3).compareTo(roleOrder[b.role] ?? 3);
       });
-      
+
       return editorialBoard;
     } catch (e) {
       log('Error getting editorial board by journal id: $e');
@@ -81,7 +80,6 @@ class FirestoreService {
           .collection('pages')
           .where('journalId', isEqualTo: journalId)
           .where('url', isEqualTo: pageRoute)
-          .orderBy('createdAt', descending: true)
           .get();
 
       return PageModel.fromJson(snapshot.first.map);
@@ -108,10 +106,10 @@ class FirestoreService {
       if (journalDoc.isEmpty) return null;
 
       final journal = JournalModel.fromJson(journalDoc.first.map);
-      
+
       // Store in cache
       _cacheService.setJournal(domain, journal);
-      
+
       return journal;
     } catch (e) {
       log('Error getting journal by domain: $e');
@@ -195,10 +193,12 @@ class FirestoreService {
           .orderBy('createdAt', descending: true)
           .get();
 
-      return snapshot.map((doc) => ArticleModel.fromJson({
-        'id': doc.id,
-        ...doc.map,
-      })).toList();
+      return snapshot
+          .map((doc) => ArticleModel.fromJson({
+                'id': doc.id,
+                ...doc.map,
+              }))
+          .toList();
     } catch (e) {
       log('Error getting articles by issue: $e');
       return [];
@@ -207,11 +207,7 @@ class FirestoreService {
 
   Future<IssueModel?> getIssueById(String issueId) async {
     try {
-      final doc = await _firestore
-          .collection('issues')
-          .document(issueId)
-          .get();
-
+      final doc = await _firestore.collection('issues').document(issueId).get();
 
       final data = {
         'id': doc.id,
@@ -367,10 +363,8 @@ class FirestoreService {
 
   Future<String?> getPaperStatus(String paperId) async {
     try {
-      final doc = await _firestore
-          .collection('articles')
-          .document(paperId)
-          .get();
+      final doc =
+          await _firestore.collection('articles').document(paperId).get();
 
       return doc.map['status'];
     } catch (e) {
@@ -388,18 +382,16 @@ class FirestoreService {
     try {
       final socialLinks = <String, SocialLink>{};
       final platforms = ['facebook', 'instagram', 'linkedin', 'x', 'youtube'];
-      
+
       for (final platform in platforms) {
-        final doc = await _firestore
-            .collection('socialLinks')
-            .document(platform)
-            .get();
-            
+        final doc =
+            await _firestore.collection('socialLinks').document(platform).get();
+
         if (doc.map.isNotEmpty) {
           socialLinks[platform] = SocialLink.fromJson(doc.map);
         }
       }
-      
+
       // Cache the results
       _cachedSocialLinks = socialLinks;
       return socialLinks;
@@ -454,5 +446,14 @@ class FirestoreService {
       log('Error getting latest issue: $e');
       return null;
     }
+  }
+
+  Future<Map<String, dynamic>> getConfigDocument(String documentId) async {
+    final docSnapshot =
+        await _firestore.collection('configs').document(documentId).get();
+    if (docSnapshot.map.isEmpty) {
+      throw Exception('Config document $documentId not found');
+    }
+    return docSnapshot.map;
   }
 }

@@ -28,9 +28,10 @@ Future<Response> renderHtml(String template, Map<String, dynamic> data) async {
     return Response.ok(output, headers: {
       'content-type': 'text/html',
     });
-  } catch (e) {
+  } catch (e, stackTrace) {
     print('Error rendering template: $e');
-    return renderError('An error occurred while processing your request', data);
+    print('Stack trace: $stackTrace');
+    return renderError('An error occurred while processing your request: $e', data);
   }
 }
 
@@ -43,8 +44,9 @@ Future<Response> renderNotFound(Map<String, dynamic> data) async {
     return Response.notFound(output, headers: {
       'content-type': 'text/html',
     });
-  } catch (e) {
+  } catch (e, stackTrace) {
     print('Error rendering not found page: $e');
+    print('Stack trace: $stackTrace');
     return Response.notFound('Page not found');
   }
 }
@@ -63,8 +65,9 @@ Future<Response> renderError(
       body: output,
       headers: {'content-type': 'text/html'},
     );
-  } catch (e) {
+  } catch (e, stackTrace) {
     print('Error rendering error page: $e');
+    print('Stack trace: $stackTrace');
     return Response.internalServerError(
       body: 'An error occurred while processing your request',
     );
@@ -72,8 +75,21 @@ Future<Response> renderError(
 }
 
 Future<String> _loadTemplate(String name) async {
-  final file = File('templates/$name');
-  return await file.readAsString();
+  try {
+    final file = File('templates/$name');
+    if (!await file.exists()) {
+      throw Exception('Template file does not exist: templates/$name');
+    }
+    final content = await file.readAsString();
+    if (content.isEmpty) {
+      throw Exception('Template file is empty: templates/$name');
+    }
+    return content;
+  } catch (e, stackTrace) {
+    print('Error loading template $name: $e');
+    print('Stack trace: $stackTrace');
+    rethrow;
+  }
 }
 
 String _buildNavigation(Map<String, dynamic> data) {

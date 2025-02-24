@@ -17,5 +17,4 @@ class PageRoutes {
   static const String reviewers = 'reviewers';
   static const String contact = 'contact';
   static const String archive = 'archive';
-  
 }
