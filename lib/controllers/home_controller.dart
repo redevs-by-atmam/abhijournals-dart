@@ -22,10 +22,12 @@ class HomeController {
 
       // Create the template variables
       final templateVars = {
-        'adminUrl': Env.projectId.contains('janoli')
-            ? 'https://admin.janolijournals.org'
-            : 'https://admin.abhijournals.com',
-        'title': content['title'] ?? 'Abhi International Journals',
+        'shortTitle': content['shortTitle'] ?? 'Abhi',
+        'shortForm': content['shortForm'] ?? 'AIJ',
+        'logoUrl': content['logoUrl'] ?? '',
+        'faviconUrl': content['faviconUrl'] ?? '',
+        'adminUrl': content['adminUrl'] ?? 'https://admin.abhijournals.com',
+        'fullTitle': content['fullTitle'] ?? 'Abhi International Journals',
         'description': content['description'] ?? '',
         'keywords': content['keywords'] ?? '',
         'journals': journals.map((j) => j.toJson()).toList(),
