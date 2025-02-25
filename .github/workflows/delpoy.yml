@@ -31,22 +31,22 @@ jobs:
           project_id: ${{ secrets.FIREBASE_PROJECT_ID }}
       - name: Enable Docker Authentication
         run: |
-          gcloud auth configure-docker us-central1-docker.pkg.dev
+          gcloud auth configure-docker asia-south1-docker.pkg.dev
 
       - name: Build and Push Docker Image (Artifact Registry)
         run: |
           gcloud auth configure-docker asia-south1-docker.pkg.dev
           docker build \
             --build-arg FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }} \
-            -t us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app .
-          docker push us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app
+            -t asia-south1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app .
+          docker push asia-south1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app
 
       - name: Deploy to Google Cloud Run
         run: |
           gcloud run deploy dart-shelf-app \
-            --image us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app \
+            --image asia-south1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/dart-shelf-repo/dart-shelf-app \
             --platform managed \
-            --region us-central1 \
+            --region asia-south1 \
             --allow-unauthenticated \
             --set-env-vars "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}"
   
