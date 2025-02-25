@@ -1,0 +1,4 @@
+gcloud artifacts repositories create dart-shelf-repo --location=us-central1 --repository-format=docker --description="Docker repository for Dart Shelf app"
+
+
+gcloud projects add-iam-policy-binding journal-3c895 --member="serviceAccount:firebase-adminsdk-tjfrv@journal-3c895.iam.gserviceaccount.com" --role="roles/artifactregistry.writer"

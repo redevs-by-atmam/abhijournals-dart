@@ -6,3 +6,5 @@ env.g.dart
 key.json
 .vercel
 node_modules
+cmds-.rxt
+firebase-debug.log*
