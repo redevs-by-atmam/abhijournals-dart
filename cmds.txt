@@ -2,3 +2,6 @@ gcloud artifacts repositories create dart-shelf-repo --location=us-central1 --re
 
 
 gcloud projects add-iam-policy-binding journal-3c895 --member="serviceAccount:firebase-adminsdk-tjfrv@journal-3c895.iam.gserviceaccount.com" --role="roles/artifactregistry.writer"
+
+
+gcloud projects add-iam-policy-binding journal-3c895 --member="serviceAccount:firebase-adminsdk-tjfrv@journal-3c895.iam.gserviceaccount.com" --role="roles/run.admin" ; gcloud projects add-iam-policy-binding journal-3c895 --member="serviceAccount:firebase-adminsdk-tjfrv@journal-3c895.iam.gserviceaccount.com" --role="roles/iam.serviceAccountUser"
