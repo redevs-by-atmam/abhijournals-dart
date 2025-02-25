@@ -20,6 +20,19 @@ jobs:
         env:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
 
+      - name: Copy SEO Files
+        run: |
+          mkdir -p static
+          if echo "${{ secrets.FIREBASE_PROJECT_ID }}" | grep -qi "janoli"; then
+            cp seo/janoli-robots.txt static/robots.txt
+            cp seo/janoli-sitemap.xml static/sitemap.xml
+            echo "Copied Janoli SEO files"
+          else
+            cp seo/abh-robots.txt static/robots.txt
+            cp seo/abhi-sitemap.xml static/sitemap.xml
+            echo "Copied Abhi SEO files"
+          fi
+        
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
         with:

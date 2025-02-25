@@ -456,4 +456,58 @@ class FirestoreService {
     }
     return docSnapshot.map;
   }
+
+  Future<List<dynamic>> getArticles(String journalId) async {
+    try {
+      final snapshot = await _firestore
+          .collection('journals')
+          .document(journalId)
+          .collection('articles')
+          .get();
+        return snapshot  
+          .map((doc) => {
+                'id': doc.id,
+                'title': doc.map['title'] ?? '',
+                'publishedDate': doc.map['publishedDate']?.toString(),
+              })
+          .toList();
+    } catch (e) {
+      print('Error fetching articles: $e');
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> getVolumes(String journalId) async {
+    try {
+      final snapshot = await _firestore
+          .collection('journals')
+          .document(journalId)
+          .collection('volumes')
+          .get();
+      return snapshot.map((doc) => {
+            'id': doc.id,
+          }).toList();
+    } catch (e) {
+      print('Error fetching volumes: $e');
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> getIssues(String journalId, String volumeId) async {
+    try {
+      final snapshot = await _firestore
+          .collection('journals')
+          .document(journalId)
+          .collection('volumes')
+          .document(volumeId)
+          .collection('issues')
+          .get();
+      return snapshot.map((doc) => {
+            'id': doc.id,
+          }).toList();
+    } catch (e) {
+      print('Error fetching issues: $e');
+      return [];
+    }
+  }
 }

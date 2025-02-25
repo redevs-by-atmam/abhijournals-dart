@@ -15,7 +15,18 @@ COPY . .
 
 # Build with environment variables
 ARG FIREBASE_PROJECT_ID
+ARG BASE_URL
 ENV FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID
+ENV BASE_URL=$BASE_URL
+
+# Copy correct SEO files based on project ID
+RUN if echo "$FIREBASE_PROJECT_ID" | grep -qi "janoli"; then \
+    cp seo/janoli-robots.txt static/robots.txt && \
+    cp seo/janoli-sitemap.xml static/sitemap.xml; \
+    else \
+    cp seo/abhi-robots.txt static/robots.txt && \
+    cp seo/abhi-sitemap.xml static/sitemap.xml; \
+    fi
 
 # Run build_runner with environment variables
 RUN dart run build_runner build --delete-conflicting-outputs

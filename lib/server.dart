@@ -1,10 +1,14 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:io';
+import 'package:dart_main_website/controllers/home_controller.dart';
+import 'package:dart_main_website/env/env.dart';
+import 'package:dart_main_website/services/firestore_service.dart';
 import 'package:mustache_template/mustache_template.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
+import 'package:shelf_static/shelf_static.dart';
 import 'middleware/cache_middleware.dart';
 // import 'package:abhi_international_journals/services/firestore_service.dart';
 
@@ -31,7 +35,8 @@ Future<Response> renderHtml(String template, Map<String, dynamic> data) async {
   } catch (e, stackTrace) {
     print('Error rendering template: $e');
     print('Stack trace: $stackTrace');
-    return renderError('An error occurred while processing your request: $e', data);
+    return renderError(
+        'An error occurred while processing your request: $e', data);
   }
 }
 
@@ -119,12 +124,93 @@ String _buildNavigation(Map<String, dynamic> data) {
 
 void main() async {
   final app = Router();
+  final firestoreService = FirestoreService();
+  final baseUrl = Env.baseUrl;
+  final projectId = Env.firebaseProjectId;
 
-  // Add middleware
+  // Add middleware pipeline
   final handler = Pipeline()
       .addMiddleware(logRequests())
       .addMiddleware(cachingMiddleware())
-      .addHandler(app.call);
+      .addHandler((request) async {
+    final path = request.url.path;
 
-  // ... rest of server setup ...
+    // Add debug logging
+    print('Current Firebase Project ID: $projectId');
+    print('Contains "janoli": ${projectId.toLowerCase().contains('janoli')}');
+
+    // Handle SEO files based on project ID
+    if (path == 'robots.txt' || path == '/robots.txt') {
+      final robotsFile = projectId.toLowerCase().contains('janoli')
+          ? 'static/janoli-robots.txt'
+          : 'static/robots.txt';
+      print('Selected robots file: $robotsFile');
+      return _serveStaticFile(robotsFile, 'text/plain');
+    }
+
+    if (path == 'sitemap.xml' || path == '/sitemap.xml') {
+      final sitemapFile = projectId.toLowerCase().contains('janoli')
+          ? 'static/janoli-sitemap.xml'
+          : 'static/sitemap.xml';
+      print('Selected sitemap file: $sitemapFile');
+      return _serveStaticFile(sitemapFile, 'application/xml');
+    }
+
+    // Handle other static files
+    if (path.startsWith('static/')) {
+      final staticHandler = createStaticHandler('static/');
+      return staticHandler(request);
+    }
+
+    // Handle all other routes
+    return app(request);
+  });
+
+  // Create server
+  final port = int.parse(Platform.environment['PORT'] ?? '8080');
+  final server = await serve(handler, InternetAddress.anyIPv4, port);
+  print('Server running on http://localhost:${server.port}');
+}
+
+Future<Response> _serveStaticFile(String filePath, String contentType) async {
+  try {
+    final file = File(filePath);
+    if (await file.exists()) {
+      final content = await file.readAsString();
+      return Response.ok(
+        content,
+        headers: {
+          'content-type': '$contentType; charset=utf-8',
+          'cache-control': 'public, max-age=3600',
+        },
+      );
+    }
+    return Response.notFound('File not found');
+  } catch (e) {
+    print('Error serving static file: $e');
+    return Response.internalServerError();
+  }
+}
+
+// Update the caching middleware
+Middleware cachingMiddleware() {
+  return (Handler innerHandler) {
+    return (Request request) async {
+      final response = await innerHandler(request);
+
+      // Add caching headers for SEO files
+      if (request.url.path == 'robots.txt' ||
+          request.url.path == 'sitemap.xml') {
+        return response.change(
+          headers: {
+            ...response.headers,
+            'cache-control': 'public, max-age=3600',
+            'vary': 'Accept-Encoding',
+          },
+        );
+      }
+
+      return response;
+    };
+  };
 }

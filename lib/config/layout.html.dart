@@ -5,7 +5,7 @@ import 'package:dart_main_website/models/social_link.dart';
 
 const String headerHtml = '';
 
-String getHeaderHtml(JournalModel journal) {
+String getHeaderHtml(JournalModel journal, {String? addedString}) {
   // Get cached social links using the public getter
 
   return '''
@@ -38,7 +38,7 @@ String getHeaderHtml(JournalModel journal) {
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
+    ${addedString ?? ''}
 </head>
 
 <body>

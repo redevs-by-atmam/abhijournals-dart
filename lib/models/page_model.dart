@@ -17,8 +17,8 @@ class PageModel extends Equatable {
 
   factory PageModel.fromJson(Map<String, dynamic> json) {
     return PageModel(
-      id: json['id'],
-      journalId: json['journalId'],
+      id: json['id'] ?? '',
+      journalId: json['journalId'] ?? '',
       name: ((json['name'] ?? 'Untitled') as String).trim(),
       url: ((json['url'] ?? '') as String).trim(),
       content: ((json['content'] ?? 'No content') as String).trim(),

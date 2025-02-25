@@ -1,0 +1,75 @@
+User-agent: *
+Allow: /
+Allow: /static/
+Allow: /*/
+Disallow: /admin/
+Disallow: /private/
+
+# Sitemaps
+Sitemap: https://www.janolijournals.org/sitemap.xml
+
+# Rate Limiting
+Crawl-delay: 10
+
+# Search Engine Specific Rules
+User-agent: Googlebot
+Allow: /
+Allow: /static/
+Allow: /*/
+Crawl-delay: 5
+
+User-agent: Googlebot-News
+Allow: /
+Crawl-delay: 5
+
+User-agent: Googlebot-Scholar
+Allow: /
+Crawl-delay: 5
+
+# Academic Search Engines
+User-agent: Scirus
+Allow: /
+Crawl-delay: 10
+
+User-agent: CiteSeerXbot
+Allow: /
+Crawl-delay: 10
+
+# Journal Specific Rules
+Allow: /jijaiams/
+Allow: /jijhrfhm/
+Allow: /jijes/
+Allow: /jijipm/
+Allow: /jijaiam/
+Allow: /jijms/
+Allow: /jijsc/
+Allow: /jijbs/
+Allow: /jijas/
+Allow: /jijaiae/
+Allow: /jijmst/
+Allow: /jijhl/
+Allow: /jijae/
+Allow: /jijcse/
+Allow: /jijcps/
+
+# Common Journal Paths
+Allow: /*/volumes/
+Allow: /*/issues/
+Allow: /*/articles/
+Allow: /*/editorial-board/
+Allow: /*/author-guidelines/
+Allow: /*/about/
+Allow: /*/contact/
+Allow: /*/indexing/
+Allow: /*/current-issue/
+
+# Clean Parameters
+Allow: /*?page=*
+Allow: /*?volume=*
+Allow: /*?issue=*
+Disallow: /*?*session=
+Disallow: /*?*token=
+Disallow: /*?*password=
+
+# Host Information
+Host: www.janolijournals.org 
