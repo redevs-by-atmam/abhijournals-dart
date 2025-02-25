@@ -28,7 +28,7 @@ jobs:
             cp seo/janoli-sitemap.xml static/sitemap.xml
             echo "Copied Janoli SEO files"
           else
-            cp seo/abh-robots.txt static/robots.txt
+            cp seo/abhi-robots.txt static/robots.txt
             cp seo/abhi-sitemap.xml static/sitemap.xml
             echo "Copied Abhi SEO files"
           fi
