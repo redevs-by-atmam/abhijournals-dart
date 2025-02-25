@@ -22,6 +22,9 @@ class HomeController {
 
       // Create the template variables
       final templateVars = {
+        'adminUrl': Env.projectId.contains('janoli')
+            ? 'https://admin.janolijournals.org'
+            : 'https://admin.abhijournals.com',
         'title': content['title'] ?? 'Abhi International Journals',
         'description': content['description'] ?? '',
         'keywords': content['keywords'] ?? '',
