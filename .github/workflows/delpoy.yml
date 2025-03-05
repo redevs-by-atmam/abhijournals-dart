@@ -13,12 +13,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
-      - name: Print Project ID Info
+      - name: Create .env file
         run: |
-          echo "Project ID starts with: ${FIREBASE_PROJECT_ID:0:3}"
-        env:
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" > .env
+          echo "JOURNAL_DOMAIN=${{ secrets.JOURNAL_DOMAIN }}" >> .env
+          echo "JOURNAL_TITLE=${{ secrets.JOURNAL_TITLE }}" >> .env
 
       - name: Copy SEO Files
         run: |
