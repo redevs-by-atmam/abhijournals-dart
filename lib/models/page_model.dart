@@ -21,7 +21,9 @@ class PageModel extends Equatable {
       journalId: json['journalId'] ?? '',
       name: ((json['name'] ?? 'Untitled') as String).trim(),
       url: ((json['url'] ?? '') as String).trim(),
-      content: ((json['content'] ?? 'No content') as String).trim(),
+      content: ((json['content'] ?? 'No content') as String)
+          .trim()
+          .replaceAll('<p><br></p>', ''),
     );
   }
 
@@ -36,6 +38,11 @@ class PageModel extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [id, journalId, name, url, content, ];
+  List<Object?> get props => [
+        id,
+        journalId,
+        name,
+        url,
+        content,
+      ];
 }

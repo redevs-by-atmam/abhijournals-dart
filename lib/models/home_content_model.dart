@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 
 class JournalMetaDataModel {
@@ -68,16 +70,23 @@ class HomeContentModel extends Equatable {
   });
 
   factory HomeContentModel.fromJson(Map<String, dynamic> json) {
+    log('htmlContent: ${json['htmlContent']}');
     return HomeContentModel(
-      htmlContent: json['htmlContent'] ?? '',
+      htmlContent:
+          (json['htmlContent'] as String?)?.replaceAll('<p><br></p>', '') ?? '',
       quickLinks: (json['quickLinks'] as List<dynamic>?)
-          ?.map((link) => QuickLinksModel.fromJson(link as Map<String, dynamic>))
-          .toList() ?? [],
-      journalMetaData: JournalMetaDataModel.fromJson(json['journalMetaData'] ?? {}),
+              ?.map((link) =>
+                  QuickLinksModel.fromJson(link as Map<String, dynamic>))
+              .toList() ??
+          [],
+      journalMetaData:
+          JournalMetaDataModel.fromJson(json['journalMetaData'] ?? {}),
       publisher: PublisherModel.fromJson(json['publisher'] ?? {}),
       patrons: (json['patrons'] as List<dynamic>?)
-          ?.map((patron) => PatronModel.fromJson(patron as Map<String, dynamic>))
-          .toList() ?? [],
+              ?.map((patron) =>
+                  PatronModel.fromJson(patron as Map<String, dynamic>))
+              .toList() ??
+          [],
       mode: json['mode'] ?? 'N/A',
       language: json['language'] ?? 'N/A',
       frequency: json['frequency'] ?? 'N/A',
@@ -98,7 +107,16 @@ class HomeContentModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [htmlContent, quickLinks, journalMetaData, publisher, patrons, mode, language, frequency];
+  List<Object?> get props => [
+        htmlContent,
+        quickLinks,
+        journalMetaData,
+        publisher,
+        patrons,
+        mode,
+        language,
+        frequency
+      ];
 }
 
 class JournalMetaData extends Equatable {
