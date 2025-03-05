@@ -79,7 +79,7 @@ class FirestoreService {
       final snapshot = await _firestore
           .collection('pages')
           .where('journalId', isEqualTo: journalId)
-          .where('url', isEqualTo: pageRoute)
+          .where('url', isEqualTo: pageRoute.trim())
           .get();
 
       return PageModel.fromJson(snapshot.first.map);
@@ -464,7 +464,7 @@ class FirestoreService {
           .document(journalId)
           .collection('articles')
           .get();
-        return snapshot  
+      return snapshot
           .map((doc) => {
                 'id': doc.id,
                 'title': doc.map['title'] ?? '',
@@ -484,9 +484,11 @@ class FirestoreService {
           .document(journalId)
           .collection('volumes')
           .get();
-      return snapshot.map((doc) => {
-            'id': doc.id,
-          }).toList();
+      return snapshot
+          .map((doc) => {
+                'id': doc.id,
+              })
+          .toList();
     } catch (e) {
       print('Error fetching volumes: $e');
       return [];
@@ -502,9 +504,11 @@ class FirestoreService {
           .document(volumeId)
           .collection('issues')
           .get();
-      return snapshot.map((doc) => {
-            'id': doc.id,
-          }).toList();
+      return snapshot
+          .map((doc) => {
+                'id': doc.id,
+              })
+          .toList();
     } catch (e) {
       print('Error fetching issues: $e');
       return [];
