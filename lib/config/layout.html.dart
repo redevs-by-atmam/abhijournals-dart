@@ -1,3 +1,4 @@
+import 'package:dart_main_website/env/env.dart';
 import 'package:dart_main_website/models/journal.dart';
 import 'package:dart_main_website/routes/route_const.dart';
 import 'package:dart_main_website/services/firestore_service.dart';
@@ -56,7 +57,7 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
                                 href="#">Contact</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-body small" href="https://admin.abhijournals.com/"
+                            <a class="nav-link text-body small" href="https://admin.${Env.journalDomain}/"
                                 target="_blank">Login</a>
                         </li>
                     </ul>
@@ -80,7 +81,7 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
                 </a>
             </div>
             <div class="col-lg-8 text-center text-lg-right">
-                <a href="https://admin.abhijournals.com/" target="_blank" class="btn btn-dark px-4"
+                <a href="https://admin.${Env.journalDomain}/" target="_blank" class="btn btn-dark px-4"
                     style="border-radius: 0;">
                   Login/Register
                 </a>
@@ -158,7 +159,7 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
                         class="nav-item nav-link">Contact</a>
                     
                     <!-- Login button for mobile view -->
-                    <a href="https://admin.abhijournals.com/" target="_blank" 
+                    <a href="https://admin.${Env.journalDomain}/" target="_blank" 
                         class="nav-item nav-link d-lg-none">
                         Login/Register
                     </a>
@@ -241,15 +242,15 @@ String getFooterHtml(JournalModel journal) {
                 <div class="d-flex flex-column">
                     <p class="font-weight-medium mb-2"><i class="fa fa-map-marker-alt mr-2"></i>Vitthal Namdev Nagar,
                         Opp Jain Temple Sanganer Sanganer Bazar Jaipur 302029 Rajasthan (India)</p>
-                    <p class="font-weight-medium mb-2"><i class="fa fa-phone-alt mr-2"></i>+91-9799997157</p>
-                    <p class="font-weight-medium mb-0"><i class="fa fa-envelope mr-2"></i>mail@abhijournals.com</p>
+                    <p class="font-weight-medium mb-2"><i class="fa fa-phone-alt mr-2"></i><a style="text-decoration: none; color: grey;" href="tel:+91-9799997157">+91-9799997157</a></p>
+                    <p class="font-weight-medium mb-0"><i class="fa fa-envelope mr-2"></i><a style="text-decoration: none; color: grey;" href="mailto:mail@${Env.journalDomain}">mail@${Env.journalDomain}</a></p>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="footer-2 py-4 px-sm-3 px-md-5" style="background: #111111;">
-        <p class="m-0 text-center">&copy; <a href="#">Abhi Journals</a>. All Rights Reserved.
+        <p class="m-0 text-center">&copy; <a href="https://${Env.journalDomain}">${Env.journalTitle}</a>. All Rights Reserved.
         </p>
     </div>
     <!-- Footer End -->
@@ -274,4 +275,3 @@ String getFooterHtml(JournalModel journal) {
 
 ''';
 }
-

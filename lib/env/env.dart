@@ -5,13 +5,12 @@ part 'env.g.dart';
 
 @Envied(path: '.env')
 abstract class Env {
-  @EnviedField(
-      varName: 'FIREBASE_PROJECT_ID', defaultValue: 'your-project-id-here')
+  @EnviedField(varName: 'FIREBASE_PROJECT_ID')
   static const String projectId = _Env.projectId;
 
-  static const firebaseProjectId = String.fromEnvironment('FIREBASE_PROJECT_ID',
-      defaultValue: 'default-project-id');
+  @EnviedField(varName: 'JOURNAL_DOMAIN')
+  static const String journalDomain = _Env.journalDomain;
 
-  static const baseUrl = String.fromEnvironment('BASE_URL',
-      defaultValue: 'https://abhijournals.com');
+  @EnviedField(varName: 'JOURNAL_TITLE')
+  static const String journalTitle = _Env.journalTitle;
 }

@@ -125,8 +125,7 @@ String _buildNavigation(Map<String, dynamic> data) {
 void main() async {
   final app = Router();
   final firestoreService = FirestoreService();
-  final baseUrl = Env.baseUrl;
-  final projectId = Env.firebaseProjectId;
+  final projectId = Env.projectId;
 
   // Add middleware pipeline
   final handler = Pipeline()
