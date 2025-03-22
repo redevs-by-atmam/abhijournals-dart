@@ -38,6 +38,7 @@ jobs:
 
       - name: Deploy to Google Cloud Run
         run: |
+          dart run build_runner build --delete-conflicting-outputs \
           gcloud run deploy dart-shelf-app \
             --image asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app \
             --platform managed \
