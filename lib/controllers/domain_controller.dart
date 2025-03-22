@@ -1,5 +1,4 @@
 import 'package:dart_main_website/config/layout.html.dart';
-import 'package:dart_main_website/env/env.dart';
 import 'package:dart_main_website/models/home_content_model.dart';
 import 'package:dart_main_website/models/journal.dart';
 import 'package:dart_main_website/server.dart';

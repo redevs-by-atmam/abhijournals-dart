@@ -1,9 +1,6 @@
-import 'package:dart_main_website/config/layout.html.dart';
-import 'package:dart_main_website/models/journal.dart';
 import 'package:shelf/shelf.dart';
 import '../services/firestore_service.dart';
 import '../server.dart';
-import '../env/env.dart';
 
 class HomeController {
   final _firestoreService = FirestoreService();

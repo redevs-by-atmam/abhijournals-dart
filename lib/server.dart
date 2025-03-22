@@ -1,7 +1,6 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:io';
-import 'package:dart_main_website/controllers/home_controller.dart';
 import 'package:dart_main_website/env/env.dart';
 import 'package:dart_main_website/services/firestore_service.dart';
 import 'package:mustache_template/mustache_template.dart';
@@ -9,7 +8,6 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf_static/shelf_static.dart';
-import 'middleware/cache_middleware.dart';
 // import 'package:abhi_international_journals/services/firestore_service.dart';
 
 Future<Response> renderHtml(String template, Map<String, dynamic> data) async {

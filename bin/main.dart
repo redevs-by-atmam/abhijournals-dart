@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:dart_main_website/env/env.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart';

@@ -1,4 +1,3 @@
-import 'package:shelf/shelf.dart';
 import '../services/cache_service.dart';
 import '../services/firestore_service.dart';
 import '../models/journal.dart';
