@@ -514,4 +514,45 @@ class FirestoreService {
       return [];
     }
   }
+
+  Future<HomeCountsModel> getHomeCounts() async {
+    try {
+      final totalArticles = (await _firestore
+          .collection('articles')
+          .where('status', isEqualTo: ArticleStatus.accepted.value)
+          .get()).length;
+      final totalJournals = (await _firestore
+          .collection('journals')
+          .get()).length;
+      final totalVolumes = (await _firestore
+          .collection('volumes')
+          .where('isActive', isEqualTo: true)
+          .get()).length;
+      final totalIssues = (await _firestore
+          .collection('issues')
+          .where('isActive', isEqualTo: true)
+          .get()).length;
+      final totalAuthors = (await _firestore
+          .collection('users')
+          .where('role', isEqualTo: 'author')
+          .get()).length;
+      return HomeCountsModel(
+        totalArticles: totalArticles,
+        totalJournals: totalJournals,
+        totalVolumes: totalVolumes,
+        totalIssues: totalIssues,
+        totalAuthors: totalAuthors,
+
+      );
+    } catch (e) {
+      log('Error getting home counts: $e');
+      return HomeCountsModel(
+        totalArticles: 0,
+        totalJournals: 0,
+        totalVolumes: 0,
+        totalIssues: 0,
+        totalAuthors: 0,
+      );
+    }
+  }
 }

@@ -1,242 +1,256 @@
 {{{header}}}
-  <!-- Main Page With Sidebar Start -->
+<!-- Main Page With Sidebar Start -->
 
-  <div class="container-fluid" id="hp-main">
-    <div class="row">
-      <!-- Left Column - Quick Links -->
-      <div class="col-lg-3 col-md-4 col-sm-12">
-        <div class="mb-3">
-          <div class="bg-light border border-top-0 p-3" style="background: linear-gradient(to bottom right, rgba(255, 255, 204, 0.8), rgba(200, 200, 200, 0.5)); height: 500px; background-size: cover; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
-            <div class="d-flex flex-column align-items-center justify-content-center" style="height: 100%;">
-              <h3 class="text-center font-weight-bold">Abhi International Journals</h3>
-              <hr style="width: 80%; border-top: 1px solid #ccc; margin: 10px 0;" />
-             
-            
-                <h5 class="text-center mb-3">Volume {{latestVolume}} - Issue {{latestIssue}}, {{latestYear}}</h5>
-          
-              <hr style="width: 80%; border-top: 1px solid #ccc; margin: 0 0;" />
+<div class="container-fluid" id="hp-main">
+  <div class="row">
+    <!-- Left Column - Quick Links -->
+    <div class="col-lg-3 col-md-4 col-sm-12">
+      <div class="mb-3">
+        <div class="bg-light border border-top-0 p-3"
+          style="background: linear-gradient(to bottom right, rgba(255, 255, 204, 0.8), rgba(200, 200, 200, 0.5)); height: 500px; background-size: cover; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+          <div class="d-flex flex-column align-items-center justify-content-center" style="height: 100%;">
 
-              <br />
-              <a href="https://abhijournals.com" class="btn btn-primary d-flex align-items-center" style="border-radius: 20px;"><i class="fas fa-globe mr-2"></i> www.abhijournals.com</a>
-            </div>
-          </div>
-        </div>
+            <h3 class="text-center font-weight-bold">{{ journalTitle }}</h3>
+            <hr style="width: 80%; border-top: 1px solid #ccc; margin: 10px 0;" />
 
-        <!-- Quick Links Start -->
-        <div class="mb-3">
-          <div class="section-title mb-0">
-            <h5 class="m-0 text-uppercase font-weight-bold">Quick Links</h5>
-          </div>
-          <div class="bg-white border border-top-0 p-3">
-            <div class="d-flex flex-column">
-              {{#content}}
-                {{#quickLinks}}
-                  <a href="{{url}}" class="mb-2" style="color: #000000; text-decoration: none;" 
-                     onmouseover="this.style.color='#033e93'" 
-                     onmouseout="this.style.color='#000000'">
-                    <i class="fas fa-link mr-2"></i>{{title}}
-                  </a>
-                {{/quickLinks}}
-                {{^quickLinks}}
-                  <p>No Quick Links found.</p>
-                {{/quickLinks}}
-              {{/content}}
-            </div>
-          </div>
-        </div>
-        <!-- Quick Links End -->
 
-        <!-- Articles in Press Start -->
-        <div class="mb-3">
-          <div class="section-title mb-0">
-            <h5 class="m-0 text-uppercase font-weight-bold">Articles in Press</h5>
-          </div>
-          <div class="bg-white border border-top-0 p-3">
-            <div class="d-flex flex-column">
-              {{#journal}}
-              <a href="/{{domain}}/current-issue/" class="mb-2" style="color: #000000; text-decoration: none;" onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'"><i class="fas fa-link mr-2"></i>Current Issue</a>
-              {{/journal}}
-            </div>
-          </div>
-        </div>
+            <h5 class="text-center mb-3">Volume {{latestVolume}} - Issue {{latestIssue}}, {{latestYear}}</h5>
 
-        <!-- Articles in Press End -->
-        <div class="mb-3">
-          <div class="section-title mb-0">
-            <h5 class="m-0 text-uppercase font-weight-bold">Archive</h5>
-          </div>
-          <div class="bg-white border border-top-0 p-3">
-            <div class="accordion" id="volumeAccordion">
-              {{#volumes}}
-                <div class="mb-2">
-                  <div class="d-flex align-items-center" style="cursor: pointer;" data-toggle="collapse" data-target="#volume_{{id}}" aria-expanded="false">
-                    <i class="fas fa-book mr-2"></i>
-                    <span style="color: #000000;" onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'">Volume {{volumeNumber}}</span>
-                    <i class="fas fa-chevron-down ml-auto"></i>
-                  </div>
+            <hr style="width: 80%; border-top: 1px solid #ccc; margin: 0 0;" />
 
-                  <div id="volume_{{id}}" class="collapse ml-4 mt-2" data-parent="#volumeAccordion">
-                    {{#volumeIssues}}
-                      <div class="mb-2">
-                        <a href="/{{domain}}/issue/{{id}}/articles/" style="color: #000000; text-decoration: none;" onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'">
-                          <i class="far fa-file-alt mr-2"></i>
-                          Issue {{issueNumber}}
-                        </a>
-                      </div>
-                    {{/volumeIssues}}
-                  </div>
-                </div>
-              {{/volumes}}
-            </div>
+            <br />
+            <a href="{{ journalDomain }}" class="btn btn-primary d-flex align-items-center"
+              style="border-radius: 20px;"><i class="fas fa-globe mr-2"></i> www.{{journalDomain}}</a>
           </div>
         </div>
       </div>
 
-      <!-- Center Column - Main Content -->
-      <div class="col-lg-5 col-md-8 col-sm-12">
-        <div class="bg-white border p-3">
-          <div class="col-12" style="color: black; text-align: justify; font-family: 'Space Grotesk', sans-serif !important; font-size: 1rem !important;">
+      <!-- Quick Links Start -->
+      <div class="mb-3">
+        <div class="section-title mb-0">
+          <h5 class="m-0 text-uppercase font-weight-bold">Quick Links</h5>
+        </div>
+        <div class="bg-white border border-top-0 p-3">
+          <div class="d-flex flex-column">
             {{#content}}
-              {{{htmlContent}}}
+            {{#quickLinks}}
+            <a href="{{url}}" class="mb-2" style="color: #000000; text-decoration: none;"
+              onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'">
+              <i class="fas fa-link mr-2"></i>{{title}}
+            </a>
+            {{/quickLinks}}
+            {{^quickLinks}}
+            <p>No Quick Links found.</p>
+            {{/quickLinks}}
             {{/content}}
           </div>
         </div>
       </div>
+      <!-- Quick Links End -->
 
-      <!-- Right Column - Publication Info -->
-      <div class="col-lg-4 col-md-12">
-        <!-- Table Start -->
-        <div class="mb-3">
-          <div class="section-title mb-0">
-            <h5 class="m-0 text-uppercase font-weight-bold">Abhi International Journals</h5>
-          </div>
-          <div class="bg-white border border-top-0 p-3">
-            <h6 class="m-0 text-uppercase font-weight-bold">Facts and Figures</h6>
-            <div class="table-responsive mt-3">
-              <table class="table table-bordered" style="color: #31404b;">
-                <tbody>
-                  <tr onmouseover="this.style.backgroundColor='#e6f2ff'" onmouseout="this.style.backgroundColor=''">
-                    <td>Number of Volumes</td>
-                    <td>0</td>
-                  </tr>
-                  <tr onmouseover="this.style.backgroundColor='#e6f2ff'" onmouseout="this.style.backgroundColor=''">
-                    <td>Number of Issues</td>
-                    <td>0</td>
-                  </tr>
-                  <tr onmouseover="this.style.backgroundColor='#e6f2ff'" onmouseout="this.style.backgroundColor=''">
-                    <td>Number of Articles</td>
-                    <td>0</td>
-                  </tr>
-                  <tr onmouseover="this.style.backgroundColor='#e6f2ff'" onmouseout="this.style.backgroundColor=''">
-                    <td>Number of Contributors</td>
-                    <td>0</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+      <!-- Articles in Press Start -->
+      <div class="mb-3">
+        <div class="section-title mb-0">
+          <h5 class="m-0 text-uppercase font-weight-bold">Articles in Press</h5>
+        </div>
+        <div class="bg-white border border-top-0 p-3">
+          <div class="d-flex flex-column">
+            {{#journal}}
+            <a href="/{{domain}}/current-issue/" class="mb-2" style="color: #000000; text-decoration: none;"
+              onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'"><i
+                class="fas fa-link mr-2"></i>Current Issue</a>
+            {{/journal}}
           </div>
         </div>
-        <!-- Table End -->
+      </div>
 
-        <div class="mb-3">
-          <div class="section-title mb-0">
-            <h5 class="m-0 text-uppercase font-weight-bold">Publication Information</h5>
-          </div>
-          <div class="bg-white text-left border border-top-0 p-3">
-            {{#content}}
-              <p style="color: #31404B">
-                <i class="fas fa-cube"></i>
-                <b>Publisher</b> <br />
-                {{publisher.name}} <br /><br />
-                {{publisher.address}} <br /><br />
-                Email: <a href="mailto:{{publisher.email}}" style="color: #033e93;text-decoration: none;">{{publisher.email}}</a>
-                <br />
-                {{publisher.institute}}
-              </p>
-              <hr />
-              
-              {{#patrons}}
-                <p style="color: #31404B">
-                  <i class="fas fa-cube"></i>
-                  <b>Patron</b> <br />
-                  {{name}} <br />
-                  {{address}} <br /><br />
-                  {{institute}} <br /><br />
-                  Email: <a href="mailto:{{email}}" style="color: #033e93;text-decoration: none;">{{email}}</a>
-                </p>
-                <hr />
-              {{/patrons}}
-
-              <p style="color: #31404B">
-                <i class="fas fa-cube"></i>
-                <b>Chief Editor</b> <br />
-                {{journalMetaData.editorInChief}}
-              </p>
-
-              <div class="d-flex flex-column">
-                <div class="mb-3 d-flex align-items-center">
-                  <div style="color: #31404b; width: 150px;">
-                    <i class="fas fa-cube mr-2"></i>Mode:
-                  </div>
-                  <div style="color: #31404b;">{{mode}}</div>
-                </div>
-                <div class="mb-3 d-flex align-items-center">
-                  <div style="color: #31404b; width: 150px;">
-                    <i class="fas fa-cube mr-2"></i>Language:
-                  </div>
-                  <div style="color: #31404b;">{{language}}</div>
-                </div>
-                <div class="d-flex align-items-center">
-                  <div style="color: #31404b; width: 150px;">
-                    <i class="fas fa-cube mr-2"></i>Frequency:
-                  </div>
-                  <div style="color: #31404b;">{{frequency}}</div>
-                </div>
+      <!-- Articles in Press End -->
+      <div class="mb-3">
+        <div class="section-title mb-0">
+          <h5 class="m-0 text-uppercase font-weight-bold">Archive</h5>
+        </div>
+        <div class="bg-white border border-top-0 p-3">
+          <div class="accordion" id="volumeAccordion">
+            {{#volumes}}
+            <div class="mb-2">
+              <div class="d-flex align-items-center" style="cursor: pointer;" data-toggle="collapse"
+                data-target="#volume_{{id}}" aria-expanded="false">
+                <i class="fas fa-book mr-2"></i>
+                <span style="color: #000000;" onmouseover="this.style.color='#033e93'"
+                  onmouseout="this.style.color='#000000'">Volume {{volumeNumber}}</span>
+                <i class="fas fa-chevron-down ml-auto"></i>
               </div>
-            {{/content}}
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="section-title mb-3">
-            <h5 class="m-0 text-uppercase font-weight-bold">ISSN Number and Details</h5>
-          </div>
-          <div class="bg-white border p-3">
-            <p style="color: #31404B">
-              {{#content}}
-                <b>Chief Editor:</b> {{journalMetaData.editorInChief}} <br />
-                <b>Publisher:</b> {{publisher.name}} <br />
-                <b>Since:</b> {{journalMetaData.since}} <br />
-              {{/content}}
-              {{#journal}}
-                <b>ISSN (Online):</b> {{issn}} <br />
-              {{/journal}}
-            </p>
+
+              <div id="volume_{{id}}" class="collapse ml-4 mt-2" data-parent="#volumeAccordion">
+                {{#volumeIssues}}
+                <div class="mb-2">
+                  <a href="/{{domain}}/issue/{{id}}/articles/" style="color: #000000; text-decoration: none;"
+                    onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'">
+                    <i class="far fa-file-alt mr-2"></i>
+                    Issue {{issueNumber}}
+                  </a>
+                </div>
+                {{/volumeIssues}}
+              </div>
+            </div>
+            {{/volumes}}
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Center Column - Main Content -->
+    <div class="col-lg-5 col-md-8 col-sm-12">
+      <div class="bg-white border p-3">
+        <div class="col-12"
+          style="color: black; text-align: justify; font-family: 'Space Grotesk', sans-serif !important; font-size: 1rem !important;">
+          {{#content}}
+          {{{htmlContent}}}
+          {{/content}}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column - Publication Info -->
+    <div class="col-lg-4 col-md-12">
+      <!-- Table Start -->
+       {{#homeCounts}}
+      <div class="mb-3">
+        <div class="section-title mb-0">
+          <h5 class="m-0 text-uppercase font-weight-bold">{{ journalTitle }}</h5>
+        </div>
+        <div class="bg-white border border-top-0 p-3">
+          <h6 class="m-0 text-uppercase font-weight-bold">Facts and Figures</h6>
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered" style="color: #31404b;">
+              <tbody>
+                <tr onmouseover="this.style.backgroundColor='#e6f2ff'" onmouseout="this.style.backgroundColor=''">
+                  <td>Number of Volumes</td>
+                  <td>{{ totalVolumes }}</td>
+                </tr>
+                <tr onmouseover="this.style.backgroundColor='#e6f2ff'" onmouseout="this.style.backgroundColor=''">
+                  <td>Number of Issues</td>
+                  <td>{{ totalIssues }}</td>
+                </tr>
+                <tr onmouseover="this.style.backgroundColor='#e6f2ff'" onmouseout="this.style.backgroundColor=''">
+                  <td>Number of Articles</td>
+                  <td>{{ totalArticles }}</td>
+                </tr>
+                <tr onmouseover="this.style.backgroundColor='#e6f2ff'" onmouseout="this.style.backgroundColor=''">
+                  <td>Number of Contributors</td>
+                  <td>{{ totalAuthors }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      {{/homeCounts}}
+      <!-- Table End -->
+
+      <div class="mb-3">
+        <div class="section-title mb-0">
+          <h5 class="m-0 text-uppercase font-weight-bold">Publication Information</h5>
+        </div>
+        <div class="bg-white text-left border border-top-0 p-3">
+          {{#content}}
+          <p style="color: #31404B">
+            <i class="fas fa-cube"></i>
+            <b>Publisher</b> <br />
+            {{publisher.name}} <br /><br />
+            {{publisher.address}} <br /><br />
+            Email: <a href="mailto:{{publisher.email}}"
+              style="color: #033e93;text-decoration: none;">{{publisher.email}}</a>
+            <br />
+            {{publisher.institute}}
+          </p>
+          <hr />
+
+          {{#patrons}}
+          <p style="color: #31404B">
+            <i class="fas fa-cube"></i>
+            <b>Patron</b> <br />
+            {{name}} <br />
+            {{address}} <br /><br />
+            {{institute}} <br /><br />
+            Email: <a href="mailto:{{email}}" style="color: #033e93;text-decoration: none;">{{email}}</a>
+          </p>
+          <hr />
+          {{/patrons}}
+
+          <p style="color: #31404B">
+            <i class="fas fa-cube"></i>
+            <b>Chief Editor</b> <br />
+            {{journalMetaData.editorInChief}}
+          </p>
+
+          <div class="d-flex flex-column">
+            <div class="mb-3 d-flex align-items-center">
+              <div style="color: #31404b; width: 150px;">
+                <i class="fas fa-cube mr-2"></i>Mode:
+              </div>
+              <div style="color: #31404b;">{{mode}}</div>
+            </div>
+            <div class="mb-3 d-flex align-items-center">
+              <div style="color: #31404b; width: 150px;">
+                <i class="fas fa-cube mr-2"></i>Language:
+              </div>
+              <div style="color: #31404b;">{{language}}</div>
+            </div>
+            <div class="d-flex align-items-center">
+              <div style="color: #31404b; width: 150px;">
+                <i class="fas fa-cube mr-2"></i>Frequency:
+              </div>
+              <div style="color: #31404b;">{{frequency}}</div>
+            </div>
+          </div>
+          {{/content}}
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="section-title mb-3">
+          <h5 class="m-0 text-uppercase font-weight-bold">ISSN Number and Details</h5>
+        </div>
+        <div class="bg-white border p-3">
+          <p style="color: #31404B">
+            {{#content}}
+            <b>Chief Editor:</b> {{journalMetaData.editorInChief}} <br />
+            <b>Publisher:</b> {{publisher.name}} <br />
+            <b>Since:</b> {{journalMetaData.since}} <br />
+            {{/content}}
+            {{#journal}}
+            <b>ISSN (Online):</b> {{issn}} <br />
+            {{/journal}}
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- News With Sidebar End -->
+</div>
+<!-- News With Sidebar End -->
 
-  <style>
-    @media (max-width: 767px) {
-        .news-carousel .position-relative {
-            height: 200px;
-        }
-
-        .section-title h4,
-        .section-title h5 {
-            font-size: 1.2rem;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-        }
-
-        #hp-main .col-lg-3, #hp-main .col-lg-5, #hp-main .col-lg-4 {
-            margin-bottom: 20px; /* Add spacing between columns on small screens */
-        }
+<style>
+  @media (max-width: 767px) {
+    .news-carousel .position-relative {
+      height: 200px;
     }
-  </style>
 
-  {{{footer}}}
+    .section-title h4,
+    .section-title h5 {
+      font-size: 1.2rem;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    #hp-main .col-lg-3,
+    #hp-main .col-lg-5,
+    #hp-main .col-lg-4 {
+      margin-bottom: 20px;
+      /* Add spacing between columns on small screens */
+    }
+  }
+</style>
+
+{{{footer}}}

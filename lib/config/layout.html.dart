@@ -22,8 +22,8 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="robots" content="index, follow">
 
-    <meta name="description" content="Abhi International Journals is a distinguished group of peer-reviewed academic journals dedicated to fostering global knowledge exchange and innovation across diverse domains of research and application. With a commitment to excellence, our journals provide a platform for researchers, academicians, and industry professionals to publish high-quality, original, and impactful research. Covering a wide spectrum of disciplines, including artificial intelligence, medical sciences, engineering, economics, management, and more, Abhi International Journals aims to bridge the gap between theoretical advancements and real-world applications.">
-    <meta name="keywords" content="Abhi International Journals, peer-reviewed journals, global knowledge exchange, innovation, research, application, interdisciplinary collaboration, cutting-edge research, open access, scholarly discourse, trusted resource, global research community, AIJ, Abhi, International Journal">
+    <meta name="description" content="${journal.title} is a distinguished group of peer-reviewed academic journals dedicated to fostering global knowledge exchange and innovation across diverse domains of research and application. With a commitment to excellence, our journals provide a platform for researchers, academicians, and industry professionals to publish high-quality, original, and impactful research. Covering a wide spectrum of disciplines, including artificial intelligence, medical sciences, engineering, economics, management, and more, ${journal.title} aims to bridge the gap between theoretical advancements and real-world applications.">
+    <meta name="keywords" content="${journal.title}, peer-reviewed journals, global knowledge exchange, innovation, research, application, interdisciplinary collaboration, cutting-edge research, open access, scholarly discourse, trusted resource, global research community, AIJ, JIJ, ${journal.title}">
     <link rel="sitemap" type="application/xml" title="Sitemap" href='sitemap_xml'>
     <link rel="robots" type="application/txt" title="Robots" href='robots_txt'>
 
@@ -242,7 +242,7 @@ String getFooterHtml(JournalModel journal) {
                 <div class="d-flex flex-column">
                     <p class="font-weight-medium mb-2"><i class="fa fa-map-marker-alt mr-2"></i>Vitthal Namdev Nagar,
                         Opp Jain Temple Sanganer Sanganer Bazar Jaipur 302029 Rajasthan (India)</p>
-                    <p class="font-weight-medium mb-2"><i class="fa fa-phone-alt mr-2"></i><a style="text-decoration: none; color: grey;" href="tel:+91-9799997157">+91-9799997157</a></p>
+
                     <p class="font-weight-medium mb-0"><i class="fa fa-envelope mr-2"></i><a style="text-decoration: none; color: grey;" href="mailto:mail@${Env.journalDomain}">mail@${Env.journalDomain}</a></p>
                 </div>
             </div>

@@ -2,11 +2,54 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 
+class HomeCountsModel {
+  final int totalArticles;
+  final int totalJournals;
+  final int totalVolumes;
+  final int totalIssues;
+  final int totalAuthors;
+
+  HomeCountsModel({
+    required this.totalArticles,
+    required this.totalJournals,
+    required this.totalVolumes,
+    required this.totalIssues,
+    required this.totalAuthors,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'totalArticles': totalArticles,
+      'totalJournals': totalJournals,
+      'totalVolumes': totalVolumes,
+      'totalIssues': totalIssues,
+      'totalAuthors': totalAuthors,
+    };
+  }
+
+  HomeCountsModel copyWith({
+    int? totalArticles,
+    int? totalJournals,
+    int? totalVolumes,
+    int? totalIssues,
+    int? totalAuthors,
+  }) {
+    return HomeCountsModel(
+      totalArticles: totalArticles ?? this.totalArticles,
+      totalJournals: totalJournals ?? this.totalJournals,
+      totalVolumes: totalVolumes ?? this.totalVolumes,
+      totalIssues: totalIssues ?? this.totalIssues,
+      totalAuthors: totalAuthors ?? this.totalAuthors,
+    );
+  }
+  
+}
+
 class JournalMetaDataModel {
   String editorInChief;
   String fullEditionTitle;
   String publisher;
-  DateTime since;
+  String since;
 
   JournalMetaDataModel(
       {required this.editorInChief,
@@ -19,9 +62,9 @@ class JournalMetaDataModel {
         editorInChief: json['editorInChief'] ?? 'N/A',
         fullEditionTitle: json['fullEditionTitle'] ?? 'N/A',
         publisher: json['publisher'] ?? 'N/A',
-        since: json['since'] != null
-            ? DateTime.parse(json['since'])
-            : DateTime.now());
+        since: json['since'] != null 
+            ? DateTime.parse(json['since']).toString().substring(0,4)
+            : DateTime.now().toString().substring(0,4));
   }
 
   Map<String, dynamic> toJson() {
@@ -29,7 +72,7 @@ class JournalMetaDataModel {
       'editorInChief': editorInChief,
       'fullEditionTitle': fullEditionTitle,
       'publisher': publisher,
-      'since': since.toIso8601String(),
+      'since': since,
     };
   }
 
@@ -37,7 +80,7 @@ class JournalMetaDataModel {
     String? editorInChief,
     String? fullEditionTitle,
     String? publisher,
-    DateTime? since,
+    String? since,
   }) {
     return JournalMetaDataModel(
       editorInChief: editorInChief ?? this.editorInChief,
@@ -70,7 +113,6 @@ class HomeContentModel extends Equatable {
   });
 
   factory HomeContentModel.fromJson(Map<String, dynamic> json) {
-    log('htmlContent: ${json['htmlContent']}');
     return HomeContentModel(
       htmlContent:
           (json['htmlContent'] as String?)?.replaceAll('<p><br></p>', '') ?? '',

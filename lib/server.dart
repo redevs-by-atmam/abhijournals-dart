@@ -17,7 +17,7 @@ Future<Response> renderHtml(String template, Map<String, dynamic> data) async {
     // Add common data available to all templates
     final commonData = {
       ...data,
-      'site_name': 'Abhi International Journals',
+      'site_name': Env.journalTitle,
       'current_year': DateTime.now().year.toString(),
       'navigation': _buildNavigation(data),
     };
@@ -133,6 +133,8 @@ void main() async {
       .addMiddleware(cachingMiddleware())
       .addHandler((request) async {
     final path = request.url.path;
+    final host = request.headers['host'] ?? '';
+
 
     // Add debug logging
     print('Current Firebase Project ID: $projectId');

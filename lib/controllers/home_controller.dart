@@ -20,8 +20,11 @@ class HomeController {
           await _firestoreService.getConfigDocument('main-home');
       final content = homepageConfig;
 
+      final homeCounts = await _firestoreService.getHomeCounts();
+
       // Create the template variables
       final templateVars = {
+        'homeCounts': homeCounts.toJson(),
         'shortTitle': content['shortTitle'] ?? 'Abhi',
         'shortForm': content['shortForm'] ?? 'AIJ',
         'logoUrl': content['logoUrl'] ?? '',

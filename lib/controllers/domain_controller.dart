@@ -1,4 +1,5 @@
 import 'package:dart_main_website/config/layout.html.dart';
+import 'package:dart_main_website/env/env.dart';
 import 'package:dart_main_website/models/home_content_model.dart';
 import 'package:dart_main_website/models/journal.dart';
 import 'package:dart_main_website/server.dart';
@@ -25,35 +26,40 @@ class DomainController {
       // Get journal by domain
       final journal = await _firestoreService.getJournalByDomain(domain);
       if (journal == null) {
-        return renderNotFound({
-          'domain': domain,
-          'message': 'Journal not found'
-        });
+        return renderNotFound(
+            {'domain': domain, 'message': 'Journal not found'});
       }
 
       // Get volumes and issues
       final volumes = await _firestoreService.getVolumesByJournalId(journal.id);
       final issues = await _firestoreService.getIssuesByJournalId(journal.id);
-      
+
       // Get latest volume and issue info
-      final latestVolumeAndIssueName = await _firestoreService.getLatestVolumeAndIssueName();
+      final latestVolumeAndIssueName =
+          await _firestoreService.getLatestVolumeAndIssueName();
 
       // Organize issues by volume
       final volumesWithIssues = volumes.map((volume) {
-        final volumeIssues = issues.where((issue) => issue.volumeId == volume.id).toList();
+        final volumeIssues =
+            issues.where((issue) => issue.volumeId == volume.id).toList();
         return {
           ...volume.toJson(),
-          'volumeIssues': volumeIssues.map((issue) => {
-            ...issue.toJson(),
-            'domain': domain,
-          }).toList(),
+          'volumeIssues': volumeIssues
+              .map((issue) => {
+                    ...issue.toJson(),
+                    'domain': domain,
+                  })
+              .toList(),
         };
       }).toList();
 
       final homeContent = await _firestoreService.getHomeContent(journal);
+      final homeCounts = await _firestoreService.getHomeCounts();
 
       return renderHtml('index.html', {
         'journal': journal.toJson(),
+        'journalTitle': Env.journalTitle,
+        'journalDomain': Env.journalDomain,
         'latestVolume': latestVolumeAndIssueName['volume'],
         'latestIssue': latestVolumeAndIssueName['issue'],
         'latestYear': latestVolumeAndIssueName['year'],
@@ -61,14 +67,13 @@ class DomainController {
         'header': getHeaderHtml(journal),
         'footer': getFooterHtml(journal),
         'content': homeContent?.toJson(),
+        'homeCounts': homeCounts.toJson(),
         'volumes': volumesWithIssues,
       });
     } catch (e) {
       print('Error in domain controller: $e');
-      return renderError(
-        'An error occurred while processing your request',
-        {'domain': domain}
-      );
+      return renderError('An error occurred while processing your request',
+          {'domain': domain});
     }
   }
 

@@ -53,7 +53,7 @@
     {{{about}}}
 
 
-
+    {{#homeCounts}}
     <!-- Stats Section -->
     <section id="stats" class="stats section light-background">
 
@@ -63,8 +63,10 @@
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="1"
+             
+              <span data-purecounter-start="0" data-purecounter-end="{{ totalJournals }}" data-purecounter-duration="1"
                 class="purecounter"></span>
+             
               <p>Journals</p>
             </div>
 
@@ -72,8 +74,10 @@
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="1"
+      
+              <span data-purecounter-start="0" data-purecounter-end="{{ totalVolumes }}" data-purecounter-duration="1"
                 class="purecounter"></span>
+     
               <p>Volumes</p>
 
             </div>
@@ -81,8 +85,10 @@
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="1"
+      
+              <span data-purecounter-start="0" data-purecounter-end="{{ totalIssues }}" data-purecounter-duration="1"
                 class="purecounter"></span>
+    
               <p>Issues</p>
             </div>
 
@@ -90,10 +96,13 @@
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="1"
+
+              <span data-purecounter-start="0" data-purecounter-end="{{ totalArticles }}" data-purecounter-duration="1"
                 class="purecounter"></span>
+
               <p>Articles</p>
             </div>
+
           </div><!-- End Stats Item -->
 
         </div>
@@ -101,6 +110,8 @@
       </div>
 
     </section><!-- /Stats Section -->
+    {{/homeCounts}}
+
 
     {{{features}}}
 
