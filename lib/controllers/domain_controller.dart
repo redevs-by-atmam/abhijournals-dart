@@ -55,11 +55,12 @@ class DomainController {
 
       final homeContent = await _firestoreService.getHomeContent(journal);
       final homeCounts = await _firestoreService.getHomeCounts();
+      final config = await _firestoreService.getConfigDocument('main-home');
 
       return renderHtml('index.html', {
         'journal': journal.toJson(),
-        'journalTitle': Env.journalTitle,
-        'journalDomain': Env.journalDomain,
+        'journalTitle': config['fullTitle'],
+        'journalDomain': (config['adminUrl'] as String).replaceAll('admin', 'www'),
         'latestVolume': latestVolumeAndIssueName['volume'],
         'latestIssue': latestVolumeAndIssueName['issue'],
         'latestYear': latestVolumeAndIssueName['year'],

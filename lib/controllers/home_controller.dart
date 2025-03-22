@@ -16,9 +16,8 @@ class HomeController {
       final journals = await _firestoreService.getJournals();
 
       // Fetch homepage template and content from Firebase
-      final homepageConfig =
+      final content =
           await _firestoreService.getConfigDocument('main-home');
-      final content = homepageConfig;
 
       final homeCounts = await _firestoreService.getHomeCounts();
 
