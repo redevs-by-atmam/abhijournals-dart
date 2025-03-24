@@ -17,6 +17,18 @@ class EditorialBoardModel {
     required this.createdAt,
   });
 
+  factory EditorialBoardModel.empty() {
+    return EditorialBoardModel(
+      id: '',
+      journalId: '',
+      name: '',
+      email: '',
+      role: '',
+      institution: '',
+      createdAt: DateTime.now(),
+    );
+  }
+
   factory EditorialBoardModel.fromJson(Map<String, dynamic> json) {
     return EditorialBoardModel(
       id: json['id'],

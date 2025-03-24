@@ -1,3 +1,4 @@
+import 'package:dart_main_website/models/eb_board_model.dart';
 import 'package:equatable/equatable.dart';
 
 class JournalModel extends Equatable {
@@ -8,8 +9,10 @@ class JournalModel extends Equatable {
   final DateTime createdAt;
   final String issn;
   final String eIssn;
+  final EditorialBoardModel chiefEditor;
   const JournalModel(
       {required this.id,
+      required this.chiefEditor,
       required this.image,
       required this.title,
       required this.domain,
@@ -24,12 +27,15 @@ class JournalModel extends Equatable {
       eIssn: json['eIssn'] ?? 'XXXX-XXXX',
       title: json['title'] ?? 'Untitled Journal',
       domain: json['domain'] ?? '',
+      chiefEditor: json['chiefEditor'] != null
+          ? EditorialBoardModel.fromJson(json['chiefEditor'])
+          : EditorialBoardModel.empty(),
       image: json['image'] ?? '',
-      createdAt: json['createdAt'] != null 
-        ? (json['createdAt'] is String 
-            ? DateTime.parse(json['createdAt'])
-            : DateTime.now())
-        : DateTime.now(),
+      createdAt: json['createdAt'] != null
+          ? (json['createdAt'] is String
+              ? DateTime.parse(json['createdAt'])
+              : DateTime.now())
+          : DateTime.now(),
     );
   }
 
@@ -41,12 +47,14 @@ class JournalModel extends Equatable {
       'title': title,
       'domain': domain,
       'image': image,
+      'chiefEditor': chiefEditor.toJson(),
       'createdAt': createdAt.toIso8601String(),
     };
   }
 
   @override
-  List<Object?> get props => [id, title, domain, image, createdAt, issn, eIssn];
+  List<Object?> get props =>
+      [id, title, domain, image, createdAt, issn, eIssn, chiefEditor];
 
   @override
   bool? get stringify => true;
@@ -59,9 +67,11 @@ class JournalModel extends Equatable {
     DateTime? createdAt,
     String? issn,
     String? eIssn,
+    EditorialBoardModel? chiefEditor,
   }) {
     return JournalModel(
       id: id ?? this.id,
+      chiefEditor: chiefEditor ?? this.chiefEditor,
       issn: issn ?? this.issn,
       eIssn: eIssn ?? this.eIssn,
       title: title ?? this.title,

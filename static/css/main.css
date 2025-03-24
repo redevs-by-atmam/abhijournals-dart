@@ -80,7 +80,7 @@ body {
 }
 
 a {
-  color: var(--accent-color);
+  color: var(--accent-color) !important;
   text-decoration: none;
   transition: 0.3s;
 }

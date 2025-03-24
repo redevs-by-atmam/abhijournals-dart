@@ -1,6 +1,10 @@
 {{{header}}}
 <!-- Main Page With Sidebar Start -->
-
+<style>
+  a{
+    color: #124265;
+  }
+</style>
 <div class="container-fluid" id="hp-main">
   <div class="row">
     <!-- Left Column - Quick Links -->
@@ -114,7 +118,7 @@
     <!-- Right Column - Publication Info -->
     <div class="col-lg-4 col-md-12">
       <!-- Table Start -->
-       {{#homeCounts}}
+      {{#homeCounts}}
       <div class="mb-3">
         <div class="section-title mb-0">
           <h5 class="m-0 text-uppercase font-weight-bold">{{ journalTitle }}</h5>
@@ -180,7 +184,13 @@
           <p style="color: #31404B">
             <i class="fas fa-cube"></i>
             <b>Chief Editor</b> <br />
-            {{journalMetaData.editorInChief}}
+            {{journal.chiefEditor.name}}
+            <br>
+            {{journal.chiefEditor.institution}}
+            <br><br>
+            Email: <a href="mailto:{{journal.chiefEditor.email}}">{{journal.chiefEditor.email}} </a>
+
+
           </p>
 
           <div class="d-flex flex-column">
@@ -213,7 +223,7 @@
         <div class="bg-white border p-3">
           <p style="color: #31404B">
             {{#content}}
-            <b>Chief Editor:</b> {{journalMetaData.editorInChief}} <br />
+            <b>Chief Editor:</b> {{journal.chiefEditor.name}} <br />
             <b>Publisher:</b> {{publisher.name}} <br />
             <b>Since:</b> {{journalMetaData.since}} <br />
             {{/content}}
