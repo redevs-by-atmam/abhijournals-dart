@@ -5,8 +5,12 @@ import 'package:dart_main_website/services/firestore_service.dart';
 const String headerHtml = '';
 
 String getHeaderHtml(JournalModel journal, {String? addedString}) {
-  final title = journal.domain.startsWith('j') ? 'JANOLI International Journal' : 'Abhi International Journals';
-  final domain = journal.domain.startsWith('j') ? 'janolijournals.org' : 'abhijournals.com';
+  final title = journal.domain.startsWith('j')
+      ? 'JANOLI International Journal'
+      : 'Abhi International Journals';
+  final domain = journal.domain.startsWith('j')
+      ? 'janolijournals.org'
+      : 'abhijournals.com';
   // Get cached social links using the public getter
 
   return '''
@@ -22,8 +26,7 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="robots" content="index, follow">
 
-    <meta name="description" content="${journal.title} is a distinguished group of peer-reviewed academic journals dedicated to fostering global knowledge exchange and innovation across diverse domains of research and application. With a commitment to excellence, our journals provide a platform for researchers, academicians, and industry professionals to publish high-quality, original, and impactful research. Covering a wide spectrum of disciplines, including artificial intelligence, medical sciences, engineering, economics, management, and more, ${journal.title} aims to bridge the gap between theoretical advancements and real-world applications.">
-    <meta name="keywords" content="${journal.title}, peer-reviewed journals, global knowledge exchange, innovation, research, application, interdisciplinary collaboration, cutting-edge research, open access, scholarly discourse, trusted resource, global research community, AIJ, JIJ, ${journal.title}">
+    <meta name="description" content="${journal.title} is a peer-reviewed academic journal committed to fostering global knowledge exchange and innovation across diverse research domains. It provides a platform for researchers, academicians, and industry professionals to publish high-quality, original research. Covering disciplines such as artificial intelligence, medical sciences, engineering, economics, and management, ${journal.title} bridges the gap between theoretical advancements and real-world applications. As a trusted resource in the global research community, it promotes interdisciplinary collaboration and open access to cutting-edge research.">
     <link rel="sitemap" type="application/xml" title="Sitemap" href='sitemap_xml'>
     <link rel="robots" type="application/txt" title="Robots" href='robots_txt'>
 
@@ -36,6 +39,9 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
 
     <!-- Libraries Stylesheet -->
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://${journal.domain}.$domain">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
@@ -58,7 +64,7 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-body small" href="https://admin.$domain/"
-                                target="_blank">Login</a>
+                                target="_blank" rel="noopener noreferrer">Login</a>
                         </li>
                     </ul>
                 </nav>
@@ -81,7 +87,7 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
                 </a>
             </div>
             <div class="col-lg-8 text-center text-lg-right">
-                <a href="https://admin.$domain/" target="_blank" class="btn btn-dark px-4"
+                <a href="https://admin.$domain/" target="_blank" rel="noopener noreferrer" class="btn btn-dark px-4"
                     style="border-radius: 0;">
                   Login/Register
                 </a>
@@ -96,7 +102,7 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
         <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
             <a href="/${journal.domain}/" class="navbar-brand d-block d-lg-none">
                 <div class="">   
-                    <span style="font-size: 0.6em; font-weight: bold;color: white;">${journal.title.split(' ').take(5).join(' ')}</span><br>
+                    <h1 style="font-size: 0.6em; font-weight: bold;color: white;">${journal.title.split(' ').take(5).join(' ')}</h1><br>
                     <span style="font-size: 0.6em; font-weight: bold;color: white;">${journal.title.split(' ').skip(5).take(5).join(' ')}</span><br>
                 </div>
             </a>
@@ -159,7 +165,7 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
                         class="nav-item nav-link">Contact</a>
                     
                     <!-- Login button for mobile view -->
-                    <a href="https://admin.$domain/" target="_blank" 
+                    <a href="https://admin.$domain/" target="_blank" rel="noopener noreferrer"
                         class="nav-item nav-link d-lg-none">
                         Login/Register
                     </a>
@@ -211,8 +217,12 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
 }
 
 String getFooterHtml(JournalModel journal) {
-  final title = journal.domain.startsWith('j') ? 'JANOLI International Journal' : 'Abhi International Journals';
-  final domain = journal.domain.startsWith('j') ? 'janolijournals.org' : 'abhijournals.com';
+  final title = journal.domain.startsWith('j')
+      ? 'JANOLI International Journal'
+      : 'Abhi International Journals';
+  final domain = journal.domain.startsWith('j')
+      ? 'janolijournals.org'
+      : 'abhijournals.com';
   // Get cached social links using the public getter
   final socialLinks = FirestoreService().cachedSocialLinks;
 
@@ -225,15 +235,15 @@ String getFooterHtml(JournalModel journal) {
                 <h6 class="mb-3 text-white text-uppercase font-weight-bold">Follow Us</h6>
                 <div class="d-flex justify-content-center flex-wrap">
                     <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="${socialLinks['x']?.url ?? ''}" id="twitter-link-footer"
-                        target="_blank"><i class="fab fa-twitter"></i></a>
+                        target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="${socialLinks['facebook']?.url ?? ''}" id="facebook-link-footer"
-                        target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
                     <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="${socialLinks['linkedin']?.url ?? ''}" id="linkedin-link-footer"
-                        target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
                     <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="${socialLinks['instagram']?.url ?? ''}" id="instagram-link-footer"
-                        target="_blank"><i class="fab fa-instagram"></i></a>
+                        target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                     <a class="btn btn-lg btn-secondary btn-lg-square m-2" href="${socialLinks['youtube']?.url ?? ''}" id="youtube-link-footer"
-                        target="_blank"><i class="fab fa-youtube"></i></a>
+                        target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
         </div>

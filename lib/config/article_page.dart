@@ -40,7 +40,7 @@ ${getHeaderHtml(journal, addedString: '''
                   </p>
                 </div>
                 <div class="mt-3 mt-md-0 ms-md-4">
-                  <a href="${article.pdf}" class="btn btn-primary" target="_blank">
+                  <a href="${article.pdf}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
                     <i class="fas fa-file-pdf mr-2"></i>Download PDF
                   </a>
                 </div>
@@ -70,7 +70,7 @@ ${getHeaderHtml(journal, addedString: '''
 
           <!-- Download Section -->
           <div class="article-download mt-4">
-            <a href="${article.pdf}" class="btn btn-primary" target="_blank">
+            <a href="${article.pdf}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
               <i class="fas fa-file-pdf mr-2"></i>Download PDF
             </a>
           </div>
