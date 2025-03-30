@@ -1,0 +1,8 @@
+# Automatically normalize line endings
+* text=auto
+
+# Explicitly define line endings for specific file types
+*.sh text eol=lf
+*.bat text eol=crlf
+*.md text eol=lf
+*.dart text eol=lf

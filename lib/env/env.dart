@@ -13,4 +13,10 @@ abstract class Env {
 
   @EnviedField(varName: 'JOURNAL_TITLE')
   static const String journalTitle = _Env.journalTitle;
+
+  @EnviedField(varName: 'ILOVEPDF_CLIENT_ID')
+  static const String ilovepdfClientId = _Env.ilovepdfClientId;
+
+  @EnviedField(varName: 'ILOVEPDF_CLIENT_SECRET')
+  static const String ilovepdfClientSecret = _Env.ilovepdfClientSecret;
 }

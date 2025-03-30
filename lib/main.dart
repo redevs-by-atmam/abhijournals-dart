@@ -26,6 +26,5 @@ void main() async {
     '0.0.0.0',
     8080,
   );
-
   print('Server running on http://localhost:${server.port}');
 }
