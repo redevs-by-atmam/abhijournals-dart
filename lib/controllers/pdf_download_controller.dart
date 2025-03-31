@@ -21,7 +21,6 @@ class PdfDownloadController {
     final response = await _dio.post(supabaseEndpoint, data: {
       'urls': pdfUrls,
     });
-    developer.log('Response: ${response.data}');
 
     // Extract the download URL from the response
     if (response.data['success'] == true && response.data['downloadUrl'] != null) {

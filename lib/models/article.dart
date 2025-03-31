@@ -1,5 +1,6 @@
 import 'package:dart_main_website/models/user.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class ArticleModel extends Equatable {
   final String id;
@@ -37,27 +38,38 @@ class ArticleModel extends Equatable {
   });
 
   factory ArticleModel.fromJson(Map<String, dynamic> json) {
+    // Parse dates and format createdAt
+    DateTime createdAtDate =
+        DateFormat('dd/MM/yyyy').tryParse(json['createdAt']) ??
+            DateTime.parse(json['createdAt']);
+
+    // Handle potential null values in arrays
+    List<dynamic> authorsData = json['authors'] ?? [];
+    List<dynamic> keywordsData = json['keywords'] ?? [];
+    List<dynamic> mainSubjectsData = json['mainSubjects'] ?? [];
+    List<dynamic> referencesData = json['references'] ?? [];
     return ArticleModel(
       id: json['id'] as String,
       journalId: json['journalId'] as String,
       abstractString: (json['abstractString']).toString(),
-      authors: List<MyUser>.from(json['authors']
-          .map((e) => MyUser.fromJson(e as Map<String, dynamic>))),
+      authors: List<MyUser>.from(
+          authorsData.map((e) => MyUser.fromJson(e as Map<String, dynamic>))),
       issueId: json['issueId'] as String,
       volumeId: json['volumeId'] as String,
       documentType: json['documentType'] as String,
-      keywords: List<String>.from(json['keywords']),
-      mainSubjects: List<String>.from(json['mainSubjects']),
-      createdAt: DateTime.parse(json['createdAt']),
+      keywords: List<String>.from(keywordsData),
+      mainSubjects: List<String>.from(mainSubjectsData),
+      createdAt: createdAtDate,
       updatedAt: DateTime.parse(json['updatedAt']),
       pdf: json['pdf'] as String,
-      references: List<String>.from(json['references']),
+      references: List<String>.from(referencesData),
       title: json['title'] as String,
       status: json['status'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
+    final DateFormat formatter = DateFormat('dd/MM/yyyy');
     return {
       'id': id,
       'journalId': journalId,
@@ -68,7 +80,7 @@ class ArticleModel extends Equatable {
       'documentType': documentType,
       'keywords': keywords,
       'mainSubjects': mainSubjects,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': formatter.format(createdAt),
       'updatedAt': updatedAt.toIso8601String(),
       'pdf': pdf,
       'references': references,

@@ -151,7 +151,7 @@ class FirestoreService {
       final snapshot = await _firestore
           .collection('articles')
           .where('journalId', isEqualTo: domain)
-          .orderBy('createdAt', descending: true)
+          .orderBy('startPage')
           .get();
 
       print(snapshot.map((doc) => doc.map).toList());
@@ -189,7 +189,7 @@ class FirestoreService {
       final snapshot = await _firestore
           .collection('articles')
           .where('issueId', isEqualTo: issueId)
-          .orderBy('createdAt', descending: true)
+          .orderBy('startPage')
           .get();
 
       return snapshot
@@ -277,7 +277,7 @@ class FirestoreService {
           .collection('articles')
           .where('volumeId', isEqualTo: volumeId)
           .where('issueId', isEqualTo: issueId)
-          .orderBy('createdAt', descending: true)
+          .orderBy('startPage')
           .get();
 
       return snapshot
@@ -462,6 +462,7 @@ class FirestoreService {
           .collection('journals')
           .document(journalId)
           .collection('articles')
+          .orderBy('startPage')
           .get();
       return snapshot
           .map((doc) => {
@@ -517,31 +518,33 @@ class FirestoreService {
   Future<HomeCountsModel> getHomeCounts() async {
     try {
       final totalArticles = (await _firestore
-          .collection('articles')
-          .where('status', isEqualTo: ArticleStatus.accepted.value)
-          .get()).length;
-      final totalJournals = (await _firestore
-          .collection('journals')
-          .get()).length;
+              .collection('articles')
+              .where('status', isEqualTo: ArticleStatus.accepted.value)
+              .get())
+          .length;
+      final totalJournals =
+          (await _firestore.collection('journals').get()).length;
       final totalVolumes = (await _firestore
-          .collection('volumes')
-          .where('isActive', isEqualTo: true)
-          .get()).length;
+              .collection('volumes')
+              .where('isActive', isEqualTo: true)
+              .get())
+          .length;
       final totalIssues = (await _firestore
-          .collection('issues')
-          .where('isActive', isEqualTo: true)
-          .get()).length;
+              .collection('issues')
+              .where('isActive', isEqualTo: true)
+              .get())
+          .length;
       final totalAuthors = (await _firestore
-          .collection('users')
-          .where('role', isEqualTo: 'author')
-          .get()).length;
+              .collection('users')
+              .where('role', isEqualTo: 'author')
+              .get())
+          .length;
       return HomeCountsModel(
         totalArticles: totalArticles,
         totalJournals: totalJournals,
         totalVolumes: totalVolumes,
         totalIssues: totalIssues,
         totalAuthors: totalAuthors,
-
       );
     } catch (e) {
       log('Error getting home counts: $e');
@@ -554,6 +557,4 @@ class FirestoreService {
       );
     }
   }
-
-  
 }
