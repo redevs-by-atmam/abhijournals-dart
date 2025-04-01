@@ -1,4 +1,5 @@
 import 'package:dart_main_website/config/layout.html.dart';
+import 'package:intl/intl.dart';
 import 'package:shelf/shelf.dart';
 import '../services/firestore_service.dart';
 import '../server.dart';
@@ -11,46 +12,51 @@ class CurrentIssueController {
       // Get journal
       final journal = await _firestoreService.getJournalByDomain(domain);
       if (journal == null) {
-        return renderNotFound({
-          'domain': domain,
-          'message': 'Journal not found'
-        });
+        return renderNotFound(
+            {'domain': domain, 'message': 'Journal not found'});
       }
 
       // Get latest volume and issue for this specific journal
-      final latestVolume = await _firestoreService.getLatestVolumeByJournalId(journal.id);
+      final latestVolume =
+          await _firestoreService.getLatestVolumeByJournalId(journal.id);
       if (latestVolume == null) {
-        return renderError('No volumes found for this journal', {'domain': domain});
+        return renderError(
+            'No volumes found for this journal', {'domain': domain});
       }
 
-      final latestIssue = await _firestoreService.getLatestIssueByVolumeId(latestVolume.id);
+      final latestIssue =
+          await _firestoreService.getLatestIssueByVolumeId(latestVolume.id);
       if (latestIssue == null) {
-        return renderError('No issues found for the latest volume', {'domain': domain});
+        return renderError(
+            'No issues found for the latest volume', {'domain': domain});
       }
 
       // Get articles for latest issue
-      final articles = await _firestoreService.getArticlesByIssue(latestIssue.id);
-      
+      final articles =
+          await _firestoreService.getArticlesByIssue(latestIssue.id);
+
       print('Latest Volume: ${latestVolume.volumeNumber}');
       print('Latest Issue: ${latestIssue.issueNumber}');
       print('Articles found: ${articles.length}');
+
+      final fromDate = DateFormat('MMMM - yyyy').format(latestIssue.fromDate);
 
       return renderHtml('dynamic-pages/current-issue.html', {
         'header': getHeaderHtml(journal),
         'footer': getFooterHtml(journal),
         'journal': journal.toJson(),
         'domain': journal.domain,
+        'issueId': latestIssue.id,
         'issue': latestIssue.toJson(),
+        'issueDate': fromDate,
         'volume': latestVolume.toJson(),
         'articles': articles.map((article) => article.toJson()).toList(),
         'hasArticles': articles.isNotEmpty,
       });
     } catch (e) {
       print('Error fetching current issue: $e');
-      return renderError(
-        'An error occurred while fetching the current issue',
-        {'domain': domain}
-      );
+      return renderError('An error occurred while fetching the current issue',
+          {'domain': domain});
     }
   }
 
