@@ -4,7 +4,7 @@ import 'package:dart_main_website/services/firestore_service.dart';
 
 const String headerHtml = '';
 
-String getHeaderHtml(JournalModel journal, {String? addedString}) {
+String getHeaderHtml(JournalModel journal, {String? addedHeadTags}) {
   final title = journal.domain.startsWith('j')
       ? 'JANOLI International Journal'
       : 'Abhi International Journals';
@@ -45,7 +45,7 @@ String getHeaderHtml(JournalModel journal, {String? addedString}) {
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    ${addedString ?? ''}
+    ${addedHeadTags ?? ''}
 </head>
 
 <body>

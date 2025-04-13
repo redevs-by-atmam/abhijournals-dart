@@ -14,8 +14,7 @@ String articlePage(
   final formattedDate =
       "${article.createdAt.year}/${article.createdAt.month}/${article.createdAt.day}";
   return '''
-${getHeaderHtml(journal, addedString: '''
-<head>
+${getHeaderHtml(journal, addedHeadTags: '''
   <meta name="citation_title" content="${article.title}">
 $authorMetaTags
   <meta name="citation_publication_date" content="$formattedDate">
@@ -28,8 +27,6 @@ $authorMetaTags
   <meta name="citation_keywords" content="$keywords">
   <meta name="citation_language" content="en">
   <meta name="citation_abstract" content="${article.abstractString}">
-
-</head>
 ''')}
 
 
