@@ -8,6 +8,9 @@ class ArticleModel extends Equatable {
   final String abstractString;
   final List<MyUser> authors;
   final String issueId;
+  final int startPage;
+  final int endPage;
+  final int? pageCount;
   final String volumeId;
   final String documentType;
   final List<String> keywords;
@@ -35,6 +38,9 @@ class ArticleModel extends Equatable {
     required this.mainSubjects,
     required this.createdAt,
     required this.updatedAt,
+    required this.startPage,
+    required this.endPage,
+    this.pageCount,
   });
 
   factory ArticleModel.fromJson(Map<String, dynamic> json) {
@@ -50,6 +56,9 @@ class ArticleModel extends Equatable {
     List<dynamic> referencesData = json['references'] ?? [];
     return ArticleModel(
       id: json['id'] as String,
+      startPage: json['startPage'] ?? 0,
+      endPage: json['endPage'] ?? 0,
+      pageCount: (json['endPage'] ?? 0) - (json['startPage'] ?? 0) + 1,
       journalId: json['journalId'] as String,
       abstractString: (json['abstractString']).toString(),
       authors: List<MyUser>.from(
@@ -73,6 +82,9 @@ class ArticleModel extends Equatable {
     return {
       'id': id,
       'journalId': journalId,
+      'startPage': startPage,
+      'endPage': endPage,
+      'pageCount': endPage - startPage + 1,
       'abstractString': abstractString,
       'authors': authors.map((e) => e.toJson()).toList(),
       'issueId': issueId,
@@ -106,12 +118,18 @@ class ArticleModel extends Equatable {
     String? title,
     String? journalId,
     String? status,
+    int? startPage,
+    int? endPage,
+    int? pageCount,
   }) {
     return ArticleModel(
       id: id ?? this.id,
       abstractString: abstractString ?? this.abstractString,
       authors: authors ?? this.authors,
       journalId: journalId ?? this.journalId,
+      startPage: startPage ?? this.startPage,
+      endPage: endPage ?? this.endPage,
+      pageCount: pageCount ?? this.pageCount,
       issueId: issueId ?? this.issueId,
       volumeId: volumeId ?? this.volumeId,
       documentType: documentType ?? this.documentType,
@@ -142,7 +160,10 @@ class ArticleModel extends Equatable {
         pdf,
         references,
         title,
-        status
+        status,
+        startPage,
+        endPage,
+        pageCount,
       ];
 }
 

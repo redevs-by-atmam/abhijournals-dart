@@ -24,6 +24,23 @@ Crawl-delay: 5
 
 User-agent: Googlebot-Scholar
 Allow: /
+Allow: /*/articles/
+Allow: /*/articles/*
+Allow: /aijaiams/articles/*
+Allow: /aijhrfhm/articles/*
+Allow: /aijes/articles/*
+Allow: /aijipm/articles/*
+Allow: /aijaiam/articles/*
+Allow: /aijms/articles/*
+Allow: /aijsc/articles/*
+Allow: /aijbs/articles/*
+Allow: /aijas/articles/*
+Allow: /aijaiae/articles/*
+Allow: /aijmst/articles/*
+Allow: /aijhl/articles/*
+Allow: /aijae/articles/*
+Allow: /aijcse/articles/*
+Allow: /aijcps/articles/*
 Crawl-delay: 5
 
 # Academic Search Engines

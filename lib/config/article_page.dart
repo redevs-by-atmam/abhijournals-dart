@@ -6,16 +6,29 @@ import 'package:dart_main_website/models/journal.dart';
 String articlePage(
     ArticleModel article, JournalModel journal, IssueModel issue) {
   final authors = article.authors.map((author) => author.name).join(', ');
+  final authorMetaTags = article.authors
+      .map((author) =>
+          '  <meta name="citation_author" content="${author.name}">')
+      .join('\n');
+  final keywords = article.keywords.map((keyword) => keyword).join(', ');
+  final formattedDate =
+      "${article.createdAt.year}/${article.createdAt.month}/${article.createdAt.day}";
   return '''
 ${getHeaderHtml(journal, addedString: '''
 <head>
   <meta name="citation_title" content="${article.title}">
-  <meta name="citation_author" content="${article.authors}">
-  <meta name="citation_publication_date" content="${article.createdAt}">
+$authorMetaTags
+  <meta name="citation_publication_date" content="$formattedDate">
   <meta name="citation_journal_title" content="${journal.title}">
   <meta name="citation_volume" content="${article.volumeId}">
   <meta name="citation_issue" content="${article.issueId}">
+  <meta name="citation_firstpage" content="${article.startPage}">
+  <meta name="citation_lastpage" content="${article.endPage}">
   <meta name="citation_pdf_url" content="${article.pdf}">
+  <meta name="citation_keywords" content="$keywords">
+  <meta name="citation_language" content="en">
+  <meta name="citation_abstract" content="${article.abstractString}">
+
 </head>
 ''')}
 
@@ -57,15 +70,15 @@ ${getHeaderHtml(journal, addedString: '''
           <!-- Keywords -->
           <div class="article-keywords mb-4">
             <h4>Keywords</h4>
-            <p>${article.keywords.join(', ')}</p>
+            <p>$keywords</p>
           </div>
 
           <!-- References -->
           <div class="article-references mb-4">
             <h4>References</h4>
-            <ul>
+            <ol>
               ${article.references.map((reference) => '<li style="list-style-type: none;">$reference</li>').join()}
-            </ul>
+            </ol>
           </div>
 
           <!-- Download Section -->
