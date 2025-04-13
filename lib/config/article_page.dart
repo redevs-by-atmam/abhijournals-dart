@@ -35,7 +35,8 @@ $authorMetaTags
   "author": [
     ${article.authors.map((author) => '{ "@type": "Person", "name": "${author.name}" }').join(',\n    ')}
   ],
-  "datePublished": "$formattedDate",
+  "datePublished": "${article.createdAt.toIso8601String()}",
+  "dateModified": "${article.updatedAt.toIso8601String()}",
   "isPartOf": {
     "@type": "PublicationIssue",
     "issueNumber": "${issue.issueNumber}",
