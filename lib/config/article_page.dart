@@ -44,7 +44,7 @@ $authorMetaTags
   "pagination": "${article.startPage}-${article.endPage}",
   "inLanguage": "en",
   "keywords": [
-    $keywords
+    "${article.keywords.map((keyword) => keyword).join('", "')}"
   ],
   "description": "${article.abstractString}",
   "url": "https://abhijournals.com/${journal.domain}/articles/${article.id}",
