@@ -27,6 +27,7 @@ String getHeaderHtml(JournalModel journal, {String? addedHeadTags}) {
     <meta name="robots" content="index, follow">
 
     <meta name="description" content="${journal.title} is a peer-reviewed academic journal committed to fostering global knowledge exchange and innovation across diverse research domains. It provides a platform for researchers, academicians, and industry professionals to publish high-quality, original research. Covering disciplines such as artificial intelligence, medical sciences, engineering, economics, and management, ${journal.title} bridges the gap between theoretical advancements and real-world applications. As a trusted resource in the global research community, it promotes interdisciplinary collaboration and open access to cutting-edge research.">
+    ${addedHeadTags ?? ''}
     <link rel="sitemap" type="application/xml" title="Sitemap" href='sitemap_xml'>
     <link rel="robots" type="application/txt" title="Robots" href='robots_txt'>
 
@@ -45,7 +46,7 @@ String getHeaderHtml(JournalModel journal, {String? addedHeadTags}) {
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    ${addedHeadTags ?? ''}
+    
 </head>
 
 <body>
