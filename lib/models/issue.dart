@@ -1,10 +1,10 @@
-
 import 'package:equatable/equatable.dart';
 
 class IssueModel extends Equatable {
   final String id;
   final String title;
   final String issueNumber;
+  final String volumeNumber;
   final String volumeId;
   final String journalId;
   final String description;
@@ -17,12 +17,12 @@ class IssueModel extends Equatable {
     required this.issueNumber,
     required this.volumeId,
     required this.journalId,
+    required this.volumeNumber,
     required this.description,
     required this.fromDate,
     required this.toDate,
     required this.isActive,
   });
-
 
   factory IssueModel.fromJson(Map<String, dynamic> json) {
     return IssueModel(
@@ -30,6 +30,7 @@ class IssueModel extends Equatable {
       title: json['title'],
       issueNumber: json['issueNumber'],
       volumeId: json['volumeId'],
+      volumeNumber: json['volumeNumber'] ?? '',
       journalId: json['journalId'],
       description: json['description'],
       fromDate: DateTime.parse(json['fromDate']),
@@ -49,6 +50,7 @@ class IssueModel extends Equatable {
       'fromDate': fromDate.toIso8601String(),
       'toDate': toDate.toIso8601String(),
       'isActive': isActive,
+      'volumeNumber': volumeNumber, 
     };
   }
 
@@ -59,6 +61,7 @@ class IssueModel extends Equatable {
     String? volumeId,
     String? journalId,
     String? description,
+    String? volumeNumber,
     DateTime? fromDate,
     DateTime? toDate,
     bool? isActive,
@@ -70,12 +73,24 @@ class IssueModel extends Equatable {
       volumeId: volumeId ?? this.volumeId,
       journalId: journalId ?? this.journalId,
       description: description ?? this.description,
+      volumeNumber: volumeNumber ?? this.volumeNumber,
       fromDate: fromDate ?? this.fromDate,
       toDate: toDate ?? this.toDate,
       isActive: isActive ?? this.isActive,
     );
   }
-  
+
   @override
-  List<Object?> get props => [id, title, issueNumber, volumeId, journalId, description, fromDate, toDate, isActive];
+  List<Object?> get props => [
+        id,
+        title,
+        issueNumber,
+        volumeId,
+        journalId,
+        description,
+        fromDate,
+        toDate,
+        isActive,
+        volumeNumber,
+      ];
 }

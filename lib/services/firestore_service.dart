@@ -139,7 +139,18 @@ class FirestoreService {
           .orderBy('issueNumber', descending: true)
           .get();
 
-      return snapshot.map((doc) => IssueModel.fromJson(doc.map)).toList();
+      final issues =
+          snapshot.map((doc) => IssueModel.fromJson(doc.map)).toList();
+
+      // Use Future.wait to fetch all volumes in parallel
+      final updatedIssues = await Future.wait(
+        issues.map((issue) async {
+          final volume = await getVolumeById(issue.volumeId);
+          return issue.copyWith(volumeNumber: volume?.volumeNumber ?? '');
+        }),
+      );
+
+      return updatedIssues;
     } catch (e) {
       log('Error getting issues by journal id: $e');
       return [];
@@ -319,10 +330,12 @@ class FirestoreService {
           .orderBy('issueNumber', descending: true)
           .limit(1)
           .get();
+      final volume = await getVolumeById(snapshot.first.map['volumeId']);
 
       return IssueModel.fromJson({
         'id': snapshot.first.id,
         ...snapshot.first.map,
+        'volumeNumber': volume?.volumeNumber ?? '',
       });
     } catch (e) {
       log('Error getting latest issues: $e');

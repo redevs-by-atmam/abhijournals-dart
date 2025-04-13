@@ -27,19 +27,26 @@ $authorMetaTags
   <meta name="citation_keywords" content="$keywords">
   <meta name="citation_language" content="en">
   <meta name="citation_abstract" content="${article.abstractString}">
-  <script type="application/ld+json">
+ <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "ScholarlyArticle",
   "headline": "${article.title}",
-  "author": {
-    "@type": "Person",
-    "name": "$authors"
-  },
+  "author": [
+    ${article.authors.map((author) => '{ "@type": "Person", "name": "${author.name}" }').join(',\n    ')}
+  ],
   "datePublished": "$formattedDate",
   "isPartOf": {
-    "@type": "Periodical",
-    "name": "${journal.title}"
+    "@type": "PublicationIssue",
+    "issueNumber": "${issue.issueNumber}",
+    "isPartOf": {
+      "@type": "PublicationVolume",
+      "volumeNumber": "${issue.volumeNumber}",
+      "isPartOf": {
+        "@type": "Periodical",
+        "name": "${journal.title}"
+      }
+    }
   },
   "pagination": "${article.startPage}-${article.endPage}",
   "inLanguage": "en",
@@ -51,6 +58,7 @@ $authorMetaTags
   "sameAs": "${article.pdf}"
 }
 </script>
+
 
 ''')}
 
