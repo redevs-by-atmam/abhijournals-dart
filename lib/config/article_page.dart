@@ -37,7 +37,7 @@ $authorMetaTags
     "name": "$authors"
   },
   "datePublished": "$formattedDate",
-  "journal": {
+  "isPartOf": {
     "@type": "Periodical",
     "name": "${journal.title}"
   },
