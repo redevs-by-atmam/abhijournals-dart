@@ -47,7 +47,7 @@ $authorMetaTags
     $keywords
   ],
   "description": "${article.abstractString}",
-  "url": "https://abhijournals.com/${journal.domain}/${article.volumeId}/${article.issueId}/${article.id}",
+  "url": "https://abhijournals.com/${journal.domain}/articles/${article.id}",
   "sameAs": "${article.pdf}"
 }
 </script>
