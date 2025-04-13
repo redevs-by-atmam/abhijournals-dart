@@ -27,6 +27,31 @@ $authorMetaTags
   <meta name="citation_keywords" content="$keywords">
   <meta name="citation_language" content="en">
   <meta name="citation_abstract" content="${article.abstractString}">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "${article.title}",
+  "author": {
+    "@type": "Person",
+    "name": "$authors"
+  },
+  "datePublished": "$formattedDate",
+  "journal": {
+    "@type": "Periodical",
+    "name": "${journal.title}"
+  },
+  "pagination": "${article.startPage}-${article.endPage}",
+  "inLanguage": "en",
+  "keywords": [
+    $keywords
+  ],
+  "description": "${article.abstractString}",
+  "url": "https://abhijournals.com/${journal.domain}/${article.volumeId}/${article.issueId}/${article.id}",
+  "sameAs": "${article.pdf}"
+}
+</script>
+
 ''')}
 
 
