@@ -41,6 +41,7 @@
       </nav>
 
       <a class="btn-getstarted d-none d-xl-inline-block" href="{{adminUrl}}" target="_blank"
+      style="color: white !important;"
         rel="noopener noreferrer">Submit
         Paper</a>
 
@@ -155,8 +156,11 @@
           <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
             {{#journals}}
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-              <img src="{{ image }}" class="img-fluid" alt="{{ title }}" height="300px" width="500px" loading="lazy">
-              <div class="portfolio-info">
+              <a href="/{{domain}}/" target="_blank" rel="noopener noreferrer">
+                <img src="{{ image }}" class="img-fluid" alt="{{ title }}" height="300px" width="500px"
+                  loading="lazy">
+              </a>
+              <!-- <div class="portfolio-info">
                 <a href="/{{domain}}/" target="_blank" rel="noopener noreferrer">
                   <h4>{{ title }}</h4>
                 </a>
@@ -166,7 +170,7 @@
 
 
 
-              </div>
+              </div> -->
 
             </div><!-- End Portfolio Item -->
 
