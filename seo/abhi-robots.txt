@@ -2,28 +2,39 @@ User-agent: *
 Allow: /
 Allow: /static/
 Allow: /*/
-Disallow: /admin/
-Disallow: /private/
+Allow: /*/*/
+Allow: /*/*/*/
+Allow: /*/*/*/*/
+Allow: /*/*/*/*/*/
 
 # Sitemaps
 Sitemap: https://abhijournals.com/sitemap.xml
-
-# Rate Limiting
-Crawl-delay: 10
 
 # Search Engine Specific Rules
 User-agent: Googlebot
 Allow: /
 Allow: /static/
 Allow: /*/
-Crawl-delay: 5
+Allow: /*/*/
+Allow: /*/*/*/
+Allow: /*/*/*/*/
+Allow: /*/*/*/*/*/
 
 User-agent: Googlebot-News
 Allow: /
-Crawl-delay: 5
+Allow: /*/
+Allow: /*/*/
+Allow: /*/*/*/
+Allow: /*/*/*/*/
+Allow: /*/*/*/*/*/
 
 User-agent: Googlebot-Scholar
 Allow: /
+Allow: /*/
+Allow: /*/*/
+Allow: /*/*/*/
+Allow: /*/*/*/*/
+Allow: /*/*/*/*/*/
 Allow: /*/articles/
 Allow: /*/articles/*
 Allow: /aijaiams/articles/*
@@ -41,16 +52,23 @@ Allow: /aijhl/articles/*
 Allow: /aijae/articles/*
 Allow: /aijcse/articles/*
 Allow: /aijcps/articles/*
-Crawl-delay: 5
 
 # Academic Search Engines
 User-agent: Scirus
 Allow: /
-Crawl-delay: 10
+Allow: /*/
+Allow: /*/*/
+Allow: /*/*/*/
+Allow: /*/*/*/*/
+Allow: /*/*/*/*/*/
 
 User-agent: CiteSeerXbot
 Allow: /
-Crawl-delay: 10
+Allow: /*/
+Allow: /*/*/
+Allow: /*/*/*/
+Allow: /*/*/*/*/
+Allow: /*/*/*/*/*/
 
 # Journal Specific Rules
 Allow: /aijaiams/
@@ -79,14 +97,26 @@ Allow: /*/about/
 Allow: /*/contact/
 Allow: /*/indexing/
 Allow: /*/current-issue/
+Allow: /*/archive/
+Allow: /*/aim-and-scope/
+Allow: /*/publication-ethics/
+Allow: /*/indexing-and-abstracting/
+Allow: /*/peer-review-process/
+Allow: /*/submit-online-paper/
+Allow: /*/topics/
+Allow: /*/by-issue/
+Allow: /*/issue/*/articles/
+Allow: /*/article/*/
+Allow: /*/archive/volume/*/issues/
 
 # Clean Parameters
 Allow: /*?page=*
 Allow: /*?volume=*
 Allow: /*?issue=*
-Disallow: /*?*session=
-Disallow: /*?*token=
-Disallow: /*?*password=
+Allow: /*?*
+Allow: /*/*?*
+Allow: /*/*/*?*
+Allow: /*/*/*/*?*
 
 # Host Information
 Host: abhijournals.com
