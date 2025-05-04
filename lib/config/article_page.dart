@@ -1,10 +1,12 @@
 import 'package:dart_main_website/config/layout.html.dart';
+import 'package:dart_main_website/env/env.dart';
 import 'package:dart_main_website/models/article.dart';
 import 'package:dart_main_website/models/issue.dart';
 import 'package:dart_main_website/models/journal.dart';
+import 'package:dart_main_website/models/volume.dart';
 
-String articlePage(
-    ArticleModel article, JournalModel journal, IssueModel issue) {
+String articlePage(ArticleModel article, JournalModel journal, IssueModel issue,
+    VolumeModel volume) {
   final authors = article.authors.map((author) => author.name).join(', ');
   final authorMetaTags = article.authors
       .map((author) =>
@@ -19,11 +21,11 @@ ${getHeaderHtml(journal, addedHeadTags: '''
 $authorMetaTags
   <meta name="citation_publication_date" content="$formattedDate">
   <meta name="citation_journal_title" content="${journal.title}">
-  <meta name="citation_volume" content="${article.volumeId}">
-  <meta name="citation_issue" content="${article.issueId}">
+  <meta name="citation_volume" content="${volume.volumeNumber}">
+  <meta name="citation_issue" content="${issue.issueNumber}">
   <meta name="citation_firstpage" content="${article.startPage}">
   <meta name="citation_lastpage" content="${article.endPage}">
-  <meta name="citation_pdf_url" content="${article.pdf}">
+  <meta name="citation_pdf_url" content="https://${Env.journalDomain}/${journal.domain}/article/${article.id}/article.pdf">
   <meta name="citation_keywords" content="$keywords">
   <meta name="citation_language" content="en">
   <meta name="citation_abstract" content="${article.abstractString}">
@@ -35,14 +37,14 @@ $authorMetaTags
   "author": [
     ${article.authors.map((author) => '{ "@type": "Person", "name": "${author.name}" }').join(',\n    ')}
   ],
-  "datePublished": "${article.createdAt.toIso8601String()}",
-  "dateModified": "${article.updatedAt.toIso8601String()}",
+  "datePublished": "$formattedDate",
+  "dateModified": "$formattedDate",
   "isPartOf": {
     "@type": "PublicationIssue",
     "issueNumber": "${issue.issueNumber}",
     "isPartOf": {
       "@type": "PublicationVolume",
-      "volumeNumber": "${issue.volumeNumber}",
+      "volumeNumber": "${volume.volumeNumber}",
       "isPartOf": {
         "@type": "Periodical",
         "name": "${journal.title}"
@@ -55,7 +57,7 @@ $authorMetaTags
     "${article.keywords.map((keyword) => keyword).join('", "')}"
   ],
   "description": "${article.abstractString}",
-  "url": "https://abhijournals.com/${journal.domain}/articles/${article.id}",
+  "url": "https://${Env.journalDomain}/${journal.domain}/articles/${article.id}",
   "sameAs": "${article.pdf}"
 }
 </script>
@@ -84,7 +86,7 @@ $authorMetaTags
                   </p>
                 </div>
                 <div class="mt-3 mt-md-0 ms-md-4">
-                  <a href="${article.pdf}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                  <a href="https://${Env.journalDomain}/${journal.domain}/article/${article.id}/article.pdf" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
                     <i class="fas fa-file-pdf mr-2"></i>Download PDF
                   </a>
                 </div>
@@ -114,7 +116,7 @@ $authorMetaTags
 
           <!-- Download Section -->
           <div class="article-download mt-4">
-            <a href="${article.pdf}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+            <a href="https://${Env.journalDomain}/${journal.domain}/article/${article.id}/article.pdf" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
               <i class="fas fa-file-pdf mr-2"></i>Download PDF
             </a>
           </div>

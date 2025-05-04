@@ -49,6 +49,11 @@ class Routes {
 
     // Article Route
     router.get('/<domain>/article/<articleId>/', articleController.show);
+    router.get('/<domain>/article/<articleId>', articleController.show);
+
+    // Article PDF Route
+    router.get(
+        '/<domain>/article/<articleId>/<pdfTitle>.pdf', articleController.pdf);
 
     // Archive Route
     router.get('/<domain>/archive/', archiveController.index);
