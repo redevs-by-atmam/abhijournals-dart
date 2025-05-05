@@ -33,6 +33,8 @@ jobs:
           gcloud auth configure-docker asia-south1-docker.pkg.dev
           docker build \
             --build-arg FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }} \
+            --build-arg JOURNAL_DOMAIN=${{ secrets.JOURNAL_DOMAIN }} \
+            --build-arg JOURNAL_TITLE=${{ secrets.JOURNAL_TITLE }} \
             -t asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app .
           docker push asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app
 
