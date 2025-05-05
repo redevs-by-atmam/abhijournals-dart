@@ -26,16 +26,20 @@ jobs:
 
       - name: Enable Docker Authentication
         run: |
+          gcloud auth configure-docker asia-south1-docker.pkg.dev
+
+      - name: Build and Push Docker Image (Artifact Registry)
+        run: |
           gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
-          docker buildx build \
+          docker build \
             --build-arg FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }} \
             --build-arg JOURNAL_DOMAIN=${{ secrets.JOURNAL_DOMAIN }} \
             --build-arg JOURNAL_TITLE=${{ secrets.JOURNAL_TITLE }} \
             -t asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app \
-            --load \
             .
           docker push asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app
-        
+
+
       - name: Deploy to Google Cloud Run
         run: |
           gcloud run deploy dart-shelf-app \
@@ -44,7 +48,6 @@ jobs:
             --region asia-south1 \
             --allow-unauthenticated \
             --set-env-vars "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}"
-
       - name: Setup Firebase Tools
         run: npm install -g firebase-tools
 
