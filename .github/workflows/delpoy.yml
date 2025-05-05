@@ -34,7 +34,7 @@ jobs:
             -t asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app \
             --load \
             .
-            docker push asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app
+          docker push asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app
         
       - name: Deploy to Google Cloud Run
         run: |
