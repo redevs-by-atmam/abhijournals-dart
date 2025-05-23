@@ -172,7 +172,6 @@ class HomeContentModel extends Equatable {
 
 class JournalMetaData extends Equatable {
   final String issn;
-  final String eIssn;
   final String impact;
   final String frequency;
   final String language;
@@ -180,7 +179,6 @@ class JournalMetaData extends Equatable {
 
   const JournalMetaData({
     required this.issn,
-    required this.eIssn,
     required this.impact,
     required this.frequency,
     required this.language,
@@ -191,7 +189,6 @@ class JournalMetaData extends Equatable {
     log('since: ${json['since']}');
     return JournalMetaData(
       issn: json['issn'] ?? '',
-      eIssn: json['eIssn'] ?? '',
       impact: json['impact'] ?? '',
       frequency: json['frequency'] ?? '',
       language: json['language'] ?? '',
@@ -204,7 +201,6 @@ class JournalMetaData extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'issn': issn,
-      'eIssn': eIssn,
       'impact': impact,
       'frequency': frequency,
       'language': language,
@@ -213,7 +209,7 @@ class JournalMetaData extends Equatable {
   }
 
   @override
-  List<Object?> get props => [issn, eIssn, impact, frequency, language, since];
+  List<Object?> get props => [issn, impact, frequency, language, since];
 }
 
 class PublisherModel {
