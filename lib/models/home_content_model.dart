@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 
 class HomeCountsModel {
@@ -99,6 +101,7 @@ class HomeContentModel extends Equatable {
   final String mode;
   final String language;
   final String frequency;
+  final String since;
 
 
   const HomeContentModel({
@@ -110,6 +113,7 @@ class HomeContentModel extends Equatable {
     required this.mode,
     required this.language,
     required this.frequency,
+    required this.since,
   });
 
   factory HomeContentModel.fromJson(Map<String, dynamic> json) {
@@ -132,6 +136,9 @@ class HomeContentModel extends Equatable {
       mode: json['mode'] ?? 'N/A',
       language: json['language'] ?? 'N/A',
       frequency: json['frequency'] ?? 'N/A',
+      since: json['since'] != null 
+            ? DateTime.parse(json['since']).toString().substring(0,4)
+            : DateTime.now().toString().substring(0,4),
     );
   }
 
@@ -145,6 +152,7 @@ class HomeContentModel extends Equatable {
       'mode': mode,
       'language': language,
       'frequency': frequency,
+      'since': since,
     };
   }
 
@@ -158,6 +166,7 @@ class HomeContentModel extends Equatable {
         mode,
         language,
         frequency,
+        since,
       ];
 }
 
@@ -179,6 +188,7 @@ class JournalMetaData extends Equatable {
   });
 
   factory JournalMetaData.fromJson(Map<String, dynamic> json) {
+    log('since: ${json['since']}');
     return JournalMetaData(
       issn: json['issn'] ?? '',
       eIssn: json['eIssn'] ?? '',
