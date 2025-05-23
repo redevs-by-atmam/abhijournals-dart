@@ -100,6 +100,7 @@ class HomeContentModel extends Equatable {
   final String language;
   final String frequency;
 
+
   const HomeContentModel({
     required this.htmlContent,
     required this.quickLinks,
@@ -156,7 +157,7 @@ class HomeContentModel extends Equatable {
         patrons,
         mode,
         language,
-        frequency
+        frequency,
       ];
 }
 
@@ -166,6 +167,7 @@ class JournalMetaData extends Equatable {
   final String impact;
   final String frequency;
   final String language;
+  final String since;
 
   const JournalMetaData({
     required this.issn,
@@ -173,6 +175,7 @@ class JournalMetaData extends Equatable {
     required this.impact,
     required this.frequency,
     required this.language,
+    required this.since,
   });
 
   factory JournalMetaData.fromJson(Map<String, dynamic> json) {
@@ -182,6 +185,9 @@ class JournalMetaData extends Equatable {
       impact: json['impact'] ?? '',
       frequency: json['frequency'] ?? '',
       language: json['language'] ?? '',
+      since: json['since'] != null 
+            ? DateTime.parse(json['since']).toString().substring(0,4)
+            : DateTime.now().toString().substring(0,4),
     );
   }
 
@@ -192,11 +198,12 @@ class JournalMetaData extends Equatable {
       'impact': impact,
       'frequency': frequency,
       'language': language,
+      'since': since,
     };
   }
 
   @override
-  List<Object?> get props => [issn, eIssn, impact, frequency, language];
+  List<Object?> get props => [issn, eIssn, impact, frequency, language, since];
 }
 
 class PublisherModel {
