@@ -1,7 +1,7 @@
 {{{header}}}
 <!-- Main Page With Sidebar Start -->
 <style>
-  a{
+  a {
     color: #124265;
   }
 </style>
@@ -161,12 +161,13 @@
           <p style="color: #31404B">
             <i class="fas fa-cube"></i>
             <b>Publisher</b> <br />
-            {{publisher.name}} <br /><br />
-            {{publisher.address}} <br /><br />
-            Email: <a href="mailto:{{publisher.email}}"
+            <b>Owner:</b> {{publisher.name}} <br>
+            <b>Publishing Body:</b> {{publisher.institute}} <br>
+            <b>Address:</b> {{publisher.address}} <br>
+            <b>Email:</b> <a href="mailto:{{publisher.email}}"
               style="color: #033e93;text-decoration: none;">{{publisher.email}}</a>
             <br />
-            {{publisher.institute}}
+            
           </p>
           <hr />
 
