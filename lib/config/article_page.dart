@@ -106,13 +106,15 @@ $authorMetaTags
             <p>$keywords</p>
           </div>
 
-          <!-- References -->
+        
+         ${article.references.isEmpty ? '' : '''
           <div class="article-references mb-4">
             <h4>References</h4>
             <ol>
               ${article.references.map((reference) => '<li style="list-style-type: none;">$reference</li>').join()}
             </ol>
           </div>
+          '''}
 
           <!-- Download Section -->
           <div class="article-download mt-4">

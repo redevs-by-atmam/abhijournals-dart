@@ -344,18 +344,18 @@ class FirestoreService {
     }
   }
 
-  Future<Map<String, String>> getLatestVolumeAndIssueName() async {
+  Future<Map<String, String>> getLatestVolumeAndIssueName(String journalId) async {
     try {
-      final volume = await getLatestVolume();
-      final issue = await getLatestIssue();
-      final year = volume.createdAt.year;
+      final volume = await getLatestVolumeByJournalId(journalId);
+      final issue = await getLatestIssueByVolumeId(volume?.id ?? '');
+      final year = volume?.createdAt.year ?? 0;
 
       return {
-        'volume': volume.volumeNumber,
-        'issue': issue.issueNumber,
+        'volume': volume?.volumeNumber ?? '',
+        'issue': issue?.issueNumber ?? '',
         'year': year.toString(),
-        'volumeId': volume.id,
-        'issueId': issue.id,
+        'volumeId': volume?.id ?? '',
+        'issueId': issue?.id ?? '',
       };
     } catch (e) {
       log('Error getting latest volume and issue name: $e');

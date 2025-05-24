@@ -35,7 +35,7 @@ class DomainController {
 
       // Get latest volume and issue info
       final latestVolumeAndIssueName =
-          await _firestoreService.getLatestVolumeAndIssueName();
+          await _firestoreService.getLatestVolumeAndIssueName(journal.id);
 
       // Organize issues by volume
       final volumesWithIssues = volumes.map((volume) {
