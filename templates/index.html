@@ -162,12 +162,13 @@
             <i class="fas fa-cube"></i>
             <b>Publisher</b> <br />
             <b>Owner:</b> {{publisher.name}} <br>
-            <b>Publishing Body:</b> {{publisher.institute}} <br>
+            <b>Publishing Body:</b> <a href="{{publisher.instituteLink}}"
+              style="color: #033e93;text-decoration: none;">{{publisher.institute}}</a> <br>
             <b>Address:</b> {{publisher.address}} <br>
             <b>Email:</b> <a href="mailto:{{publisher.email}}"
               style="color: #033e93;text-decoration: none;">{{publisher.email}}</a>
             <br />
-            
+
           </p>
           <hr />
 
@@ -207,12 +208,22 @@
               </div>
               <div style="color: #31404b;">{{language}}</div>
             </div>
-            <div class="d-flex align-items-center">
-              <div style="color: #31404b; width: 150px;">
-                <i class="fas fa-cube mr-2"></i>Frequency:
+            <div class="mb-3 d-flex align-items-center">
+              <div class="d-flex align-items-center">
+                <div style="color: #31404b; width: 150px;">
+                  <i class="fas fa-cube mr-2"></i>Frequency:
+                </div>
+                <div style="color: #31404b;">{{frequency}}</div>
               </div>
-              <div style="color: #31404b;">{{frequency}}</div>
             </div>
+
+            <div class="mb-3 d-flex align-items-center">
+              <div style="color: #31404b; width: 150px;">
+                <i class="fas fa-cube mr-2"></i>Subject:
+              </div>
+              <div style="color: #31404b;">{{subject}}</div>
+            </div>
+
           </div>
           {{/content}}
         </div>

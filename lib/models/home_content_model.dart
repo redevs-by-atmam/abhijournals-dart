@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
@@ -43,7 +42,6 @@ class HomeCountsModel {
       totalAuthors: totalAuthors ?? this.totalAuthors,
     );
   }
-  
 }
 
 class JournalMetaDataModel {
@@ -63,9 +61,9 @@ class JournalMetaDataModel {
         editorInChief: json['editorInChief'] ?? 'N/A',
         fullEditionTitle: json['fullEditionTitle'] ?? 'N/A',
         publisher: json['publisher'] ?? 'N/A',
-        since: json['since'] != null 
-            ? DateTime.parse(json['since']).toString().substring(0,4)
-            : DateTime.now().toString().substring(0,4));
+        since: json['since'] != null
+            ? DateTime.parse(json['since']).toString().substring(0, 4)
+            : DateTime.now().toString().substring(0, 4));
   }
 
   Map<String, dynamic> toJson() {
@@ -101,11 +99,12 @@ class HomeContentModel extends Equatable {
   final String mode;
   final String language;
   final String frequency;
+  final String subject;
   final String since;
-
 
   const HomeContentModel({
     required this.htmlContent,
+    required this.subject,
     required this.quickLinks,
     required this.journalMetaData,
     required this.publisher,
@@ -120,6 +119,7 @@ class HomeContentModel extends Equatable {
     return HomeContentModel(
       htmlContent:
           (json['htmlContent'] as String?)?.replaceAll('<p><br></p>', '') ?? '',
+      subject: json['subject'] ?? 'N/A',
       quickLinks: (json['quickLinks'] as List<dynamic>?)
               ?.map((link) =>
                   QuickLinksModel.fromJson(link as Map<String, dynamic>))
@@ -136,9 +136,9 @@ class HomeContentModel extends Equatable {
       mode: json['mode'] ?? 'N/A',
       language: json['language'] ?? 'N/A',
       frequency: json['frequency'] ?? 'N/A',
-      since: json['since'] != null 
-            ? DateTime.parse(json['since']).toString().substring(0,4)
-            : DateTime.now().toString().substring(0,4),
+      since: json['since'] != null
+          ? DateTime.parse(json['since']).toString().substring(0, 4)
+          : DateTime.now().toString().substring(0, 4),
     );
   }
 
@@ -153,6 +153,7 @@ class HomeContentModel extends Equatable {
       'language': language,
       'frequency': frequency,
       'since': since,
+      'subject': subject,
     };
   }
 
@@ -167,6 +168,7 @@ class HomeContentModel extends Equatable {
         language,
         frequency,
         since,
+        subject,
       ];
 }
 
@@ -192,9 +194,9 @@ class JournalMetaData extends Equatable {
       impact: json['impact'] ?? '',
       frequency: json['frequency'] ?? '',
       language: json['language'] ?? '',
-      since: json['since'] != null 
-            ? DateTime.parse(json['since']).toString().substring(0,4)
-            : DateTime.now().toString().substring(0,4),
+      since: json['since'] != null
+          ? DateTime.parse(json['since']).toString().substring(0, 4)
+          : DateTime.now().toString().substring(0, 4),
     );
   }
 
@@ -216,12 +218,14 @@ class PublisherModel {
   String name;
   String address;
   String institute;
+  String instituteLink;
   String email;
 
   PublisherModel({
     required this.name,
     required this.address,
     required this.institute,
+    required this.instituteLink,
     required this.email,
   });
 
@@ -230,6 +234,7 @@ class PublisherModel {
       name: json['name'] ?? 'N/A',
       address: json['address'] ?? 'N/A',
       institute: json['institute'] ?? 'N/A',
+      instituteLink: json['instituteLink'] ?? 'N/A',
       email: json['email'] ?? 'N/A',
     );
   }
@@ -239,16 +244,22 @@ class PublisherModel {
       'name': name,
       'address': address,
       'institute': institute,
+      'instituteLink': instituteLink,
       'email': email
     };
   }
 
   PublisherModel copyWith(
-      {String? name, String? address, String? institute, String? email}) {
+      {String? name,
+      String? address,
+      String? institute,
+      String? instituteLink,
+      String? email}) {
     return PublisherModel(
         name: name ?? this.name,
         address: address ?? this.address,
         institute: institute ?? this.institute,
+        instituteLink: instituteLink ?? this.instituteLink,
         email: email ?? this.email);
   }
 }
