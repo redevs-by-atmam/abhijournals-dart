@@ -162,7 +162,7 @@
             <i class="fas fa-cube"></i>
             <b>Publisher</b> <br />
             <b>Owner:</b> {{publisher.name}} <br>
-            <b>Publishing Body:</b> <a href="{{publisher.instituteLink}}"
+            <b>Publishing Body:</b> <a href="{{publisher.instituteLink}}" target="_blank"
               style="color: #033e93;text-decoration: none;">{{publisher.institute}}</a> <br>
             <b>Address:</b> {{publisher.address}} <br>
             <b>Email:</b> <a href="mailto:{{publisher.email}}"
@@ -236,7 +236,11 @@
           <p style="color: #31404B">
             {{#content}}
             <b>Chief Editor:</b> {{journal.chiefEditor.name}} <br />
-            <b>Publisher:</b> {{publisher.name}} <br />
+
+            <b>Publisher:</b><a href="{{publisher.instituteLink}}" target="_blank"
+              style="color: #033e93;text-decoration: none;">
+              {{publisher.institute}}
+            </a> <br />
             <b>Since:</b> {{since}} <br />
             {{/content}}
             {{#journal}}
