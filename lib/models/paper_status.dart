@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-
+import 'package:intl/intl.dart';
 class PaperStatus extends Equatable {
   final String paperId;
   final String title;
@@ -20,7 +20,7 @@ class PaperStatus extends Equatable {
       paperId: json['paperId'],
       title: json['title'],
       currentStatus: json['currentStatus'],
-      lastUpdated: DateTime.parse(json['lastUpdated']),
+      lastUpdated: DateFormat('dd, MMMM yyyy').parse(json['lastUpdated']),
       statusHistory: (json['statusHistory'] as List)
           .map((item) => StatusHistoryItem.fromJson(item))
           .toList(),

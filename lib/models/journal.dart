@@ -1,5 +1,6 @@
 import 'package:dart_main_website/models/eb_board_model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class JournalModel extends Equatable {
   final String id;
@@ -48,7 +49,7 @@ class JournalModel extends Equatable {
       'domain': domain,
       'image': image,
       'chiefEditor': chiefEditor.toJson(),
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': DateFormat('dd, MMMM yyyy').format(createdAt),
     };
   }
 

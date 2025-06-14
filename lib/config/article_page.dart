@@ -82,7 +82,7 @@ $authorMetaTags
                   </p>
                   
                   <p class="text-muted">
-                    <strong>Published:</strong> ${article.createdAt}
+                    <strong>Published:</strong> $formattedDate
                   </p>
                 </div>
                 <div class="mt-3 mt-md-0 ms-md-4">
@@ -129,7 +129,7 @@ $authorMetaTags
             <div class="bg-light p-3">
               <p class="mb-0">
                 $authors,
-                (${article.createdAt}). ${article.title}. 
+                ($formattedDate). ${article.title}. 
                 ${journal.title}, 
                 Volume ${article.volumeId}, Issue ${issue.issueNumber}.
               </p>

@@ -1,78 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width="device-width, initial-scale=1.0">
-    <title>Articles List</title>
-</head>
-<body>
-    {{{header}}}
-    
-    <div class="container-fluid mt-5 mb-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    {{#hasArticles}}
-                        <div class="card shadow-sm mb-4">
-                            <div class="card-body bg-light">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h2 class="mb-0">Volume {{volumeNo}}, Issue {{issueNo}} - {{issueDate}}</h2>
-                                    {{#journal}}
-                                        <a href="/{{domain}}/issue/{{issueId}}/articles/download/" class="btn btn-primary">
-                                            <i class="fas fa-download me-2"></i>Download Issue
-                                        </a>
-                                    {{/journal}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="articles-list">
-                            {{#articles}}
-                            <div class="col-lg-12">
-                                <div class="position-relative mb-3">
-                                  <div class="bg-white border border-top-0 p-4">
-                                    <h3 class="mb-3">
-                                      <a href="/{{domain}}/article/{{id}}/" 
-                                         style="color: #000000; text-decoration: none;"
-                                         onmouseover="this.style.color='#033e93'" 
-                                         onmouseout="this.style.color='#000000'">
-                                        {{title}}
-                                      </a>
-                                    </h3>
-                                    <div class="authors mb-2">
-                                      {{#authors}}
-                                        <span>{{name}}{{#designation}}, {{designation}}{{/designation}}</span>
-                                      {{/authors}}
-                                    </div>
-                                    {{#abstractString}}
-                                    <p class="mb-4">{{abstractString}}</p>
-                                    {{/abstractString}}
-                                    <div class="d-flex justify-content-between align-items-center">
-                                      {{#pdf}}
-                                      <a href="{{pdf}}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                                        <i class="fas fa-file-pdf mr-2"></i>Download PDF
-                                      </a>
-                                      {{/pdf}}
-                                      <small>Published: {{createdAt}}</small>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            {{/articles}}
-                        </div>
-                    {{/hasArticles}}
-                    
-                    {{^hasArticles}}
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <p class="mb-0">No articles found in this issue.</p>
-                            </div>
-                        </div>
-                    {{/hasArticles}}
-                </div>
-            </div>
-        </div>
-    </div>
 
-    {{{footer}}}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=" device-width, initial-scale=1.0">
+  <title>Articles List</title>
+</head>
+
+<body>
+  {{{header}}}
+
+  <div class="container-fluid mt-5 mb-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          {{#hasArticles}}
+          <div class="card shadow-sm mb-4">
+            <div class="card-body bg-light">
+              <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-0"><a href="/{{domain}}/archive/volume/{{volume.id}}/issues/"
+                    style="color: #000000; text-decoration: none;" onmouseover="this.style.color='#033e93'"
+                    onmouseout="this.style.color='#000000'">Volume {{volumeNo}} </a> > Issue {{issueNo}} - {{issueDate}}
+                </h2>
+                {{#journal}}
+                <a href="/{{domain}}/issue/{{issueId}}/articles/download/" class="btn btn-primary">
+                  <i class="fas fa-download me-2"></i>Download Issue
+                </a>
+                {{/journal}}
+              </div>
+            </div>
+          </div>
+          <div class="articles-list">
+            {{#articles}}
+            <div class="col-lg-12">
+              <div class="position-relative mb-3">
+                <div class="bg-white border border-top-0 p-4">
+                  <h3 class="mb-3">
+                    <a href="/{{domain}}/article/{{id}}/" style="color: #000000; text-decoration: none;"
+                      onmouseover="this.style.color='#033e93'" onmouseout="this.style.color='#000000'">
+                      {{title}}
+                    </a>
+                  </h3>
+                  <div class="authors mb-2">
+                    {{#authors}}
+                    <span>{{name}}{{#designation}}, {{designation}}{{/designation}}</span>
+                    {{/authors}}
+                  </div>
+                  {{#abstractString}}
+                  <p class="mb-4">{{abstractString}}</p>
+                  {{/abstractString}}
+                  <div class="d-flex justify-content-between align-items-center">
+                    {{#pdf}}
+                    <a href="{{pdf}}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                      <i class="fas fa-file-pdf mr-2"></i>Download PDF
+                    </a>
+                    {{/pdf}}
+                    <small>Published: {{createdAt}}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {{/articles}}
+          </div>
+          {{/hasArticles}}
+
+          {{^hasArticles}}
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <p class="mb-0">No articles found in this issue.</p>
+            </div>
+          </div>
+          {{/hasArticles}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{{footer}}}
 </body>
+
 </html>

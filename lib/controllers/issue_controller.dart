@@ -1,4 +1,6 @@
 import 'package:dart_main_website/config/layout.html.dart';
+import 'package:dart_main_website/const.dart';
+import 'package:intl/intl.dart';
 import 'package:shelf/shelf.dart';
 import '../services/firestore_service.dart';
 import '../server.dart';
@@ -6,24 +8,6 @@ import '../controllers/base_controller.dart';
 
 class IssueController extends BaseController {
   final _firestoreService = FirestoreService();
-
-  String _getMonthName(int month) {
-    const monthNames = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ];
-    return monthNames[month - 1];
-  }
 
   Future<Response> getArticles(
       Request request, String domain, String issueId) async {
@@ -48,8 +32,6 @@ class IssueController extends BaseController {
       // Get articles for the issue
       final articles = await _firestoreService.getArticlesByIssue(issueId);
 
-      String issueDate = '${_getMonthName(issue.fromDate.month)} ${issue.fromDate.year}';
-
       // Helper function to convert month number to name
 
       return renderHtml('dynamic-pages/articles-list.html', {
@@ -57,7 +39,7 @@ class IssueController extends BaseController {
         'footer': getFooterHtml(journal),
         'journal': journal.toJson(),
         'domain': domain,
-        'issueDate': issueDate,
+        'issueDate': DateFormat('dd, MMMM yyyy').format(issue.fromDate),
         'volume': volume?.toJson(),
         'volumeNo': volume?.volumeNumber,
         'issueNo': issue.issueNumber,

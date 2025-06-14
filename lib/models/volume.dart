@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class VolumeModel extends Equatable {
   final String id;
@@ -18,7 +19,6 @@ class VolumeModel extends Equatable {
     required this.createdAt,
   });
 
-
   factory VolumeModel.fromJson(Map<String, dynamic> json) {
     return VolumeModel(
       journalId: json['journalId'],
@@ -37,7 +37,7 @@ class VolumeModel extends Equatable {
       'journalId': journalId,
       'title': title,
       'volumeNumber': volumeNumber,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': DateFormat('dd, MMMM yyyy').format(createdAt),
       'description': description,
       'isActive': isActive,
     };
@@ -62,7 +62,8 @@ class VolumeModel extends Equatable {
       createdAt: createdAt ?? this.createdAt,
     );
   }
-  
+
   @override
-  List<Object?> get props => [id, journalId, description, isActive, volumeNumber, title, createdAt];
+  List<Object?> get props =>
+      [id, journalId, description, isActive, volumeNumber, title, createdAt];
 }

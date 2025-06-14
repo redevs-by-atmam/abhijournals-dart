@@ -78,7 +78,6 @@ class ArticleModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    final DateFormat formatter = DateFormat('dd/MM/yyyy');
     return {
       'id': id,
       'journalId': journalId,
@@ -92,8 +91,8 @@ class ArticleModel extends Equatable {
       'documentType': documentType,
       'keywords': keywords,
       'mainSubjects': mainSubjects,
-      'createdAt': formatter.format(createdAt),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': DateFormat('dd-MM-yyyy').format(createdAt),
+      'updatedAt': DateFormat('dd-MM-yyyy').format(updatedAt),
       'pdf': pdf,
       'references': references,
       'title': title,

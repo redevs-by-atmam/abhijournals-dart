@@ -9,6 +9,11 @@
             <h5 class="card-subtitle mb-2">{{name}}</h5>
             <p class="card-text">{{institution}}</p>
             <p class="card-text"><small class="text-muted">{{email}}</small></p>
+            {{#profileLink}}
+            <a href="{{profileLink}}" target="_blank" class="btn btn-primary mt-2" style="transition: all 0.3s ease;">
+              <i class="fas fa-external-link-alt mr-2"></i>View Profile
+            </a>
+            {{/profileLink}}
           {{/chiefEditor}}
         </div>
       </div>
@@ -26,6 +31,11 @@
             <h5 class="card-title">{{name}}</h5>
             <p class="card-text">{{institution}}</p>
             <p class="card-text"><small class="text-muted">{{email}}</small></p>
+            {{#profileLink}}
+            <a href="{{profileLink}}" target="_blank" class="btn btn-outline-primary mt-2" style="transition: all 0.3s ease;">
+              <i class="fas fa-external-link-alt mr-2"></i>View Profile
+            </a>
+            {{/profileLink}}
           </div>
         </div>
       </div>
@@ -43,6 +53,11 @@
             <h5 class="card-title">{{name}}</h5>
             <p class="card-text">{{institution}}</p>
             <p class="card-text"><small class="text-muted">{{email}}</small></p>
+            {{#profileLink}}
+            <a href="{{profileLink}}" target="_blank" class="btn btn-outline-primary mt-2" style="transition: all 0.3s ease;">
+              <i class="fas fa-external-link-alt mr-2"></i>View Profile
+            </a>
+            {{/profileLink}}
           </div>
         </div>
       </div>

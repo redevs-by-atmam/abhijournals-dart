@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class IssueModel extends Equatable {
   final String id;
@@ -47,10 +48,10 @@ class IssueModel extends Equatable {
       'volumeId': volumeId,
       'journalId': journalId,
       'description': description,
-      'fromDate': fromDate.toIso8601String(),
-      'toDate': toDate.toIso8601String(),
+      'fromDate': DateFormat('dd, MMMM yyyy').format(fromDate),
+      'toDate': DateFormat('dd, MMMM yyyy').format(toDate),
       'isActive': isActive,
-      'volumeNumber': volumeNumber, 
+      'volumeNumber': volumeNumber,
     };
   }
 
