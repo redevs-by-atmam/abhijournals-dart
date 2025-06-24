@@ -3,8 +3,14 @@
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body d-flex flex-column flex-md-row align-items-center">
           {{#chiefEditor}}
+          {{#profileImage}}
+          <div class="profile-image-container mb-3 mb-md-0 me-md-4">
+            <img src="{{profileImage}}" alt="{{name}}" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+          </div>
+          {{/profileImage}}
+          <div class="profile-details">
             <h4 class="card-title text-primary">Chief Editor</h4>
             <h5 class="card-subtitle mb-2">{{name}}</h5>
             <p class="card-text">{{institution}}</p>
@@ -14,6 +20,7 @@
               <i class="fas fa-external-link-alt mr-2"></i>View Profile
             </a>
             {{/profileLink}}
+          </div>
           {{/chiefEditor}}
         </div>
       </div>
@@ -25,20 +32,29 @@
       <h4>Associate Editors</h4>
     </div>
     {{#associateEditors}}
-      <div class="col-md-6 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{name}}</h5>
-            <p class="card-text">{{institution}}</p>
-            <p class="card-text"><small class="text-muted">{{email}}</small></p>
-            {{#profileLink}}
-            <a href="{{profileLink}}" target="_blank" class="btn btn-outline-primary mt-2" style="transition: all 0.3s ease;">
-              <i class="fas fa-external-link-alt mr-2"></i>View Profile
-            </a>
-            {{/profileLink}}
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex flex-column align-items-center align-items-md-start">
+            {{#profileImage}}
+            <div class="profile-image-container mb-3">
+              <img src="{{profileImage}}" alt="{{name}}" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+            </div>
+            {{/profileImage}}
+            <div class="profile-details text-center text-md-start w-100">
+              <h5 class="card-title">{{name}}</h5>
+              <p class="card-text">{{institution}}</p>
+              <p class="card-text"><small class="text-muted">{{email}}</small></p>
+              {{#profileLink}}
+              <a href="{{profileLink}}" target="_blank" class="btn btn-outline-primary mt-2" style="transition: all 0.3s ease;">
+                <i class="fas fa-external-link-alt mr-2"></i>View Profile
+              </a>
+              {{/profileLink}}
+            </div>
           </div>
         </div>
       </div>
+    </div>
     {{/associateEditors}}
   </div>
 
@@ -47,20 +63,29 @@
       <h4>Editors</h4>
     </div>
     {{#editors}}
-      <div class="col-md-6 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{name}}</h5>
-            <p class="card-text">{{institution}}</p>
-            <p class="card-text"><small class="text-muted">{{email}}</small></p>
-            {{#profileLink}}
-            <a href="{{profileLink}}" target="_blank" class="btn btn-outline-primary mt-2" style="transition: all 0.3s ease;">
-              <i class="fas fa-external-link-alt mr-2"></i>View Profile
-            </a>
-            {{/profileLink}}
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex flex-column align-items-center align-items-md-start">
+            {{#profileImage}}
+            <div class="profile-image-container mb-3">
+              <img src="{{profileImage}}" alt="{{name}}" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+            </div>
+            {{/profileImage}}
+            <div class="profile-details text-center text-md-start w-100">
+              <h5 class="card-title">{{name}}</h5>
+              <p class="card-text">{{institution}}</p>
+              <p class="card-text"><small class="text-muted">{{email}}</small></p>
+              {{#profileLink}}
+              <a href="{{profileLink}}" target="_blank" class="btn btn-outline-primary mt-2" style="transition: all 0.3s ease;">
+                <i class="fas fa-external-link-alt mr-2"></i>View Profile
+              </a>
+              {{/profileLink}}
+            </div>
           </div>
         </div>
       </div>
+    </div>
     {{/editors}}
   </div>
 </div>

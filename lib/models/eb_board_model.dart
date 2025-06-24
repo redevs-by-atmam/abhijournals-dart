@@ -6,7 +6,8 @@ class EditorialBoardModel {
   final String name;
   final String email;
   final String role;
-  final String profileLink;
+  final String? profileLink;
+  final String? profileImage;
   final String institution;
   final DateTime createdAt;
 
@@ -16,7 +17,8 @@ class EditorialBoardModel {
     required this.name,
     required this.email,
     required this.role,
-    required this.profileLink,
+    this.profileLink,
+    this.profileImage,
     required this.institution,
     required this.createdAt,
   });
@@ -29,6 +31,7 @@ class EditorialBoardModel {
       email: '',
       role: '',
       profileLink: '',
+      profileImage: '',
       institution: '',
       createdAt: DateTime.now(),
     );
@@ -41,7 +44,8 @@ class EditorialBoardModel {
       name: json['name'],
       email: json['email'],
       role: json['role'],
-      profileLink: json['profileLink'] ?? 'https://www.google.com',
+      profileLink: json['profileLink'],
+      profileImage: json['profileImage'],
       institution: json['institution'],
       createdAt: DateTime.parse(json['createdAt']),
     );
@@ -55,6 +59,7 @@ class EditorialBoardModel {
       'email': email,
       'role': role,
       'profileLink': profileLink,
+      'profileImage': profileImage,
       'institution': institution,
       'createdAt': DateFormat('dd, MMMM yyyy').format(createdAt),
     };
@@ -74,6 +79,7 @@ class EditorialBoardModel {
     String? institution,
     DateTime? createdAt,
     String? profileLink,
+    String? profileImage,
   }) {
     return EditorialBoardModel(
       id: id ?? this.id,
@@ -82,6 +88,7 @@ class EditorialBoardModel {
       email: email ?? this.email,
       role: role ?? this.role,
       profileLink: profileLink ?? this.profileLink,
+      profileImage: profileImage ?? this.profileImage,
       institution: institution ?? this.institution,
       createdAt: createdAt ?? this.createdAt,
     );
