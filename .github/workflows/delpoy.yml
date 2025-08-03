@@ -28,6 +28,7 @@ jobs:
         run: |
           gcloud auth configure-docker asia-south1-docker.pkg.dev
 
+
       - name: Check Required Secrets
         run: |
           if [ -z "${{ secrets.FIREBASE_PROJECT_ID }}" ]; then echo "❌ Missing FIREBASE_PROJECT_ID"; exit 1; fi
