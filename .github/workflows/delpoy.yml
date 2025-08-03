@@ -39,17 +39,20 @@ jobs:
           if [ -z "${{ secrets.FIREBASE_TOKEN }}" ]; then echo "❌ Missing FIREBASE_TOKEN"; exit 1; fi
 
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build and Push Docker Image (Artifact Registry)
         run: |
-          docker build \
+          docker buildx build \
             --build-arg FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }} \
             --build-arg JOURNAL_DOMAIN=${{ secrets.JOURNAL_DOMAIN }} \
             --build-arg JOURNAL_TITLE=${{ secrets.JOURNAL_TITLE }} \
             --build-arg ILOVEPDF_SECRET_KEY=${{ secrets.ILOVEPDF_SECRET_KEY }} \
             --build-arg ILOVEPDF_PUBLIC_KEY=${{ secrets.ILOVEPDF_PUBLIC_KEY }} \
-            -t asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app .
-
-          docker push asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app
+            --tag asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app \
+            --push \
+            .
 
       - name: Deploy to Google Cloud Run
         run: |
