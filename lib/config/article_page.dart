@@ -25,7 +25,7 @@ $authorMetaTags
   <meta name="citation_issue" content="${issue.issueNumber}">
   <meta name="citation_firstpage" content="${article.startPage}">
   <meta name="citation_lastpage" content="${article.endPage}">
-  <meta name="citation_pdf_url" content="https://${Env.journalDomain}/${journal.domain}/article/${article.id}/article.pdf">
+  <meta name="citation_pdf_url" content="https://janolijournals.org/${journal.domain}/article/${article.id}/article.pdf">
   <meta name="citation_keywords" content="$keywords">
   <meta name="citation_language" content="en">
   <meta name="citation_abstract" content="${article.abstractString}">
@@ -57,7 +57,7 @@ $authorMetaTags
     "${article.keywords.map((keyword) => keyword).join('", "')}"
   ],
   "description": "${article.abstractString}",
-  "url": "https://${Env.journalDomain}/${journal.domain}/articles/${article.id}",
+  "url": "https://janolijournals.org/${journal.domain}/articles/${article.id}",
   "sameAs": "${article.pdf}"
 }
 </script>
@@ -86,7 +86,7 @@ $authorMetaTags
                   </p>
                 </div>
                 <div class="mt-3 mt-md-0 ms-md-4">
-                  <a href="https://${Env.journalDomain}/${journal.domain}/article/${article.id}/article.pdf" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                  <a href="https://janolijournals.org/${journal.domain}/article/${article.id}/article.pdf" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
                     <i class="fas fa-file-pdf mr-2"></i>Download PDF
                   </a>
                 </div>
@@ -118,7 +118,7 @@ $authorMetaTags
 
           <!-- Download Section -->
           <div class="article-download mt-4">
-            <a href="https://${Env.journalDomain}/${journal.domain}/article/${article.id}/article.pdf" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+            <a href="https://janolijournals.org/${journal.domain}/article/${article.id}/article.pdf" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
               <i class="fas fa-file-pdf mr-2"></i>Download PDF
             </a>
           </div>
