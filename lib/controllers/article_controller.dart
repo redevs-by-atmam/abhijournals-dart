@@ -1,5 +1,6 @@
 import 'package:dart_main_website/config/article_page.dart';
 import 'package:shelf/shelf.dart';
+import 'package:http/http.dart' as http;
 import '../services/firestore_service.dart';
 import '../server.dart';
 
@@ -12,7 +13,28 @@ class ArticleController {
     if (article == null) {
       return Response.notFound('Article not found');
     }
-    return Response.movedPermanently(article.pdf);
+
+    // Fetch the PDF content from the article.pdf URL
+    try {
+      final uri = Uri.parse(article.pdf);
+      final httpResponse = await http.get(uri);
+
+      if (httpResponse.statusCode != 200) {
+        return Response.notFound('PDF not found');
+      }
+
+      final bytes = httpResponse.bodyBytes;
+
+      return Response.ok(
+        bytes,
+        headers: {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': 'inline; filename="$pdfTitle.pdf"',
+        },
+      );
+    } catch (e) {
+      return Response.internalServerError(body: 'Failed to fetch PDF: $e');
+    }
   }
 
   Future<Response> show(

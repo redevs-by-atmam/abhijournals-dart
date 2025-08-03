@@ -27,12 +27,24 @@ jobs:
       - name: Enable Docker Authentication
         run: |
           gcloud auth configure-docker asia-south1-docker.pkg.dev
-          
+
+      - name: Create .env file from GitHub Secrets
+        run: |
+          echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" > .env
+          echo "JOURNAL_DOMAIN=${{ secrets.JOURNAL_DOMAIN }}" >> .env
+          echo "JOURNAL_TITLE=${{ secrets.JOURNAL_TITLE }}" >> .env
+          echo "ILOVEPDF_SECRET_KEY=${{ secrets.ILOVEPDF_SECRET_KEY }}" >> .env
+          echo "ILOVEPDF_PUBLIC_KEY=${{ secrets.ILOVEPDF_PUBLIC_KEY }}" >> .env
+
       - name: Build and Push Docker Image (Artifact Registry)
         run: |
           gcloud auth configure-docker asia-south1-docker.pkg.dev
           docker build \
             --build-arg FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }} \
+            --build-arg JOURNAL_DOMAIN=${{ secrets.JOURNAL_DOMAIN }} \
+            --build-arg JOURNAL_TITLE=${{ secrets.JOURNAL_TITLE }} \
+            --build-arg ILOVEPDF_SECRET_KEY=${{ secrets.ILOVEPDF_SECRET_KEY }} \
+            --build-arg ILOVEPDF_PUBLIC_KEY=${{ secrets.ILOVEPDF_PUBLIC_KEY }} \
             -t asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app .
           docker push asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app
 
@@ -43,7 +55,8 @@ jobs:
             --platform managed \
             --region asia-south1 \
             --allow-unauthenticated \
-            --set-env-vars "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}"
+            --set-env-vars "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }},JOURNAL_DOMAIN=${{ secrets.JOURNAL_DOMAIN }},JOURNAL_TITLE=${{ secrets.JOURNAL_TITLE }},ILOVEPDF_SECRET_KEY=${{ secrets.ILOVEPDF_SECRET_KEY }},ILOVEPDF_PUBLIC_KEY=${{ secrets.ILOVEPDF_PUBLIC_KEY }}"
+
       - name: Setup Firebase Tools
         run: npm install -g firebase-tools
 
