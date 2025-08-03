@@ -39,15 +39,17 @@ jobs:
       - name: Build and Push Docker Image (Artifact Registry)
         run: |
           gcloud auth configure-docker asia-south1-docker.pkg.dev
-          docker build \
+          docker buildx create --use || true
+          docker buildx build \
             --build-arg FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }} \
             --build-arg JOURNAL_DOMAIN=${{ secrets.JOURNAL_DOMAIN }} \
             --build-arg JOURNAL_TITLE=${{ secrets.JOURNAL_TITLE }} \
             --build-arg ILOVEPDF_SECRET_KEY=${{ secrets.ILOVEPDF_SECRET_KEY }} \
             --build-arg ILOVEPDF_PUBLIC_KEY=${{ secrets.ILOVEPDF_PUBLIC_KEY }} \
-            -t asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app .
-          docker push asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app
-
+            -t asia-south1-docker.pkg.dev/${{ secrets.FIREBASE_PROJECT_ID }}/dart-shelf-repo/dart-shelf-app \
+            --push \
+            .
+          
       - name: Deploy to Google Cloud Run
         run: |
           gcloud run deploy dart-shelf-app \
