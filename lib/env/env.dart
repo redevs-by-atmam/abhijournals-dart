@@ -19,4 +19,7 @@ abstract class Env {
 
   @EnviedField(varName: 'ILOVEPDF_PUBLIC_KEY')
   static const String ilovepdfPublicKey = _Env.ilovepdfPublicKey;
+
+  @EnviedField(varName: 'BASE_URL')
+  static const String baseUrl = _Env.baseUrl;
 }
