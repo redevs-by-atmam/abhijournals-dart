@@ -30,12 +30,13 @@ jobs:
 
       - name: Check Required Secrets
         run: |
-          for var in FIREBASE_PROJECT_ID JOURNAL_DOMAIN JOURNAL_TITLE ILOVEPDF_SECRET_KEY ILOVEPDF_PUBLIC_KEY FIREBASE_TOKEN; do
-            if [ -z "${{ secrets[$var] }}" ]; then
-              echo "❌ Missing required secret: $var"
-              exit 1
-            fi
-          done
+          if [ -z "${{ secrets.FIREBASE_PROJECT_ID }}" ]; then echo "❌ Missing FIREBASE_PROJECT_ID"; exit 1; fi
+          if [ -z "${{ secrets.JOURNAL_DOMAIN }}" ]; then echo "❌ Missing JOURNAL_DOMAIN"; exit 1; fi
+          if [ -z "${{ secrets.JOURNAL_TITLE }}" ]; then echo "❌ Missing JOURNAL_TITLE"; exit 1; fi
+          if [ -z "${{ secrets.ILOVEPDF_SECRET_KEY }}" ]; then echo "❌ Missing ILOVEPDF_SECRET_KEY"; exit 1; fi
+          if [ -z "${{ secrets.ILOVEPDF_PUBLIC_KEY }}" ]; then echo "❌ Missing ILOVEPDF_PUBLIC_KEY"; exit 1; fi
+          if [ -z "${{ secrets.FIREBASE_TOKEN }}" ]; then echo "❌ Missing FIREBASE_TOKEN"; exit 1; fi
+
 
       - name: Build and Push Docker Image (Artifact Registry)
         run: |
