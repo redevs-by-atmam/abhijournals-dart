@@ -73,7 +73,7 @@ $authorMetaTags
         <div class="bg-white border p-4">
           <!-- Article Header -->
           <div class="article-header mb-4">
-            <h2 class="article-title">${article.title}</h2>
+            <h2 class="article-title">${article.title} (P${article.startPage}-P${article.endPage})</h2>
             <div class="article-meta mt-3">
               <div class="d-flex flex-column flex-md-row justify-content-between align-items-start">
                 <div>

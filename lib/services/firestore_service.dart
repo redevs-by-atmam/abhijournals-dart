@@ -204,12 +204,20 @@ class FirestoreService {
           .orderBy('startPage')
           .get();
 
-      return snapshot
+      final articles = snapshot
           .map((doc) => ArticleModel.fromJson({
                 'id': doc.id,
                 ...doc.map,
               }))
           .toList();
+
+      articles.sort((a, b) {
+        final aPage = a.startPage;
+        final bPage = b.startPage;
+        return aPage.compareTo(bPage);
+      });
+
+      return articles;
     } catch (e) {
       log('Error getting articles by issue: $e');
       return [];
@@ -237,10 +245,12 @@ class FirestoreService {
       final doc =
           await _firestore.collection('articles').document(articleId).get();
 
-      return ArticleModel.fromJson({
+      final data = {
         'id': doc.id,
         ...doc.map,
-      });
+      };
+
+      return ArticleModel.fromJson(data);
     } catch (e) {
       log('Error getting article: $e');
       return null;
@@ -289,15 +299,18 @@ class FirestoreService {
           .collection('articles')
           .where('volumeId', isEqualTo: volumeId)
           .where('issueId', isEqualTo: issueId)
-          .orderBy('startPage')
           .get();
 
-      return snapshot
+      final articles = snapshot
           .map((doc) => ArticleModel.fromJson({
                 'id': doc.id,
                 ...doc.map,
               }))
           .toList();
+
+      articles.sort((a, b) => (a.startPage).compareTo(b.startPage));
+
+      return articles;
     } catch (e) {
       log('Error getting articles by volume and issue: $e');
       return [];
