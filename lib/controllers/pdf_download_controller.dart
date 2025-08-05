@@ -1,286 +1,219 @@
-import 'package:dart_main_website/services/firestore_service.dart';
-import 'package:dio/dio.dart' as dio;
-import 'dart:developer' as developer;
-import 'package:shelf/shelf.dart';
 import 'dart:typed_data';
 
+import 'package:dart_main_website/env/env.dart';
+import 'package:dart_main_website/services/firestore_service.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:shelf/shelf.dart';
+
+final _dio = dio.Dio();
+final _firestoreService = FirestoreService();
+
 class PdfDownloadController {
-  final dio.Dio _dio = dio.Dio();
-  final String supabaseEndpoint =
-      'https://etvzvjlkhdcmurvsqaao.supabase.co/functions/v1/merge-pdf-ilovepdf';
+  static const String ilovePdfPublicKey = Env.ilovepdfPublicKey;
+  static const String ilovePdfSecretKey = Env.ilovepdfSecretKey;
+  static const String ilovePdfApiBase = 'https://api.ilovepdf.com/v1';
 
-  /// Main method to download and merge PDFs
-  Future<Response> downloadPdf(
-      Request request, String domain, String issueId) async {
-    developer.log(
-        'Starting PDF download and merge process for issue: $issueId, domain: $domain');
+  Future<Response> downloadPdf(Request request) async {
+    // Extract domain and issueId from the URL path
+    final pathSegments = request.url.pathSegments;
+    final domain = pathSegments.isNotEmpty ? pathSegments.first : 'unknown';
 
-    // Check if this is the initial request or the actual download request
-    final isDownloadRequest = request.url.queryParameters['download'] == 'true';
-    final isComplete = request.url.queryParameters['complete'] == 'true';
-
-    if (isComplete) {
-      // Show download complete page
-      return Response.ok(
-        '''
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Download Complete</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              margin-top: 100px;
-            }
-            .success-icon {
-              color: green;
-              font-size: 80px;
-              margin-bottom: 20px;
-            }
-            h2 {
-              color: #033e93;
-            }
-            .btn {
-              background-color: #033e93;
-              color: white;
-              padding: 10px 20px;
-              text-decoration: none;
-              border-radius: 5px;
-              display: inline-block;
-              margin-top: 20px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="success-icon">✓</div>
-          <h2>पीडीएफ डाउनलोड हो गया है!</h2>
-          <h2>PDF has been downloaded successfully!</h2>
-          <p>Your file has been downloaded to your device.</p>
-          <a href="/$domain/issue/$issueId/articles/" class="btn">Return to Issue</a>
-        </body>
-        </html>
-        ''',
-        headers: {'Content-Type': 'text/html'},
-      );
-    }
-
-    if (!isDownloadRequest) {
-      // Show loading page to inform user that PDFs are being merged
-      return Response.ok(
-        '''
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Merging PDFs</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              margin-top: 100px;
-            }
-            .loader {
-              border: 16px solid #f3f3f3;
-              border-radius: 50%;
-              border-top: 16px solid #033e93;
-              width: 120px;
-              height: 120px;
-              animation: spin 2s linear infinite;
-              margin: 0 auto;
-              margin-bottom: 30px;
-            }
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-            h2 {
-              color: #033e93;
-            }
-            #error {
-              color: red;
-              display: none;
-            }
-          </style>
-          <script>
-            window.onload = function() {
-              setTimeout(function() {
-                // Add download parameter to indicate this is the actual download request
-                window.location.href = window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'download=true';
-              }, 2000); // Wait 2 seconds before redirecting to show the loading message
-            };
-          </script>
-        </head>
-        <body>
-          <div class="loader"></div>
-          <h2>मर्जिंग पीडीएफ, कृपया प्रतीक्षा करें...</h2>
-          <h2>Merging PDFs, please wait...</h2>
-          <p>Your download will start automatically once the PDFs are merged.</p>
-          <p id="error">Error occurred during PDF merging. Please try again later.</p>
-        </body>
-        </html>
-        ''',
-        headers: {'Content-Type': 'text/html'},
-      );
-    }
-
-    try {
-      // Fetch articles and extract PDF URLs
-      final articles = await FirestoreService().getArticlesByIssue(issueId);
-
-      if (articles.isEmpty) {
-        return Response.notFound('No articles found for this issue');
+    // Find the issueId after '/issue/'
+    String issueId = 'unknown';
+    for (int i = 0; i < pathSegments.length - 1; i++) {
+      if (pathSegments[i] == 'issue') {
+        issueId = pathSegments[i + 1];
+        break;
       }
+    }
 
-      final pdfUrls = articles
-          .map((article) => article.pdf)
+    if (issueId == 'unknown') {
+      return _errorHtml(
+        domain,
+        issueId,
+        'Could not determine issueId from the URL. Please check the request path.',
+        [],
+      );
+    }
+
+    // Fetch articles for the given issueId
+    List<String> pdfUrls = [];
+    try {
+      final articles = await _firestoreService.getArticlesByIssue(issueId);
+      if (articles.isEmpty) {
+        return _errorHtml(
+          domain,
+          issueId,
+          'No articles found for this issue. Cannot merge PDFs.',
+          [],
+        );
+      }
+      // Collect all non-empty PDF URLs from the articles
+      pdfUrls = articles
+          .map((article) => article.pdf.trim())
           .where((url) => url.isNotEmpty)
           .toList();
 
       if (pdfUrls.isEmpty) {
-        return Response.notFound(
-            'No PDF files found for articles in this issue');
+        return _errorHtml(
+          domain,
+          issueId,
+          'No valid PDF URLs found for the articles in this issue.',
+          [],
+        );
       }
-
-      // Call the PDF merge service
-      final response = await _dio.post(
-        supabaseEndpoint,
-        data: {'urls': pdfUrls},
-        options: dio.Options(
-          receiveTimeout: const Duration(minutes: 2),
-          sendTimeout: const Duration(minutes: 2),
-        ),
+    } catch (e) {
+      return _errorHtml(
+        domain,
+        issueId,
+        'Failed to fetch articles for this issue: $e',
+        [],
       );
+    }
 
-      // Extract the download URL from the response
-      if (response.data['success'] == true &&
-          response.data['downloadUrl'] != null) {
-        // If downloadUrl is a Buffer object
-        if (response.data['downloadUrl'] is Map &&
-            response.data['downloadUrl']['type'] == 'Buffer' &&
-            response.data['downloadUrl']['data'] is List) {
-          // Convert the buffer data to Uint8List
-          final List<int> bufferData =
-              List<int>.from(response.data['downloadUrl']['data']);
-          final Uint8List pdfBytes = Uint8List.fromList(bufferData);
+    try {
+      // 1. Get ILovePDF auth token
+      final authResp = await _dio.post(
+        '$ilovePdfApiBase/auth',
+        data: {'public_key': ilovePdfPublicKey},
+      );
+      if (authResp.statusCode != 200 || authResp.data['token'] == null) {
+        return _errorHtml(
+            domain,
+            issueId,
+            'Failed to authenticate with ILovePDF. Please check your API keys and try again.',
+            pdfUrls);
+      }
+      final ilovePdfToken = authResp.data['token'];
 
-          // Return the PDF data directly with a script to redirect to the completion page
-          return Response.ok(
-            pdfBytes,
-            headers: {
-              'Content-Type': 'application/pdf',
-              'Content-Disposition':
-                  'attachment; filename=issue_$issueId.pdf',
-              'X-Complete-Url':
-                  '/$domain/issue/$issueId/articles/download/?complete=true',
-            },
-          );
-        } else if (response.data['downloadUrl'] is String) {
-          // If downloadUrl is a string URL, fetch the PDF content
-          final pdfResponse = await _dio.get(
-            response.data['downloadUrl'],
-            options: dio.Options(responseType: dio.ResponseType.bytes),
-          );
+      // 2. Start a merge task
+      final taskResp = await _dio.post(
+        '$ilovePdfApiBase/start/merge',
+        options:
+            dio.Options(headers: {'Authorization': 'Bearer $ilovePdfToken'}),
+      );
+      if (taskResp.statusCode != 200 || taskResp.data['task'] == null) {
+        return _errorHtml(
+            domain,
+            issueId,
+            'Failed to start ILovePDF merge task. Please try again later.',
+            pdfUrls);
+      }
+      final taskId = taskResp.data['task'];
 
-          // Return the PDF data with a script to redirect to the completion page
-          return Response.ok(
-            pdfResponse.data,
-            headers: {
-              'Content-Type': 'application/pdf',
-              'Content-Disposition':
-                  'attachment; filename=issue_$issueId.pdf',
-              'X-Complete-Url':
-                  '/$domain/issue/$issueId/articles/download/?complete=true',
-            },
-          );
+      // 3. Add files by URL
+      for (final url in pdfUrls) {
+        final addResp = await _dio.post(
+          '$ilovePdfApiBase/upload/url',
+          data: {
+            'task': taskId,
+            'cloud_file': url,
+          },
+          options:
+              dio.Options(headers: {'Authorization': 'Bearer $ilovePdfToken'}),
+        );
+        if (addResp.statusCode != 200) {
+          return _errorHtml(
+              domain,
+              issueId,
+              'Failed to add PDF from URL: $url. Please ensure the URL is correct and accessible.',
+              pdfUrls);
         }
       }
 
-      // If we get here, something went wrong with the response format
-      developer.log('Invalid response format: ${response.data}');
-      return Response.internalServerError(
-        body: '''
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Error</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              margin-top: 100px;
-            }
-            .error-icon {
-              color: red;
-              font-size: 80px;
-              margin-bottom: 20px;
-            }
-            h2 {
-              color: #033e93;
-            }
-            .btn {
-              background-color: #033e93;
-              color: white;
-              padding: 10px 20px;
-              text-decoration: none;
-              border-radius: 5px;
-              display: inline-block;
-              margin-top: 20px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="error-icon">✗</div>
-          <h2>Network response was not ok</h2>
-          <p>Failed to process PDF merge: Invalid response format</p>
-          <a href="/$domain/issue/$issueId/articles/" class="btn">Return to Issue</a>
-        </body>
-        </html>
-        ''',
-        headers: {'Content-Type': 'text/html'},
+      // 4. Process the merge
+      final processResp = await _dio.post(
+        '$ilovePdfApiBase/process',
+        data: {
+          'task': taskId,
+        },
+        options:
+            dio.Options(headers: {'Authorization': 'Bearer $ilovePdfToken'}),
+      );
+      if (processResp.statusCode != 200) {
+        return _errorHtml(
+            domain,
+            issueId,
+            'Failed to process PDF merge. Please try again.',
+            pdfUrls);
+      }
+
+      // 5. Download the merged PDF
+      final downloadResp = await _dio.get<List<int>>(
+        '$ilovePdfApiBase/download/$taskId',
+        options: dio.Options(
+          headers: {'Authorization': 'Bearer $ilovePdfToken'},
+          responseType: dio.ResponseType.bytes,
+        ),
+      );
+      if (downloadResp.statusCode != 200 || downloadResp.data == null) {
+        return _errorHtml(
+            domain,
+            issueId,
+            'Failed to download merged PDF. Please try again.',
+            pdfUrls);
+      }
+
+      final mergedBytes = Uint8List.fromList(downloadResp.data!);
+
+      return Response.ok(
+        mergedBytes,
+        headers: {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': 'attachment; filename=issue_$issueId.pdf',
+          'X-Complete-Url':
+              '/$domain/issue/$issueId/articles/download/?complete=true',
+        },
       );
     } catch (e) {
-      developer.log('Error during PDF merge: $e');
-      return Response.internalServerError(
-        body: '''
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Error</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              margin-top: 100px;
-            }
-            .error-icon {
-              color: red;
-              font-size: 80px;
-              margin-bottom: 20px;
-            }
-            h2 {
-              color: #033e93;
-            }
-            .btn {
-              background-color: #033e93;
-              color: white;
-              padding: 10px 20px;
-              text-decoration: none;
-              border-radius: 5px;
-              display: inline-block;
-              margin-top: 20px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="error-icon">✗</div>
-          <h2>Network response was not ok</h2>
-          <p>Failed to process PDF merge: ${e.toString()}</p>
-          <a href="/$domain/issue/$issueId/articles/" class="btn">Return to Issue</a>
-        </body>
-        </html>
-        ''',
-        headers: {'Content-Type': 'text/html'},
+      // Print the error to the console for debugging
+      print('Error while downloading or merging PDFs: $e');
+      // If it's a DioException, print more details
+      if (e is dio.DioException) {
+        print('DioException details:');
+        print('Type: ${e.type}');
+        print('Message: ${e.message}');
+        print('Response: ${e.response}');
+        print('RequestOptions: ${e.requestOptions}');
+      }
+      return _errorHtml(
+        domain,
+        issueId,
+        "Due to a technical glitch, the issue PDF can't be downloaded or merged at this time. However, you can view the individual article PDFs using the links below.",
+        pdfUrls,
       );
     }
+  }
+
+  Response _errorHtml(String domain, String issueId, String message, List<String> pdfUrls) {
+    final pdfLinksHtml = pdfUrls.isNotEmpty
+        ? '''
+  <h2>Article PDFs</h2>
+  <ul>
+    ${pdfUrls.map((url) => '<li><a href="$url" target="_blank">$url</a></li>').join('\n    ')}
+  </ul>
+  '''
+        : '';
+
+    final html = '''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PDF Download Failed</title>
+</head>
+<body>
+  <h1>PDF Merge Error</h1>
+  <p style="color: red;">$message</p>
+  $pdfLinksHtml
+  <a href="/$domain/issue/$issueId/articles/download/?complete=true">Try again</a>
+</body>
+</html>
+''';
+
+    return Response.internalServerError(
+      body: html,
+      headers: {'Content-Type': 'text/html'},
+    );
   }
 }
