@@ -12,11 +12,13 @@ class JournalInfoController {
       final journal = await _firestoreService.getJournalByDomain(domain);
       final aboutContent =
           await _firestoreService.getPageByDomain(journal!.id, 'about-journal');
+      final homeContent = await _firestoreService.getHomeContent(journal);
 
-      return renderHtml('dynamic-pages/page.html', {
+      return renderHtml('dynamic-pages/about-journals.html', {
         'header': getHeaderHtml(journal),
         'footer': getFooterHtml(journal),
         'journal': journal.toJson(),
+        'homeContent': homeContent?.toJson(),
         'domain': journal.domain,
         'content': aboutContent!.toJson(),
       });

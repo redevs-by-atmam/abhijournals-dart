@@ -1,0 +1,59 @@
+{{{header}}}
+<style>
+  .container-fluid {
+    color: black !important;
+  }
+</style>
+<div class="container-fluid mt-5 mb-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        {{#content}}
+          <div class="bg-white border border-top-0 p-4">
+            {{{content}}}
+          </div>
+        {{/content}}
+        
+        {{^content}}
+          <div class="bg-white border border-top-0 p-4">
+            <p>No content available.</p>
+          </div>
+        {{/content}}
+      </div>
+    </div>
+    <!-- Publisher Card Section (Tailwind, aligned with content card) -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-12 col-md-10 col-lg-12">
+        <div class="rounded-lg shadow border bg-white p-4 flex flex-col gap-2">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded font-semibold uppercase tracking-wide">Publisher</span>
+          </div>
+          {{#homeContent}}
+          {{#publisher}}
+          <div class="font-semibold text-lg text-gray-800">{{name}}</div>
+          {{#instituteLink}}
+          <div>
+            <a href="{{instituteLink}}" target="_blank" class="text-blue-600 hover:underline font-medium">
+              {{institute}}
+            </a>
+          </div>
+          {{/instituteLink}}
+          <div class="text-gray-600 text-sm">
+            <span>{{address}}</span>
+          </div>
+          <div class="flex items-center gap-2 mt-1">
+            <a href="mailto:{{email}}" class="flex items-center text-gray-700 hover:text-blue-600">
+              <i class="fa fa-envelope mr-1"></i>
+              <span class="text-sm">{{email}}</span>
+            </a>
+          </div>
+          {{/publisher}}
+          {{/homeContent}}
+        </div>
+      </div>
+    </div>
+    <!-- End Publisher Card Section -->
+  </div>
+</div>
+
+{{{footer}}}

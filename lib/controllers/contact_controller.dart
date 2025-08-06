@@ -13,15 +13,14 @@ class ContactController extends BaseController {
       if (journal == null) {
         return Response.notFound('Journal not found');
       }
-
-      final pageContent = await _firestoreService.getPageByDomain(journal.id, 'contact');
+      final homeContent = await _firestoreService.getHomeContent(journal);
 
       return renderHtml('dynamic-pages/contact.html', {
         'header': getHeaderHtml(journal),
         'footer': getFooterHtml(journal),
+        'homeContent': homeContent?.toJson(),
         'journal': journal.toJson(),
         'domain': journal.domain,
-        'pageModel': pageContent?.toJson(),
       });
     } catch (e) {
       print('Error fetching contact page: $e');
@@ -29,4 +28,4 @@ class ContactController extends BaseController {
           body: 'An error occurred while processing your request');
     }
   }
-} 
+}
