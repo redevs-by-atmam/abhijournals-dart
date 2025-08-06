@@ -3,6 +3,20 @@
   .container-fluid {
     color: black !important;
   }
+  .info-table th, .info-table td {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+  }
+  .info-table th {
+    background: #f3f4f6;
+    font-weight: 600;
+    color: #374151;
+    width: 180px;
+  }
+  .info-table tr:last-child td, .info-table tr:last-child th {
+    border-bottom: none;
+  }
 </style>
 <div class="container-fluid mt-5 mb-3">
   <div class="container">
@@ -21,6 +35,45 @@
         {{/content}}
       </div>
     </div>
+    <!-- Journal Info Card Section -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-12 col-md-10 col-lg-12">
+        <div class="rounded-lg shadow border bg-white p-4 flex flex-col gap-2">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded font-semibold uppercase tracking-wide">Journal Information</span>
+          </div>
+          {{#homeContent}}
+          <div class="overflow-auto">
+            <table class="info-table w-100" style="min-width: 350px;">
+              <tbody>
+                <tr>
+                  <th>Since</th>
+                  <td>{{since}}</td>
+                </tr>
+                <tr>
+                  <th>Mode</th>
+                  <td>{{mode}}</td>
+                </tr>
+                <tr>
+                  <th>Frequency</th>
+                  <td>{{frequency}}</td>
+                </tr>
+                <tr>
+                  <th>Language</th>
+                  <td>{{language}}</td>
+                </tr>
+                <tr>
+                  <th>Subject</th>
+                  <td>{{subject}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          {{/homeContent}}
+        </div>
+      </div>
+    </div>
+    <!-- End Journal Info Card Section -->
     <!-- Publisher Card Section (Tailwind, aligned with content card) -->
     <div class="row justify-content-center mt-4">
       <div class="col-12 col-md-10 col-lg-12">
