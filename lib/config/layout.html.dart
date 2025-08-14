@@ -248,20 +248,8 @@ String getFooterHtml(JournalModel journal) {
                 </div>
             </div>
         </div>
-        
-        <div class="row py-1">
-            <div class="col-md-6 text-center text-md-left">
-                <h5 class="mb-3 text-white text-uppercase font-weight-bold">Get In Touch</h5>
-                <div class="d-flex flex-column">
-                    <p class="font-weight-medium mb-2"><i class="fa fa-map-marker-alt mr-2"></i>Vitthal Namdev Nagar,
-                        Opp Jain Temple Sanganer Sanganer Bazar Jaipur 302029 Rajasthan (India)</p>
-
-                    <p class="font-weight-medium mb-0"><i class="fa fa-envelope mr-2"></i><a style="text-decoration: none; color: grey;" href="mailto:mail@$domain">mail@$domain</a></p>
-                </div>
-            </div>
-        </div>
     </div>
-
+    
     <div class="footer-2 py-4 px-sm-3 px-md-5" style="background: #111111;">
         <p class="m-0 text-center">&copy; <a href="https://$domain">$title</a>. All Rights Reserved.
 
